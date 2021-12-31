@@ -1,4 +1,4 @@
-namespace SpiceItUp.Api
+namespace SpiceItUpDataStorage.Api
 {
     public class WeatherForecast
     {

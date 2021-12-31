@@ -1,3 +1,5 @@
+string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace SpiceItUp.Api.Controllers
+namespace SpiceItUpDataStorage.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
