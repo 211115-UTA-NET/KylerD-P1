@@ -31,6 +31,12 @@ namespace SpiceItUpDataStorage
         //private static List<int> customerQuantity = new List<int>();
         //private static List<decimal> customerPrice = new List<decimal>();
 
+        //For serializer
+        public SqlRepository()
+        {
+
+        }
+
         /// <summary>
         /// The information entered by user is written to our database
         /// This information can be pulled and used to login to an account when entered in correctly
@@ -517,7 +523,7 @@ namespace SpiceItUpDataStorage
         /// Search a customer by their first name
         /// </summary>
         /// <returns></returns>
-        public static void SearchCustomerFirstName(string firstName)
+        public void SearchCustomerFirstName(string firstName)
         {
             using SqlConnection connection = new(connectionString);
 

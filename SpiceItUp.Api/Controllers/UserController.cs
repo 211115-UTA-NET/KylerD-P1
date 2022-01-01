@@ -9,19 +9,22 @@ namespace SpiceItUpDataStorage.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //private readonly SpiceItUpDataStorage _repository;
+        private readonly IRepository _repo;
 
-        //public UserController(SqlRepository repository)
-        //{
-        //    _repository = repository;
-        //}
-
-
-        [HttpGet]
-        public IActionResult GetAllUsers([FromQuery, Required] string firstName)
+        public UserController(IRepository repository)
         {
-            SpiceItUpDataStorage.SqlRepository.SearchCustomerFirstName(firstName);
-            return new JsonResult(User);
+            _repo = repository;
+        }
+
+        // GET api/user/?firstName={FirstName}
+        [HttpGet]
+        public IActionResult GetAllUsersFirstName([FromQuery, Required] string firstName)
+        {
+            IEnumerable<User> user;
+            
+            user = _repo.SearchCustomerFirstName(firstName);
+
+            return new JsonResult(user);
         }
     }
 }
