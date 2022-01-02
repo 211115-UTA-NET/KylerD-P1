@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceItUp.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
-    public class SqlRepository
+    public class PrintResults
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
@@ -517,12 +518,8 @@ namespace SpiceItUp
         /// Search a customer by their first name
         /// </summary>
         /// <returns></returns>
-        public static int SearchCustomerFirstName(string firstName, int testing)
+        public static void SearchCustomerFirstName(IEnumerable<User> users)
         {
-            int test = testing;
-
-            using SqlConnection connection = new(connectionString);
-
             Console.WriteLine("==============================");
             Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
                     "User ID", "FirstName", "Last Name", "Phone Number", "Is Employee?"));
@@ -530,21 +527,12 @@ namespace SpiceItUp
                     "=======", "=========", "=========", "============", "============"));
 
             //Pull customer information matching first name entered
-            connection.Open();
-            string customerSearch = "SELECT UserID, FirstName, LastName, PhoneNumber, IsEmployee FROM UserInformation " +
-                "WHERE FirstName = @firstName ORDER BY LastName;";
-            using SqlCommand getCustomer = new(customerSearch, connection);
-            getCustomer.Parameters.Add("@firstName", System.Data.SqlDbType.VarChar).Value = firstName;
-            using SqlDataReader reader = getCustomer.ExecuteReader();
-            while (reader.Read())
+            foreach (var record in users)
             {
-                test = test + 1;
                 Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3), reader.GetString(4)));
+                    record.id, record.first, record.last, record.phone, record.employee));
             }
             Console.WriteLine("==============================");
-
-            return test;
         }
 
         /// <summary>

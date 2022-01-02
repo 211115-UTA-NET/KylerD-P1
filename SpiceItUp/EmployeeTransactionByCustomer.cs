@@ -34,7 +34,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    customerIDList = SpiceItUp.SqlRepository.CustomerTransactionList();
+                    customerIDList = SpiceItUp.PrintResults.CustomerTransactionList();
                 }
                 catch (Exception)
                 {
@@ -81,7 +81,7 @@ namespace SpiceItUp
                 try
                 {
                     int customerID = customerIDList[myEntry];
-                    transList = SpiceItUp.SqlRepository.CustomerTransactionHistory(customerID);
+                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(customerID);
                 }
                 catch(Exception)
                 {
@@ -103,7 +103,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry2);
                     if (validEntry == true && transList.Count >= userEntry2 && userEntry2 > 0) //If employee chooses a transaction
                     {
-                        SpiceItUp.SqlRepository.DetailedTransaction(userEntry2); //View the transaction in more detail
+                        SpiceItUp.PrintResults.DetailedTransaction(userEntry2); //View the transaction in more detail
                         break;
                     }
                     else if (userEntry2 == 0) //Return to customer list

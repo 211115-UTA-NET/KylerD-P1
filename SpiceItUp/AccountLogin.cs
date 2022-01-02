@@ -86,13 +86,13 @@ namespace SpiceItUp
         public static void TestEntries(string username, string password)
         {
             //If username and password is a valid entry, pull a UserID
-            userID = SpiceItUp.SqlRepository.GetLoginUserID(username, password);
+            userID = SpiceItUp.PrintResults.GetLoginUserID(username, password);
 
             //Get user information based on valid UserID
-            firstName = SpiceItUp.SqlRepository.GetLoginFirstName(userID);
-            lastName = SpiceItUp.SqlRepository.GetLoginLastName(userID);
-            phoneNumber = SpiceItUp.SqlRepository.GetLoginPhoneNumber(userID);
-            isEmployee = SpiceItUp.SqlRepository.GetLoginIsEmployee(userID);
+            firstName = SpiceItUp.PrintResults.GetLoginFirstName(userID);
+            lastName = SpiceItUp.PrintResults.GetLoginLastName(userID);
+            phoneNumber = SpiceItUp.PrintResults.GetLoginPhoneNumber(userID);
+            isEmployee = SpiceItUp.PrintResults.GetLoginIsEmployee(userID);
         }
     }
 }

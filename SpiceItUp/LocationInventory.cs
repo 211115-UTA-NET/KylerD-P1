@@ -26,7 +26,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUp.SqlRepository.PrintStoreList();
+                    SpiceItUp.PrintResults.PrintStoreList();
                 }
                 catch (Exception)
                 {
@@ -48,7 +48,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUp.SqlRepository.PullStoreInfo(storeEntry); //Can we pull the store's inventory information based on user input?
+                    SpiceItUp.PrintResults.PullStoreInfo(storeEntry); //Can we pull the store's inventory information based on user input?
                 }
                 catch (Exception) //If we fail to pull store inventory
                 {

@@ -33,7 +33,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUp.SqlRepository.PrintStoreList();
+                    SpiceItUp.PrintResults.PrintStoreList();
                 }
                 catch (Exception)
                 {
@@ -74,7 +74,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    transList = SpiceItUp.SqlRepository.StoreTransactionList(myEntry);
+                    transList = SpiceItUp.PrintResults.StoreTransactionList(myEntry);
                 }
                 catch (Exception)
                 {
@@ -96,7 +96,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry);
                     if (transList.Count >= userEntry && userEntry > 0) //If a transaction selectionn is valid
                     {
-                        SpiceItUp.SqlRepository.DetailedTransaction(userEntry); //Pull results of transaction from database and print for employee
+                        SpiceItUp.PrintResults.DetailedTransaction(userEntry); //Pull results of transaction from database and print for employee
                         break;
                     }
                     else if (userEntry == 0) //If employee enters 0, return to store list

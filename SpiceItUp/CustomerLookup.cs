@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceItUp.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -66,7 +67,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a first name
         /// </summary>
-        public static void SearchByFirstName()
+        public static async void SearchByFirstName()
         {
             while (true)
             {
@@ -78,18 +79,17 @@ namespace SpiceItUp
                 }
                 else
                 {
-                    test = 0;
                     try //Try to pull customer information
                     {
-                        test = SpiceItUp.SqlRepository.SearchCustomerFirstName(firstName, test);
+                        SpiceItUpService service = new SpiceItUpService();
+                        List<User> users = await service.GetUserFirstNameAsync(firstName);
+                        SpiceItUp.PrintResults.SearchCustomerFirstName(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database
                     {
                         Console.WriteLine("There was an error retrieving the customer information.");
                     }
-                    if (test == 0) //If there are no customers that match the first name entered
-                        Console.WriteLine("There are no customers with that first name. Please try again.");
                     break;
                 }
             }
@@ -113,7 +113,7 @@ namespace SpiceItUp
                     test = 0;
                     try //Try to pull customer information
                     {
-                        test = SpiceItUp.SqlRepository.SearchCustomerLastName(lastName, test);
+                        test = SpiceItUp.PrintResults.SearchCustomerLastName(lastName, test);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database

@@ -33,7 +33,7 @@ namespace SpiceItUp
                 Console.WriteLine("Here is your order History:");
                 try
                 {
-                    transList = SpiceItUp.SqlRepository.CustomerTransactionHistory(myUserID);
+                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(myUserID);
                 }
                 catch (Exception)
                 {
@@ -57,7 +57,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry);
                     if (validEntry == true && transList.Count >= userEntry && userEntry > 0) //If entery is valid
                     {
-                        SpiceItUp.SqlRepository.DetailedTransaction(userEntry); //View the transaction in more detail
+                        SpiceItUp.PrintResults.DetailedTransaction(userEntry); //View the transaction in more detail
                         break;
                     }
                     else if (userEntry == 0) //If customer wishes to exit

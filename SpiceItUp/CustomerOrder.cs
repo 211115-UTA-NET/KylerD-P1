@@ -47,7 +47,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUp.SqlRepository.PrintStoreList();
+                    SpiceItUp.PrintResults.PrintStoreList();
                 }
                 catch (Exception)
                 {
@@ -96,13 +96,13 @@ namespace SpiceItUp
             customerPrice.Clear();
 
             //Pull information from the entered store (Name)
-            storeName = SpiceItUp.SqlRepository.GetStoreName(storeEntry);
+            storeName = SpiceItUp.PrintResults.GetStoreName(storeEntry);
 
             //Begin pulling the inventory from the selected store and storing the info in lists
-            itemIDList = SpiceItUp.SqlRepository.GetStoreInventoryItemID(storeEntry);
-            itemNameList = SpiceItUp.SqlRepository.GetStoreInventoryItemName(storeEntry);
-            inStockList = SpiceItUp.SqlRepository.GetStoreInventoryInStock(storeEntry);
-            priceList = SpiceItUp.SqlRepository.GetStoreInventoryPrice(storeEntry);
+            itemIDList = SpiceItUp.PrintResults.GetStoreInventoryItemID(storeEntry);
+            itemNameList = SpiceItUp.PrintResults.GetStoreInventoryItemName(storeEntry);
+            inStockList = SpiceItUp.PrintResults.GetStoreInventoryInStock(storeEntry);
+            priceList = SpiceItUp.PrintResults.GetStoreInventoryPrice(storeEntry);
         }
 
         /// <summary>
@@ -373,7 +373,7 @@ namespace SpiceItUp
 
             try
             {
-                SpiceItUp.SqlRepository.FinalizeTransaction(itemIDList, inStockList, storeEntry, transID, userID, customerItemID, customerQuantity, customerPrice);
+                SpiceItUp.PrintResults.FinalizeTransaction(itemIDList, inStockList, storeEntry, transID, userID, customerItemID, customerQuantity, customerPrice);
 
                 Console.WriteLine("Your order was successful!");
                 Console.WriteLine($"Your transaction ID number is: {transID}");

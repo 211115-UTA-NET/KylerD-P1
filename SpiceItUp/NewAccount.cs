@@ -37,7 +37,7 @@ namespace SpiceItUp
                 try
                 {
 #pragma warning disable CS8604 // Possible null reference argument.
-                    SpiceItUp.SqlRepository.AddNewCustomer(newUsername, newPassword, firstName, lastName, phoneNumber);
+                    SpiceItUp.PrintResults.AddNewCustomer(newUsername, newPassword, firstName, lastName, phoneNumber);
 #pragma warning restore CS8604 // Possible null reference argument.
                 }
                 catch (Exception) //Accounts will not be created if there is a duplicate username
