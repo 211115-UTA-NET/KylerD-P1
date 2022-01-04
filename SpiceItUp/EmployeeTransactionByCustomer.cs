@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceItUp.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace SpiceItUp
         /// <summary>
         /// The database prints off a list of customers for the employee to choose from
         /// </summary>
-        public static void SelectACustomer()
+        public async static void SelectACustomer()
         {
             exit = false;
             while (exit == false)
@@ -34,7 +35,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    customerIDList = SpiceItUp.PrintResults.CustomerTransactionList();
+                    SpiceItUpService service = new SpiceItUpService();
+                    List<User> users = await service.GetCustomerList();
+                    customerIDList = SpiceItUp.PrintResults.CustomerList(users);
                 }
                 catch (Exception)
                 {
@@ -58,6 +61,7 @@ namespace SpiceItUp
                     else if (userEntry == 0) //If customer wishes to return to account main menu
                     {
                         exit = true;
+                        Console.WriteLine("return");
                         break;
                     }
                     else //If we get an unknown error

@@ -14,15 +14,68 @@ namespace SpiceItUp
 
         Uri server = new("https://localhost:7106");
 
-        public async Task<List<User>> GetUserFirstNameAsync(string firstName)
+        public Task<List<User>> GetUserFirstName(string firstName)
         {
-            Uri requestUri = new(server, $"api/user/?firstName={firstName}");
+            Uri requestUri = new(server, $"/user/FirstName?firstName={firstName}");
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
-            HttpResponseMessage response = await HttpClient.SendAsync(request);
+            HttpResponseMessage response;
+            
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+            
+            response.EnsureSuccessStatusCode();
+
+            var users = response.Content.ReadFromJsonAsync<List<User>>();
+
+            return users;
+        }
+
+        public Task<List<User>> GetUserLastName(string lastName)
+        {
+            Uri requestUri = new(server, $"/user/LastName?lastName={lastName}");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
 
             response.EnsureSuccessStatusCode();
 
-            var users = await response.Content.ReadFromJsonAsync<List<User>>();
+            var users = response.Content.ReadFromJsonAsync<List<User>>();
+
+            return users;
+        }
+
+        public Task<List<User>> GetCustomerList()
+        {
+            Uri requestUri = new(server, $"/user");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var users = response.Content.ReadFromJsonAsync<List<User>>();
 
             return users;
         }

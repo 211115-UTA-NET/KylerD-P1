@@ -14,13 +14,10 @@ namespace SpiceItUp
     /// </summary>
     public class CustomerLookup
     {
-        private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
-
         private static bool exit = false;
 
         public static string? firstName;
         public static string? lastName;
-        public static int test = 0;
 
         /// <summary>
         /// Employee chooses how they would like to lookup the customer (first or last name)
@@ -82,7 +79,7 @@ namespace SpiceItUp
                     try //Try to pull customer information
                     {
                         SpiceItUpService service = new SpiceItUpService();
-                        List<User> users = await service.GetUserFirstNameAsync(firstName);
+                        List<User> users = await service.GetUserFirstName(firstName);
                         SpiceItUp.PrintResults.SearchCustomerFirstName(users);
                         break;
                     }
@@ -98,7 +95,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a last name
         /// </summary>
-        public static void SearchByLastName()
+        public static async void SearchByLastName()
         {
             while (true)
             {
@@ -110,18 +107,17 @@ namespace SpiceItUp
                 }
                 else
                 {
-                    test = 0;
                     try //Try to pull customer information
                     {
-                        test = SpiceItUp.PrintResults.SearchCustomerLastName(lastName, test);
+                        SpiceItUpService service = new SpiceItUpService();
+                        List<User> users = await service.GetUserLastName(lastName);
+                        SpiceItUp.PrintResults.SearchCustomerFirstName(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database
                     {
                         Console.WriteLine("There was an error retrieving the customer information.");
                     }
-                    if (test == 0) //If there are no customers that match the last name entered
-                        Console.WriteLine("There are no customers with that last name. Please try again.");
                     break;
                 }
             }

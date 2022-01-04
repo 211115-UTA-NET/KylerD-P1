@@ -260,37 +260,37 @@ namespace SpiceItUpDataStorage
         /// Returns customer IDs
         /// </summary>
         /// <returns></returns>
-        public static List<int> CustomerTransactionList()
-        {
-            customerIDList.Clear();
+        //public static List<int> CustomerTransactionList()
+        //{
+        //    customerIDList.Clear();
 
-            using SqlConnection connection = new(connectionString);
+        //    using SqlConnection connection = new(connectionString);
 
-            //Format our customer list
-            Console.WriteLine("Here is the customer list:");
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    "Entry", "First Name", "Last Name", "Phone Number"));
-            Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    "=====", "==========", "=========", "============"));
+        //    //Format our customer list
+        //    Console.WriteLine("Here is the customer list:");
+        //    Console.WriteLine("==============================");
+        //    Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
+        //            "Entry", "First Name", "Last Name", "Phone Number"));
+        //    Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
+        //            "=====", "==========", "=========", "============"));
 
-            //Pull a list of customers from the database
-            connection.Open();
-            string getCustomerList = "SELECT UserID, FirstName, LastName, PhoneNumber FROM UserInformation WHERE IsEmployee = 'FALSE';";
-            using SqlCommand readCustomerList = new(getCustomerList, connection);
-            using SqlDataReader readCustomers = readCustomerList.ExecuteReader();
-            int entry = 1;
-            while (readCustomers.Read())
-            {
-                customerIDList.Add(readCustomers.GetInt32(0));
-                Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    entry, readCustomers.GetString(1), readCustomers.GetString(2), readCustomers.GetInt64(3)));
-                entry++;
-            }
-            connection.Close();
+        //    //Pull a list of customers from the database
+        //    connection.Open();
+        //    string getCustomerList = "SELECT UserID, FirstName, LastName, PhoneNumber FROM UserInformation WHERE IsEmployee = 'FALSE';";
+        //    using SqlCommand readCustomerList = new(getCustomerList, connection);
+        //    using SqlDataReader readCustomers = readCustomerList.ExecuteReader();
+        //    int entry = 1;
+        //    while (readCustomers.Read())
+        //    {
+        //        customerIDList.Add(readCustomers.GetInt32(0));
+        //        Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
+        //            entry, readCustomers.GetString(1), readCustomers.GetString(2), readCustomers.GetInt64(3)));
+        //        entry++;
+        //    }
+        //    connection.Close();
 
-            return customerIDList;
-        }
+        //    return customerIDList;
+        //}
 
         /// <summary>
         /// Pulls order history for specified customer
@@ -517,63 +517,6 @@ namespace SpiceItUpDataStorage
             customerItemIDNew.Clear();
             customerQuantityNew.Clear();
             customerPriceNew.Clear();
-        }
-    
-        /// <summary>
-        /// Search a customer by their first name
-        /// </summary>
-        /// <returns></returns>
-        public void SearchCustomerFirstName(string firstName)
-        {
-            using SqlConnection connection = new(connectionString);
-
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "User ID", "FirstName", "Last Name", "Phone Number", "Is Employee?"));
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "=======", "=========", "=========", "============", "============"));
-
-            //Pull customer information matching first name entered
-            connection.Open();
-            string customerSearch = "SELECT UserID, FirstName, LastName, PhoneNumber, IsEmployee FROM UserInformation " +
-                "WHERE FirstName = @firstName ORDER BY LastName;";
-            using SqlCommand getCustomer = new(customerSearch, connection);
-            getCustomer.Parameters.Add("@firstName", System.Data.SqlDbType.VarChar).Value = firstName;
-            using SqlDataReader reader = getCustomer.ExecuteReader();
-            while (reader.Read())
-            {
-                Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3), reader.GetString(4)));
-            }
-            Console.WriteLine("==============================");
-        }
-
-        /// <summary>
-        /// Search a custome rby their last name
-        /// </summary>
-        /// <returns></returns>
-        public static void SearchCustomerLastName(string lastName)
-        {
-            using SqlConnection connection = new(connectionString);
-
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "User ID", "FirstName", "Last Name", "Phone Number", "Is Employee?"));
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "=======", "=========", "=========", "============", "============"));
-
-            //Pull customer information matching last name entered
-            connection.Open();
-            string customerSearch = "SELECT UserID, FirstName, LastName, PhoneNumber, IsEmployee FROM UserInformation " +
-                "WHERE LastName = @lastName ORDER BY LastName;";
-            using SqlCommand getCustomer = new(customerSearch, connection);
-            getCustomer.Parameters.Add("@lastName", System.Data.SqlDbType.VarChar).Value = lastName;
-            using SqlDataReader reader = getCustomer.ExecuteReader();
-            while (reader.Read())
-            {Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3), reader.GetString(4)));
-            }
-            Console.WriteLine("==============================");
         }
 
         /// <summary>

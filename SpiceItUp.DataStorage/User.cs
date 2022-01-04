@@ -27,5 +27,13 @@ namespace SpiceItUpDataStorage
             this.phone = phone;
             this.employee = employee;
         }
+
+        public User(int id, string first, string last, double phone)
+        {
+            this.id = id;
+            this.first = first;
+            this.last = last;
+            this.phone = phone;
+        }
     }
 }

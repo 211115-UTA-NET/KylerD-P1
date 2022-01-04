@@ -255,11 +255,9 @@ namespace SpiceItUp
         /// Returns customer IDs
         /// </summary>
         /// <returns></returns>
-        public static List<int> CustomerTransactionList()
+        public static List<int> CustomerList(IEnumerable<User> users)
         {
             customerIDList.Clear();
-
-            using SqlConnection connection = new(connectionString);
 
             //Format our customer list
             Console.WriteLine("Here is the customer list:");
@@ -269,20 +267,15 @@ namespace SpiceItUp
             Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
                     "=====", "==========", "=========", "============"));
 
-            //Pull a list of customers from the database
-            connection.Open();
-            string getCustomerList = "SELECT UserID, FirstName, LastName, PhoneNumber FROM UserInformation WHERE IsEmployee = 'FALSE';";
-            using SqlCommand readCustomerList = new(getCustomerList, connection);
-            using SqlDataReader readCustomers = readCustomerList.ExecuteReader();
             int entry = 1;
-            while (readCustomers.Read())
+            foreach (var record in users)
             {
-                customerIDList.Add(readCustomers.GetInt32(0));
                 Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    entry, readCustomers.GetString(1), readCustomers.GetString(2), readCustomers.GetInt64(3)));
+                    entry, record.first, record.last, record.phone));
+                customerIDList.Add(record.id);
                 entry++;
             }
-            connection.Close();
+            Console.WriteLine("==============================");
 
             return customerIDList;
         }
@@ -539,12 +532,8 @@ namespace SpiceItUp
         /// Search a custome rby their last name
         /// </summary>
         /// <returns></returns>
-        public static int SearchCustomerLastName(string lastName, int testing)
+        public static void SearchCustomerLastName(IEnumerable<User> users)
         {
-            int test = testing;
-
-            using SqlConnection connection = new(connectionString);
-
             Console.WriteLine("==============================");
             Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
                     "User ID", "FirstName", "Last Name", "Phone Number", "Is Employee?"));
@@ -552,21 +541,12 @@ namespace SpiceItUp
                     "=======", "=========", "=========", "============", "============"));
 
             //Pull customer information matching last name entered
-            connection.Open();
-            string customerSearch = "SELECT UserID, FirstName, LastName, PhoneNumber, IsEmployee FROM UserInformation " +
-                "WHERE LastName = @lastName ORDER BY LastName;";
-            using SqlCommand getCustomer = new(customerSearch, connection);
-            getCustomer.Parameters.Add("@lastName", System.Data.SqlDbType.VarChar).Value = lastName;
-            using SqlDataReader reader = getCustomer.ExecuteReader();
-            while (reader.Read())
+            foreach (var record in users)
             {
-                test = test + 1;
                 Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3), reader.GetString(4)));
+                    record.id, record.first, record.last, record.phone, record.employee));
             }
             Console.WriteLine("==============================");
-
-            return test;
         }
 
         /// <summary>
