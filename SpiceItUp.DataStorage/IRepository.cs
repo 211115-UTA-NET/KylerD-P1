@@ -317,5 +317,53 @@ namespace SpiceItUpDataStorage
 
             return result;
         }
+
+        public IEnumerable<Transaction> StoreTransactionHistory(int storeID)
+        {
+            List<Transaction> result = new List<Transaction>();
+
+            transList.Clear();
+
+            using SqlConnection connection = new(connectionString);
+
+            //Format our transactions
+            Console.WriteLine($"Order history for store {storeID}");
+            Console.WriteLine("==============================");
+            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -10} {4, -10}",
+                    "Entry", "Transaction ID", "First Name", "Last Name", "Total Price"));
+            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -10} {4, -10}",
+                    "=====", "==============", "==========", "==========", "=========="));
+
+            //Print off transactions at selected store from database
+            connection.Open();
+            string getOrderHistory = "SELECT TransactionHistory.TransactionID, UserInformation.FirstName, UserInformation.LastName, " +
+                "SUM(CustomerTransactionDetails.Price) " +
+                "FROM TransactionHistory JOIN UserInformation " +
+                "ON TransactionHistory.UserID = UserInformation.UserID " +
+                "JOIN CustomerTransactionDetails " +
+                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
+                "WHERE TransactionHistory.StoreID = @storeID " +
+                "GROUP BY TransactionHistory.TransactionID, UserInformation.FirstName, UserInformation.LastName;";
+            using SqlCommand storeOrderHistory = new(getOrderHistory, connection);
+            storeOrderHistory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeID;
+            using SqlDataReader reader = storeOrderHistory.ExecuteReader();
+            int entry = 1;
+            while (reader.Read())
+            {
+                string id = reader.GetString(0);
+                string first = reader.GetString(1);
+                string last = reader.GetString(2);
+                string price = String.Format("{0:0.00}", reader.GetDecimal(3));
+                result.Add(new(id, first, last, price));
+
+                transList.Add(reader.GetString(0));
+                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -10} {4, -10}",
+                    entry, reader.GetString(0), reader.GetString(1), reader.GetString(2), $"${price}"));
+                entry++;
+            }
+            connection.Close();
+
+            return result;
+        }
     }
 }

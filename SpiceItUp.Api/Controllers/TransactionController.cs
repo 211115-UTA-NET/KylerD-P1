@@ -27,6 +27,17 @@ namespace SpiceItUp.Api.Controllers
             return new JsonResult(trans);
         }
 
+        // GET transaction/storeID={storeID}
+        [HttpGet("/transaction/storeID")]
+        public IActionResult GetStoreTransactions([FromQuery] int storeID)
+        {
+            IEnumerable<Transaction> trans;
+
+            trans = _repo.StoreTransactionHistory(storeID);
+
+            return new JsonResult(trans);
+        }
+
         // GET transaction/transID={transID}
         [HttpGet("/transaction/transID")]
         public IActionResult GetTransactionDetails([FromQuery] string transID)

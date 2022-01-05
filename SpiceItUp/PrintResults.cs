@@ -116,11 +116,9 @@ namespace SpiceItUp
         /// </summary>
         /// <param name="myEntry"></param>
         /// <returns></returns>
-        public static List<string> StoreTransactionList(int myEntry)
+        public static List<string> PrintStoreTransactionList(IEnumerable<Transaction> transactions, int myEntry)
         {
             transList.Clear();
-
-            using SqlConnection connection = new(connectionString);
 
             //Format our transactions
             Console.WriteLine($"Order history for store {myEntry}");
@@ -131,28 +129,15 @@ namespace SpiceItUp
                     "=====", "==============", "==========", "==========", "=========="));
 
             //Print off transactions at selected store from database
-            connection.Open();
-            string getOrderHistory = "SELECT TransactionHistory.TransactionID, UserInformation.FirstName, UserInformation.LastName, " +
-                "SUM(CustomerTransactionDetails.Price) " +
-                "FROM TransactionHistory JOIN UserInformation " +
-                "ON TransactionHistory.UserID = UserInformation.UserID " +
-                "JOIN CustomerTransactionDetails " +
-                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-                "WHERE TransactionHistory.StoreID = @storeID " +
-                "GROUP BY TransactionHistory.TransactionID, UserInformation.FirstName, UserInformation.LastName;";
-            using SqlCommand storeOrderHistory = new(getOrderHistory, connection);
-            storeOrderHistory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = myEntry;
-            using SqlDataReader reader = storeOrderHistory.ExecuteReader();
             int entry = 1;
-            while (reader.Read())
+            foreach(var record in transactions)
             {
-                transList.Add(reader.GetString(0));
-                string price = String.Format("{0:0.00}", reader.GetDecimal(3));
+                transList.Add(record.TransID);
+                string price = String.Format("{0:0.00}", record.Price);
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -10} {4, -10}",
-                    entry, reader.GetString(0), reader.GetString(1), reader.GetString(2), $"${price}"));
+                    entry, record.TransID, record.FirstName, record.LastName, $"${price}"));
                 entry++;
             }
-            connection.Close();
 
             return transList;
         }

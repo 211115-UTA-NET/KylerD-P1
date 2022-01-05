@@ -45,5 +45,13 @@ namespace SpiceItUpDataStorage
             this.Quantity = quantity;
             this.ItemPrice = itemPrice;
         }
+
+        public Transaction(string transID, string firstName, string lastName, string price)
+        {
+            this.TransID = transID;
+            this.FirstName= firstName;
+            this.LastName= lastName;
+            this.Price = price;
+        }
     }
 }

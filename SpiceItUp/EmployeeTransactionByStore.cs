@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceItUp.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace SpiceItUp
         /// Employee is given a list of stores.
         /// Employe is then given a list of transactions made at the selected store
         /// </summary>
-        public static void StoreSelection()
+        public static async void StoreSelection()
         {
             exit = false;
             while (true)
@@ -33,7 +34,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    //SpiceItUp.PrintResults.PrintStoreList();
+                    SpiceItUpService service = new SpiceItUpService();
+                    List<Store> stores = await service.GetStoreList();
+                    SpiceItUp.PrintResults.PrintStoreList(stores);
                 }
                 catch (Exception)
                 {
@@ -65,7 +68,7 @@ namespace SpiceItUp
         /// The basic transaction information is printed for the selected store.
         /// The employee has the option to view a transaction more in depth
         /// </summary>
-        public static void TransactionHistory(int myEntry)
+        public static async void TransactionHistory(int myEntry)
         {
             exit = false;
             while (exit == false)
@@ -74,7 +77,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    transList = SpiceItUp.PrintResults.StoreTransactionList(myEntry);
+                    SpiceItUpService service = new SpiceItUpService();
+                    List<Transaction> transactions = await service.GetStoreTransactionList(myEntry);
+                    transList = SpiceItUp.PrintResults.PrintStoreTransactionList(transactions, myEntry);
                 }
                 catch (Exception)
                 {
@@ -96,7 +101,11 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry);
                     if (transList.Count >= userEntry && userEntry > 0) //If a transaction selectionn is valid
                     {
-                        //SpiceItUp.PrintResults.DetailedTransaction(userEntry); //Pull results of transaction from database and print for employee
+                        SpiceItUpService service2 = new SpiceItUpService();
+                        userEntry = userEntry - 1;
+                        string transactionNum = transList[userEntry];
+                        List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);
+                        SpiceItUp.PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
                         break;
                     }
                     else if (userEntry == 0) //If employee enters 0, return to store list
