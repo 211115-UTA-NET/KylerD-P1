@@ -8,9 +8,17 @@ namespace SpiceItUpDataStorage
 {
     public class Transaction
     {
-        public string transID { get; }
-        public int storeID { get; }
-        public string price { get; }
+        public string? TransID { get; }
+        public int StoreID { get; }
+        public string? Price { get; }
+        public string? StoreName { get; }
+        public string? Timestamp { get; }
+        public string? FirstName { get; }
+        public string? LastName { get; }
+        public string? ItemName { get; }
+        public int Quantity { get; }
+        public string? ItemPrice { get; }
+        public string? TotalPrice { get; }
 
         public Transaction()
         {
@@ -19,9 +27,23 @@ namespace SpiceItUpDataStorage
 
         public Transaction(string transID, int storeID, string price)
         {
-            this.transID = transID;
-            this.storeID = storeID;
-            this.price = price;
+            this.TransID = transID;
+            this.StoreID = storeID;
+            this.Price = price;
+        }
+
+        public Transaction(string transID, int storeID, string storeName, string timestamp, string firstName, string lastName, string totalPrice, string itemName, int quantity, string itemPrice)
+        {
+            this.TransID = transID;
+            this.StoreID= storeID;
+            this.StoreName = storeName;
+            this.Timestamp = timestamp;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.TotalPrice = totalPrice;
+            this.ItemName = itemName;
+            this.Quantity = quantity;
+            this.ItemPrice = itemPrice;
         }
     }
 }

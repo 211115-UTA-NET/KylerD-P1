@@ -109,7 +109,11 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry2);
                     if (validEntry == true && transList.Count >= userEntry2 && userEntry2 > 0) //If employee chooses a transaction
                     {
-                        SpiceItUp.PrintResults.DetailedTransaction(userEntry2); //View the transaction in more detail
+                        SpiceItUpService service2 = new SpiceItUpService();
+                        userEntry2 = userEntry2 - 1;
+                        string transactionNum = transList[userEntry2];
+                        List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);
+                        SpiceItUp.PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
                         break;
                     }
                     else if (userEntry2 == 0) //Return to customer list

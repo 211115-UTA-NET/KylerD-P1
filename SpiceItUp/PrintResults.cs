@@ -190,61 +190,31 @@ namespace SpiceItUp
         /// <summary>
         /// A transaction is printed off in more detail based on employee selection
         /// </summary>
-        public static void DetailedTransaction(int userEntry)
+        public static void DetailedTransaction(IEnumerable<Transaction> transaction)
         {
-            int entryList = userEntry - 1;
-            string detailedTransID = transList[entryList];
-
-            using SqlConnection connection = new(connectionString);
-
-            //Pull transaction details from database and print
-            connection.Open();
-            string getOpening = "SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, " +
-                "TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName, SUM(CustomerTransactionDetails.Price) " +
-                "FROM TransactionHistory JOIN StoreInfo " +
-                "ON TransactionHistory.StoreID = StoreInfo.StoreID " +
-                "JOIN CustomerTransactionDetails " +
-                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-                "JOIN UserInformation " +
-                "ON Userinformation.UserID = TransactionHistory.UserID " +
-                "WHERE TransactionHistory.TransactionID = @transID " +
-                "GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName;";
-            using SqlCommand readOpening = new(getOpening, connection);
-            readOpening.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
-            using SqlDataReader myReader = readOpening.ExecuteReader();
-            while (myReader.Read())
+            foreach (var record in transaction)
             {
-                string price = String.Format("{0:0.00}", myReader.GetDecimal(6));
                 Console.WriteLine("==============================");
-                Console.WriteLine($"Transaction ID: {myReader.GetString(0)}");
-                Console.WriteLine($"Store {myReader.GetInt32(1)}: {myReader.GetString(2)}");
-                Console.WriteLine($"Name: {myReader.GetString(4)} {myReader.GetString(5)}");
-                Console.WriteLine($"Time: {myReader.GetString(3)}");
-                Console.WriteLine($"Total: ${price}");
+                Console.WriteLine($"Transaction ID: {record.TransID}");
+                Console.WriteLine($"Store {record.StoreID}: {record.StoreName}");
+                Console.WriteLine($"Name: {record.FirstName} {record.LastName}");
+                Console.WriteLine($"Time: {record.Timestamp}");
+                Console.WriteLine($"Total: {record.TotalPrice}");
                 Console.WriteLine("==============================");
+                break;
             }
-            connection.Close();
 
             //Format transaction information
             Console.WriteLine("Item Name\t Quantity\t Price");
             Console.WriteLine("=========\t ========\t =====");
 
             //Print items that were bought in transaction
-            connection.Open();
-            string getDetails = "SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price " +
-                "FROM CustomerTransactionDetails JOIN ItemDetails ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID " +
-                "WHERE CustomerTransactionDetails.TransactionID = @transID;";
-            using SqlCommand readDetails = new(getDetails, connection);
-            readDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
-            using SqlDataReader detailReader = readDetails.ExecuteReader();
-            while (detailReader.Read())
+            foreach (var record in transaction)
             {
-                string price = String.Format("{0:0.00}", detailReader.GetDecimal(2));
                 Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
-                detailReader.GetString(0), detailReader.GetInt32(1), $"${price}"));
+                record.ItemName, record.Quantity, record.ItemPrice));
             }
             Console.WriteLine("==============================");
-            connection.Close();
             Console.WriteLine("Press 'ENTER' to continue...");
             Console.ReadLine();
             //Employee is returned
@@ -271,8 +241,8 @@ namespace SpiceItUp
             foreach (var record in users)
             {
                 Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    entry, record.first, record.last, record.phone));
-                customerIDList.Add(record.id);
+                    entry, record.First, record.Last, record.Phone));
+                customerIDList.Add(record.Id);
                 entry++;
             }
             Console.WriteLine("==============================");
@@ -302,9 +272,9 @@ namespace SpiceItUp
             int entry = 1;
             foreach (var record in transactions)
             {
-                transList.Add(record.transID);
+                transList.Add(record.TransID);
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    entry, record.transID, record.storeID, record.price));
+                    entry, record.TransID, record.StoreID, record.Price));
                 entry++;
             }
 
@@ -513,7 +483,7 @@ namespace SpiceItUp
             foreach (var record in users)
             {
                 Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    record.id, record.first, record.last, record.phone, record.employee));
+                    record.Id, record.First, record.Last, record.Phone, record.Employee));
             }
             Console.WriteLine("==============================");
         }
@@ -534,7 +504,7 @@ namespace SpiceItUp
             foreach (var record in users)
             {
                 Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    record.id, record.first, record.last, record.phone, record.employee));
+                    record.Id, record.First, record.Last, record.Phone, record.Employee));
             }
             Console.WriteLine("==============================");
         }

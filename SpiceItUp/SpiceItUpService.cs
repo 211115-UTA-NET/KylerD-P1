@@ -101,5 +101,27 @@ namespace SpiceItUp
 
             return transactions;
         }
+
+        public Task<List<Transaction>> DetailedTransaction(string transID)
+        {
+            Uri requestUri = new(server, $"/transaction/transID?transID={transID}");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var transaction = response.Content.ReadFromJsonAsync<List<Transaction>>();
+
+            return transaction;
+        }
     }
 }

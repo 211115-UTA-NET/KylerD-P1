@@ -8,10 +8,10 @@ namespace SpiceItUp.Dtos
 {
     public class User
     {
-        public int id { get; set; }
-        public string first { get; set; }
-        public string last { get; set; }
-        public double phone { get; set; }
-        public string employee { get; set; }
+        public int Id { get; set; }
+        public string? First { get; set; }
+        public string? Last { get; set; }
+        public double Phone { get; set; }
+        public string? Employee { get; set; }
     }
 }

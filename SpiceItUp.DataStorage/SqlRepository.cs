@@ -195,105 +195,64 @@ namespace SpiceItUpDataStorage
         /// <summary>
         /// A transaction is printed off in more detail based on employee selection
         /// </summary>
-        public static void DetailedTransaction(int userEntry)
-        {
-            int entryList = userEntry - 1;
-            string detailedTransID = transList[entryList];
-
-            using SqlConnection connection = new(connectionString);
-
-            //Pull transaction details from database and print
-            connection.Open();
-            string getOpening = "SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, " +
-                "TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName, SUM(CustomerTransactionDetails.Price) " +
-                "FROM TransactionHistory JOIN StoreInfo " +
-                "ON TransactionHistory.StoreID = StoreInfo.StoreID " +
-                "JOIN CustomerTransactionDetails " +
-                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-                "JOIN UserInformation " +
-                "ON Userinformation.UserID = TransactionHistory.UserID " +
-                "WHERE TransactionHistory.TransactionID = @transID " +
-                "GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName;";
-            using SqlCommand readOpening = new(getOpening, connection);
-            readOpening.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
-            using SqlDataReader myReader = readOpening.ExecuteReader();
-            while (myReader.Read())
-            {
-                string price = String.Format("{0:0.00}", myReader.GetDecimal(6));
-                Console.WriteLine("==============================");
-                Console.WriteLine($"Transaction ID: {myReader.GetString(0)}");
-                Console.WriteLine($"Store {myReader.GetInt32(1)}: {myReader.GetString(2)}");
-                Console.WriteLine($"Name: {myReader.GetString(4)} {myReader.GetString(5)}");
-                Console.WriteLine($"Time: {myReader.GetString(3)}");
-                Console.WriteLine($"Total: ${price}");
-                Console.WriteLine("==============================");
-            }
-            connection.Close();
-
-            //Format transaction information
-            Console.WriteLine("Item Name\t Quantity\t Price");
-            Console.WriteLine("=========\t ========\t =====");
-
-            //Print items that were bought in transaction
-            connection.Open();
-            string getDetails = "SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price " +
-                "FROM CustomerTransactionDetails JOIN ItemDetails ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID " +
-                "WHERE CustomerTransactionDetails.TransactionID = @transID;";
-            using SqlCommand readDetails = new(getDetails, connection);
-            readDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
-            using SqlDataReader detailReader = readDetails.ExecuteReader();
-            while (detailReader.Read())
-            {
-                string price = String.Format("{0:0.00}", detailReader.GetDecimal(2));
-                Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
-                detailReader.GetString(0), detailReader.GetInt32(1), $"${price}"));
-            }
-            Console.WriteLine("==============================");
-            connection.Close();
-            Console.WriteLine("Press 'ENTER' to continue...");
-            Console.ReadLine();
-            //Employee is returned
-        }
-
-        /// <summary>
-        /// Pulls order history for specified customer
-        /// Returns list of transaction IDs
-        /// </summary>
-        /// <param name="myEntry"></param>
-        /// <returns></returns>
-        //public static List<string> CustomerTransactionHistory(int customerID)
+        //public static void DetailedTransaction(int userEntry)
         //{
-        //    transList.Clear();
+        //    int entryList = userEntry - 1;
+        //    string detailedTransID = transList[entryList];
 
         //    using SqlConnection connection = new(connectionString);
-        //    //Format our transaction list
-        //    Console.WriteLine("==============================");
-        //    Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-        //            "Entry", "Transaction ID", "Store ID", "Total Price"));
-        //    Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-        //            "=====", "==============", "========", "==========="));
 
-        //    //Get transaction list from database and print
+        //    //Pull transaction details from database and print
         //    connection.Open();
-        //    string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
-        //        "FROM TransactionHistory JOIN CustomerTransactionDetails " +
+        //    string getOpening = "SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, " +
+        //        "TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName, SUM(CustomerTransactionDetails.Price) " +
+        //        "FROM TransactionHistory JOIN StoreInfo " +
+        //        "ON TransactionHistory.StoreID = StoreInfo.StoreID " +
+        //        "JOIN CustomerTransactionDetails " +
         //        "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-        //        "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
-        //    using SqlCommand orderHistory = new(getOrderHistory, connection);
-        //    orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerID;
-        //    using SqlDataReader reader = orderHistory.ExecuteReader();
-        //    int entry = 1;
-        //    while (reader.Read())
+        //        "JOIN UserInformation " +
+        //        "ON Userinformation.UserID = TransactionHistory.UserID " +
+        //        "WHERE TransactionHistory.TransactionID = @transID " +
+        //        "GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName;";
+        //    using SqlCommand readOpening = new(getOpening, connection);
+        //    readOpening.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
+        //    using SqlDataReader myReader = readOpening.ExecuteReader();
+        //    while (myReader.Read())
         //    {
-        //        transList.Add(reader.GetString(0));
-        //        string price = String.Format("{0:0.00}", reader.GetDecimal(2));
-        //        Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-        //            entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
-        //        entry++;
+        //        string price = String.Format("{0:0.00}", myReader.GetDecimal(6));
+        //        Console.WriteLine("==============================");
+        //        Console.WriteLine($"Transaction ID: {myReader.GetString(0)}");
+        //        Console.WriteLine($"Store {myReader.GetInt32(1)}: {myReader.GetString(2)}");
+        //        Console.WriteLine($"Name: {myReader.GetString(4)} {myReader.GetString(5)}");
+        //        Console.WriteLine($"Time: {myReader.GetString(3)}");
+        //        Console.WriteLine($"Total: ${price}");
+        //        Console.WriteLine("==============================");
         //    }
         //    connection.Close();
 
-        //    return transList;
+        //    //Format transaction information
+        //    Console.WriteLine("Item Name\t Quantity\t Price");
+        //    Console.WriteLine("=========\t ========\t =====");
+
+        //    //Print items that were bought in transaction
+        //    connection.Open();
+        //    string getDetails = "SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price " +
+        //        "FROM CustomerTransactionDetails JOIN ItemDetails ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID " +
+        //        "WHERE CustomerTransactionDetails.TransactionID = @transID;";
+        //    using SqlCommand readDetails = new(getDetails, connection);
+        //    readDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
+        //    using SqlDataReader detailReader = readDetails.ExecuteReader();
+        //    while (detailReader.Read())
+        //    {
+        //        string price = String.Format("{0:0.00}", detailReader.GetDecimal(2));
+        //        Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
+        //        detailReader.GetString(0), detailReader.GetInt32(1), $"${price}"));
+        //    }
+        //    Console.WriteLine("==============================");
+        //    connection.Close();
+        //    Console.WriteLine("Press 'ENTER' to continue...");
+        //    Console.ReadLine();
+        //    //Employee is returned
         //}
 
         /// <summary>

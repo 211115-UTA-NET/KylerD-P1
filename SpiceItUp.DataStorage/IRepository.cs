@@ -168,5 +168,83 @@ namespace SpiceItUpDataStorage
 
             return result;
         }
+
+        public IEnumerable<Transaction> DetailedTransaction(string id)
+        {
+            List<Transaction> result = new List<Transaction>();
+
+            using SqlConnection connection = new(connectionString);
+
+            //Pull transaction details from database and print
+            connection.Open();
+            string getOpening = "SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, " +
+                "TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName, SUM(CustomerTransactionDetails.Price) " +
+                "FROM TransactionHistory JOIN StoreInfo " +
+                "ON TransactionHistory.StoreID = StoreInfo.StoreID " +
+                "JOIN CustomerTransactionDetails " +
+                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
+                "JOIN UserInformation " +
+                "ON Userinformation.UserID = TransactionHistory.UserID " +
+                "WHERE TransactionHistory.TransactionID = @transID " +
+                "GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName;";
+            using SqlCommand readOpening = new(getOpening, connection);
+            readOpening.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = id;
+            using SqlDataReader myReader = readOpening.ExecuteReader();
+
+            string transID = "";
+            int storeID = 0;
+            string storeName = "";
+            string timestamp = "";
+            string firstName = "";
+            string lastName = "";
+            string totalPrice = "";
+
+            while (myReader.Read())
+            {
+                transID = myReader.GetString(0);
+                storeID = myReader.GetInt32(1);
+                storeName = myReader.GetString(2);
+                timestamp = myReader.GetString(3);
+                firstName = myReader.GetString(4);
+                lastName = myReader.GetString(5);
+                totalPrice = String.Format("{0:0.00}", myReader.GetDecimal(6));
+
+                Console.WriteLine("==============================");
+                Console.WriteLine($"Transaction ID: {myReader.GetString(0)}");
+                Console.WriteLine($"Store {myReader.GetInt32(1)}: {myReader.GetString(2)}");
+                Console.WriteLine($"Name: {myReader.GetString(4)} {myReader.GetString(5)}");
+                Console.WriteLine($"Time: {myReader.GetString(3)}");
+                Console.WriteLine($"Total: ${totalPrice}");
+                Console.WriteLine("==============================");
+            }
+            connection.Close();
+
+            //Format transaction information
+            Console.WriteLine("Item Name\t Quantity\t Price");
+            Console.WriteLine("=========\t ========\t =====");
+
+            //Print items that were bought in transaction
+            connection.Open();
+            string getDetails = "SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price " +
+                "FROM CustomerTransactionDetails JOIN ItemDetails ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID " +
+                "WHERE CustomerTransactionDetails.TransactionID = @transID;";
+            using SqlCommand readDetails = new(getDetails, connection);
+            readDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = id;
+            using SqlDataReader detailReader = readDetails.ExecuteReader();
+            while (detailReader.Read())
+            {
+                string itemName = detailReader.GetString(0);
+                int quantity = detailReader.GetInt32(1);
+                string itemPrice = String.Format("{0:0.00}", detailReader.GetDecimal(2));
+                result.Add(new(transID, storeID, storeName, timestamp, firstName, lastName, totalPrice, itemName, quantity, itemPrice));
+
+                Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
+                detailReader.GetString(0), detailReader.GetInt32(1), $"${itemPrice}"));
+            }
+            Console.WriteLine("==============================");
+            connection.Close();
+
+            return result;
+        }
     }
 }
