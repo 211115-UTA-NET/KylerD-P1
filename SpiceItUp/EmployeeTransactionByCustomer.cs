@@ -74,7 +74,7 @@ namespace SpiceItUp
         /// Once the employee chooses a customer, that customer's transaction list is printed off.
         /// The employee can choose to view a transaction in more details if they wish
         /// </summary>
-        public static void TransactionHistory(int myEntry)
+        public static async void TransactionHistory(int myEntry)
         {
             goBack = false;
 
@@ -85,7 +85,9 @@ namespace SpiceItUp
                 try
                 {
                     int customerID = customerIDList[myEntry];
-                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(customerID);
+                    SpiceItUpService service = new SpiceItUpService();
+                    List<Transaction> transactions = await service.GetCustomerTransactionList(customerID);
+                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(transactions);
                 }
                 catch(Exception)
                 {

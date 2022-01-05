@@ -13,6 +13,8 @@ namespace SpiceItUpDataStorage
 
         private static List<int> customerIDList = new List<int>();
 
+        private static List<string> transList = new List<string>();
+
         public IEnumerable<User> SearchCustomerFirstName(string firstName)
         {
             List<User> result = new List<User>();
@@ -118,6 +120,48 @@ namespace SpiceItUpDataStorage
                 customerIDList.Add(readCustomers.GetInt32(0));
                 Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
                     entry, readCustomers.GetString(1), readCustomers.GetString(2), readCustomers.GetInt64(3)));
+                entry++;
+            }
+            connection.Close();
+
+            return result;
+        }
+
+        public IEnumerable<Transaction> CustomerTransactionHistory(int customerID)
+        {
+            List<Transaction> result = new List<Transaction>();
+
+            transList.Clear();
+
+            using SqlConnection connection = new(connectionString);
+            //Format our transaction list
+            Console.WriteLine("==============================");
+            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+                    "Entry", "Transaction ID", "Store ID", "Total Price"));
+            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+                    "=====", "==============", "========", "==========="));
+
+            //Get transaction list from database and print
+            connection.Open();
+            string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
+                "FROM TransactionHistory JOIN CustomerTransactionDetails " +
+                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
+                "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
+            using SqlCommand orderHistory = new(getOrderHistory, connection);
+            orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerID;
+            using SqlDataReader reader = orderHistory.ExecuteReader();
+            int entry = 1;
+            while (reader.Read())
+            {
+                string transID = reader.GetString(0);
+                int storeID = reader.GetInt32(1);
+                string price = String.Format("{0:0.00}", reader.GetDecimal(2));
+                result.Add(new(transID, storeID, price));
+
+                transList.Add(reader.GetString(0));
+                //string price = String.Format("{0:0.00}", reader.GetDecimal(2));
+                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+                    entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
                 entry++;
             }
             connection.Close();

@@ -33,7 +33,7 @@ namespace SpiceItUp
                 Console.WriteLine("Here is your order History:");
                 try
                 {
-                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(myUserID);
+                    //transList = SpiceItUp.PrintResults.CustomerTransactionHistory(myUserID);
                 }
                 catch (Exception)
                 {

@@ -256,82 +256,45 @@ namespace SpiceItUpDataStorage
         }
 
         /// <summary>
-        /// Prints a list of transactions made by customers
-        /// Returns customer IDs
-        /// </summary>
-        /// <returns></returns>
-        //public static List<int> CustomerTransactionList()
-        //{
-        //    customerIDList.Clear();
-
-        //    using SqlConnection connection = new(connectionString);
-
-        //    //Format our customer list
-        //    Console.WriteLine("Here is the customer list:");
-        //    Console.WriteLine("==============================");
-        //    Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-        //            "Entry", "First Name", "Last Name", "Phone Number"));
-        //    Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-        //            "=====", "==========", "=========", "============"));
-
-        //    //Pull a list of customers from the database
-        //    connection.Open();
-        //    string getCustomerList = "SELECT UserID, FirstName, LastName, PhoneNumber FROM UserInformation WHERE IsEmployee = 'FALSE';";
-        //    using SqlCommand readCustomerList = new(getCustomerList, connection);
-        //    using SqlDataReader readCustomers = readCustomerList.ExecuteReader();
-        //    int entry = 1;
-        //    while (readCustomers.Read())
-        //    {
-        //        customerIDList.Add(readCustomers.GetInt32(0));
-        //        Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-        //            entry, readCustomers.GetString(1), readCustomers.GetString(2), readCustomers.GetInt64(3)));
-        //        entry++;
-        //    }
-        //    connection.Close();
-
-        //    return customerIDList;
-        //}
-
-        /// <summary>
         /// Pulls order history for specified customer
         /// Returns list of transaction IDs
         /// </summary>
         /// <param name="myEntry"></param>
         /// <returns></returns>
-        public static List<string> CustomerTransactionHistory(int customerID)
-        {
-            transList.Clear();
+        //public static List<string> CustomerTransactionHistory(int customerID)
+        //{
+        //    transList.Clear();
 
-            using SqlConnection connection = new(connectionString);
-            //Format our transaction list
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    "Entry", "Transaction ID", "Store ID", "Total Price"));
-            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    "=====", "==============", "========", "==========="));
+        //    using SqlConnection connection = new(connectionString);
+        //    //Format our transaction list
+        //    Console.WriteLine("==============================");
+        //    Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+        //            "Entry", "Transaction ID", "Store ID", "Total Price"));
+        //    Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+        //            "=====", "==============", "========", "==========="));
 
-            //Get transaction list from database and print
-            connection.Open();
-            string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
-                "FROM TransactionHistory JOIN CustomerTransactionDetails " +
-                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-                "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
-            using SqlCommand orderHistory = new(getOrderHistory, connection);
-            orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerID;
-            using SqlDataReader reader = orderHistory.ExecuteReader();
-            int entry = 1;
-            while (reader.Read())
-            {
-                transList.Add(reader.GetString(0));
-                string price = String.Format("{0:0.00}", reader.GetDecimal(2));
-                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
-                entry++;
-            }
-            connection.Close();
+        //    //Get transaction list from database and print
+        //    connection.Open();
+        //    string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
+        //        "FROM TransactionHistory JOIN CustomerTransactionDetails " +
+        //        "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
+        //        "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
+        //    using SqlCommand orderHistory = new(getOrderHistory, connection);
+        //    orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerID;
+        //    using SqlDataReader reader = orderHistory.ExecuteReader();
+        //    int entry = 1;
+        //    while (reader.Read())
+        //    {
+        //        transList.Add(reader.GetString(0));
+        //        string price = String.Format("{0:0.00}", reader.GetDecimal(2));
+        //        Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+        //            entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
+        //        entry++;
+        //    }
+        //    connection.Close();
 
-            return transList;
-        }
+        //    return transList;
+        //}
 
         /// <summary>
         /// Gets the name of the store for customer cart

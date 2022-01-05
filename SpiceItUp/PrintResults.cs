@@ -286,11 +286,10 @@ namespace SpiceItUp
         /// </summary>
         /// <param name="myEntry"></param>
         /// <returns></returns>
-        public static List<string> CustomerTransactionHistory(int customerID)
+        public static List<string> CustomerTransactionHistory(IEnumerable<Transaction> transactions)
         {
             transList.Clear();
 
-            using SqlConnection connection = new(connectionString);
             //Format our transaction list
             Console.WriteLine("==============================");
             Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
@@ -299,24 +298,15 @@ namespace SpiceItUp
                     "=====", "==============", "========", "==========="));
 
             //Get transaction list from database and print
-            connection.Open();
-            string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
-                "FROM TransactionHistory JOIN CustomerTransactionDetails " +
-                "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-                "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
-            using SqlCommand orderHistory = new(getOrderHistory, connection);
-            orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerID;
-            using SqlDataReader reader = orderHistory.ExecuteReader();
+            
             int entry = 1;
-            while (reader.Read())
+            foreach (var record in transactions)
             {
-                transList.Add(reader.GetString(0));
-                string price = String.Format("{0:0.00}", reader.GetDecimal(2));
+                transList.Add(record.transID);
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
+                    entry, record.transID, record.storeID, record.price));
                 entry++;
             }
-            connection.Close();
 
             return transList;
         }
