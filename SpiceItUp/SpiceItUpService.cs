@@ -123,5 +123,49 @@ namespace SpiceItUp
 
             return transaction;
         }
+
+        public Task<List<Store>> GetStoreList()
+        {
+            Uri requestUri = new(server, $"/store");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var stores = response.Content.ReadFromJsonAsync<List<Store>>();
+
+            return stores;
+        }
+
+        public Task<List<Store>> GetStoreInventory(int storeID)
+        {
+            Uri requestUri = new(server, $"/store/inventory?storeID={storeID}");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var inventory = response.Content.ReadFromJsonAsync<List<Store>>();
+
+            return inventory;
+        }
     }
 }

@@ -84,66 +84,47 @@ namespace SpiceItUpDataStorage
         }
 
         /// <summary>
-        /// Prints the basic summary of all store locations
-        /// </summary>
-        public static void PrintStoreList()
-        {
-            using SqlConnection connection = new(connectionString);
-
-            //Get list of stores from database
-            connection.Open();
-            string getStoreInfo = "SELECT * FROM StoreInfo ORDER BY StoreID;";
-            using SqlCommand readStoreInfo = new(getStoreInfo, connection);
-            using SqlDataReader reader = readStoreInfo.ExecuteReader();
-            while (reader.Read())
-            {
-                Console.WriteLine($"Store {reader.GetInt32(0)}: {reader.GetString(1)}");
-            }
-            connection.Close();
-        }
-
-        /// <summary>
         /// We will attempt to pull the inventory from entered store
         /// Store inventory is pulled from database and formatted accordingly
         /// </summary>
-        public static void PullStoreInfo(int storeEntry)
-        {
-            using SqlConnection connection = new(connectionString);
+        //public static void PullStoreInfo(int storeEntry)
+        //{
+        //    using SqlConnection connection = new(connectionString);
 
-            //Pull the selected store information
-            connection.Open();
-            string getSelectedStore = $"SELECT * FROM StoreInfo WHERE StoreID = @storeID;";
-            using SqlCommand readSelectedStore = new(getSelectedStore, connection);
-            readSelectedStore.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
-            using SqlDataReader readStore = readSelectedStore.ExecuteReader();
-            while (readStore.Read())
-            {
-                Console.WriteLine($"Inventory for store {readStore.GetInt32(0)}: {readStore.GetString(1)}");
-            }
-            connection.Close();
+        //    //Pull the selected store information
+        //    connection.Open();
+        //    string getSelectedStore = $"SELECT * FROM StoreInfo WHERE StoreID = @storeID;";
+        //    using SqlCommand readSelectedStore = new(getSelectedStore, connection);
+        //    readSelectedStore.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+        //    using SqlDataReader readStore = readSelectedStore.ExecuteReader();
+        //    while (readStore.Read())
+        //    {
+        //        Console.WriteLine($"Inventory for store {readStore.GetInt32(0)}: {readStore.GetString(1)}");
+        //    }
+        //    connection.Close();
 
-            //Formatting
-            Console.WriteLine("=================================");
-            Console.WriteLine("Item Name\t In Stock\t Price");
-            Console.WriteLine("=========\t ========\t =====");
+        //    //Formatting
+        //    Console.WriteLine("=================================");
+        //    Console.WriteLine("Item Name\t In Stock\t Price");
+        //    Console.WriteLine("=========\t ========\t =====");
 
-            //Pull and print the store's inventory
-            connection.Open();
-            string getStoreInventory = "SELECT ItemDetails.ItemName, StoreInventory.InStock, ItemDetails.ItemPrice " +
-                "FROM StoreInventory JOIN ItemDetails " +
-                "ON StoreInventory.ItemID = ItemDetails.ItemID " +
-                "WHERE StoreInventory.StoreID = @storeID ORDER BY ItemDetails.ItemName;";
-            using SqlCommand readStoreInventory = new(getStoreInventory, connection);
-            readStoreInventory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
-            using SqlDataReader readInventory = readStoreInventory.ExecuteReader();
-            while (readInventory.Read())
-            {
-                decimal itemPrice = readInventory.GetDecimal(2);
-                string price = String.Format("{0:0.00}", itemPrice);
-                Console.WriteLine(String.Format("{0, -16} {1, -15} {2, -16}", readInventory.GetString(0), readInventory.GetInt32(1), $"${price}"));
-            }
-            connection.Close();
-        }
+        //    //Pull and print the store's inventory
+        //    connection.Open();
+        //    string getStoreInventory = "SELECT ItemDetails.ItemName, StoreInventory.InStock, ItemDetails.ItemPrice " +
+        //        "FROM StoreInventory JOIN ItemDetails " +
+        //        "ON StoreInventory.ItemID = ItemDetails.ItemID " +
+        //        "WHERE StoreInventory.StoreID = @storeID ORDER BY ItemDetails.ItemName;";
+        //    using SqlCommand readStoreInventory = new(getStoreInventory, connection);
+        //    readStoreInventory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+        //    using SqlDataReader readInventory = readStoreInventory.ExecuteReader();
+        //    while (readInventory.Read())
+        //    {
+        //        decimal itemPrice = readInventory.GetDecimal(2);
+        //        string price = String.Format("{0:0.00}", itemPrice);
+        //        Console.WriteLine(String.Format("{0, -16} {1, -15} {2, -16}", readInventory.GetString(0), readInventory.GetInt32(1), $"${price}"));
+        //    }
+        //    connection.Close();
+        //}
 
         /// <summary>
         /// Pulls the order history from the specified store
@@ -191,69 +172,6 @@ namespace SpiceItUpDataStorage
 
             return transList;
         }
-
-        /// <summary>
-        /// A transaction is printed off in more detail based on employee selection
-        /// </summary>
-        //public static void DetailedTransaction(int userEntry)
-        //{
-        //    int entryList = userEntry - 1;
-        //    string detailedTransID = transList[entryList];
-
-        //    using SqlConnection connection = new(connectionString);
-
-        //    //Pull transaction details from database and print
-        //    connection.Open();
-        //    string getOpening = "SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, " +
-        //        "TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName, SUM(CustomerTransactionDetails.Price) " +
-        //        "FROM TransactionHistory JOIN StoreInfo " +
-        //        "ON TransactionHistory.StoreID = StoreInfo.StoreID " +
-        //        "JOIN CustomerTransactionDetails " +
-        //        "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-        //        "JOIN UserInformation " +
-        //        "ON Userinformation.UserID = TransactionHistory.UserID " +
-        //        "WHERE TransactionHistory.TransactionID = @transID " +
-        //        "GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName;";
-        //    using SqlCommand readOpening = new(getOpening, connection);
-        //    readOpening.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
-        //    using SqlDataReader myReader = readOpening.ExecuteReader();
-        //    while (myReader.Read())
-        //    {
-        //        string price = String.Format("{0:0.00}", myReader.GetDecimal(6));
-        //        Console.WriteLine("==============================");
-        //        Console.WriteLine($"Transaction ID: {myReader.GetString(0)}");
-        //        Console.WriteLine($"Store {myReader.GetInt32(1)}: {myReader.GetString(2)}");
-        //        Console.WriteLine($"Name: {myReader.GetString(4)} {myReader.GetString(5)}");
-        //        Console.WriteLine($"Time: {myReader.GetString(3)}");
-        //        Console.WriteLine($"Total: ${price}");
-        //        Console.WriteLine("==============================");
-        //    }
-        //    connection.Close();
-
-        //    //Format transaction information
-        //    Console.WriteLine("Item Name\t Quantity\t Price");
-        //    Console.WriteLine("=========\t ========\t =====");
-
-        //    //Print items that were bought in transaction
-        //    connection.Open();
-        //    string getDetails = "SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price " +
-        //        "FROM CustomerTransactionDetails JOIN ItemDetails ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID " +
-        //        "WHERE CustomerTransactionDetails.TransactionID = @transID;";
-        //    using SqlCommand readDetails = new(getDetails, connection);
-        //    readDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
-        //    using SqlDataReader detailReader = readDetails.ExecuteReader();
-        //    while (detailReader.Read())
-        //    {
-        //        string price = String.Format("{0:0.00}", detailReader.GetDecimal(2));
-        //        Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
-        //        detailReader.GetString(0), detailReader.GetInt32(1), $"${price}"));
-        //    }
-        //    Console.WriteLine("==============================");
-        //    connection.Close();
-        //    Console.WriteLine("Press 'ENTER' to continue...");
-        //    Console.ReadLine();
-        //    //Employee is returned
-        //}
 
         /// <summary>
         /// Gets the name of the store for customer cart

@@ -33,7 +33,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUp.PrintResults.PrintStoreList();
+                    //SpiceItUp.PrintResults.PrintStoreList();
                 }
                 catch (Exception)
                 {

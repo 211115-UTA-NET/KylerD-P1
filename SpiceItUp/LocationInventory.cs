@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceItUp.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace SpiceItUp
         /// Print off a list of stores by pulling store information from the database.
         /// The user can then sleect a store to view it's inventory
         /// </summary>
-        public static void StoreSelection()
+        public static async void StoreSelection()
         {
             while (true)
             {
@@ -26,7 +27,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUp.PrintResults.PrintStoreList();
+                    SpiceItUpService service = new SpiceItUpService();
+                    List<Store> stores = await service.GetStoreList();
+                    SpiceItUp.PrintResults.PrintStoreList(stores);
                 }
                 catch (Exception)
                 {
@@ -48,7 +51,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUp.PrintResults.PullStoreInfo(storeEntry); //Can we pull the store's inventory information based on user input?
+                    SpiceItUpService service2 = new SpiceItUpService();
+                    List<Store> inventory = await service2.GetStoreInventory(storeEntry);
+                    SpiceItUp.PrintResults.PrintStoreInfo(inventory, storeEntry); //Can we pull the store's inventory information based on user input?
                 }
                 catch (Exception) //If we fail to pull store inventory
                 {

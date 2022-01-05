@@ -246,5 +246,76 @@ namespace SpiceItUpDataStorage
 
             return result;
         }
+
+        public IEnumerable<Store> PrintStoreList()
+        {
+            List<Store> result = new List<Store>();
+
+            using SqlConnection connection = new(connectionString);
+
+            //Get list of stores from database
+            connection.Open();
+            string getStoreInfo = "SELECT * FROM StoreInfo ORDER BY StoreID;";
+            using SqlCommand readStoreInfo = new(getStoreInfo, connection);
+            using SqlDataReader reader = readStoreInfo.ExecuteReader();
+            while (reader.Read())
+            {
+                int id = reader.GetInt32(0);
+                string name = reader.GetString(1);
+                result.Add(new(id, name));
+
+                Console.WriteLine($"Store {reader.GetInt32(0)}: {reader.GetString(1)}");
+            }
+            connection.Close();
+
+            return result;
+        }
+
+        public IEnumerable<Store> PrintStoreInventory(int storeEntry)
+        {
+            List<Store> result = new List<Store>();
+
+            using SqlConnection connection = new(connectionString);
+
+            //Pull the selected store information
+            connection.Open();
+            string getSelectedStore = $"SELECT * FROM StoreInfo WHERE StoreID = @storeID;";
+            using SqlCommand readSelectedStore = new(getSelectedStore, connection);
+            readSelectedStore.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+            using SqlDataReader readStore = readSelectedStore.ExecuteReader();
+            while (readStore.Read())
+            {
+                Console.WriteLine($"Inventory for store {readStore.GetInt32(0)}: {readStore.GetString(1)}");
+            }
+            connection.Close();
+
+            //Formatting
+            Console.WriteLine("=================================");
+            Console.WriteLine("Item Name\t In Stock\t Price");
+            Console.WriteLine("=========\t ========\t =====");
+
+            //Pull and print the store's inventory
+            connection.Open();
+            string getStoreInventory = "SELECT ItemDetails.ItemName, StoreInventory.InStock, ItemDetails.ItemPrice " +
+                "FROM StoreInventory JOIN ItemDetails " +
+                "ON StoreInventory.ItemID = ItemDetails.ItemID " +
+                "WHERE StoreInventory.StoreID = @storeID ORDER BY ItemDetails.ItemName;";
+            using SqlCommand readStoreInventory = new(getStoreInventory, connection);
+            readStoreInventory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+            using SqlDataReader readInventory = readStoreInventory.ExecuteReader();
+            while (readInventory.Read())
+            {
+                string name = readInventory.GetString(0);
+                int quantity = readInventory.GetInt32(1);
+                decimal itemPrice = readInventory.GetDecimal(2);
+                string price = String.Format("{0:0.00}", itemPrice);
+                result.Add(new(name, quantity, price));
+
+                Console.WriteLine(String.Format("{0, -16} {1, -15} {2, -16}", readInventory.GetString(0), readInventory.GetInt32(1), $"${price}"));
+            }
+            connection.Close();
+
+            return result;
+        }
     }
 }
