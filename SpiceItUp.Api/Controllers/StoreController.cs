@@ -21,18 +21,68 @@ namespace SpiceItUp.Api.Controllers
         {
             IEnumerable<Store> store;
 
-            store = _repo.PrintStoreList();
+            try
+            {
+                store = _repo.PrintStoreList();
+            }
+            catch(Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(store);
         }
 
-        // GET api/user/inventory?id=storeID
+        // GET api/store/inventory?id=storeID
         [HttpGet("/store/inventory")]
         public IActionResult GetStoreInventory([FromQuery] int storeID)
         {
             IEnumerable<Store> store;
 
-            store = _repo.PrintStoreInventory(storeID);
+            try
+            {
+                store = _repo.PrintStoreInventory(storeID);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return new JsonResult(store);
+        }
+
+        // GET api/storeinfo/id=storeID
+        [HttpGet("/storeinfo")]
+        public IActionResult GetStoreInfo([FromQuery] int storeID)
+        {
+            IEnumerable<Store> store;
+
+            try
+            {
+                store = _repo.GetStoreInfo(storeID);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return new JsonResult(store);
+        }
+
+        // GET api/storeinfo/itemid/StoreID=storeID
+        [HttpGet("/storecart")]
+        public IActionResult GetCartStoreInv([FromQuery] int storeID)
+        {
+            IEnumerable<Store> store;
+
+            try
+            {
+                store = _repo.GetCartStoreInventory(storeID);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(store);
         }

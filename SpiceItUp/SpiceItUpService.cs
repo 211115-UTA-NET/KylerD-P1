@@ -233,5 +233,67 @@ namespace SpiceItUp
 
             return user;
         }
+
+        public void PostUserInfo(string user, string pass, string first, string last, string phone)
+        {
+            Uri requestUri = new(server, $"/newuser?username={user}&password={pass}&firstName={first}&lastName={last}&phoneNumber={phone}");
+            HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public Task<List<Store>> GetStoreName(int id)
+        {
+            Uri requestUri = new(server, $"/storeinfo?storeID={id}");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var user = response.Content.ReadFromJsonAsync<List<Store>>();
+
+            return user;
+        }
+
+        public Task<List<Store>> GetCartStoreInventory(int id)
+        {
+            Uri requestUri = new(server, $"/storecart?storeID={id}");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var user = response.Content.ReadFromJsonAsync<List<Store>>();
+
+            return user;
+        }
     }
 }

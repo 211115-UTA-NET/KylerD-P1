@@ -10,8 +10,10 @@ namespace SpiceItUp.Dtos
     {
         public int StoreID { get; set; }
         public string? StoreName { get; set; }
+        public int ItemID { get; set; }
         public string? ItemName { get; set; }
         public int ItemQuantity { get; set; }
         public string? ItemPrice { get; set; }
+        public decimal ItemPriceDecimal { get; set; }
     }
 }

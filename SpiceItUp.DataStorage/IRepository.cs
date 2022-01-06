@@ -15,6 +15,11 @@ namespace SpiceItUpDataStorage
 
         private static List<string> transList = new List<string>();
 
+        private static List<int> itemIDList = new List<int>();
+        private static List<string> itemNameList = new List<string>();
+        private static List<int> inStockList = new List<int>();
+        private static List<decimal> priceList = new List<decimal>();
+
         public IEnumerable<User> SearchCustomerFirstName(string firstName)
         {
             List<User> result = new List<User>();
@@ -410,6 +415,100 @@ namespace SpiceItUpDataStorage
                 double phone = userReader.GetInt64(3);
                 string employee = userReader.GetString(4);
                 result.Add(new(userID, first, last, phone, employee));
+            }
+            connection.Close();
+
+            return result;
+        }
+
+        public static void PostCustomerInfo(string newUsername, string newPassword, string firstName, string lastName, string phoneNumber)
+        {
+            using SqlConnection connection = new(connectionString);
+
+            // Add the customer's login information to SQL
+            connection.Open();
+            string addNewLoginManager = $"INSERT LoginManager (Username, \"Password\") VALUES (@username, @password);";
+            using SqlCommand newLoginManagerCommand = new(addNewLoginManager, connection);
+            newLoginManagerCommand.Parameters.Add("@username", System.Data.SqlDbType.VarChar).Value = newUsername;
+            newLoginManagerCommand.Parameters.Add("@password", System.Data.SqlDbType.VarChar).Value = newPassword;
+            newLoginManagerCommand.ExecuteNonQuery();
+            connection.Close();
+
+            // Extract the new ID number that was automatically created
+            connection.Open();
+            string getNewUserID = $"SELECT UserID FROM LoginManager WHERE Username = @username;";
+            using SqlCommand readNewUserID = new(getNewUserID, connection);
+            readNewUserID.Parameters.Add("@username", System.Data.SqlDbType.VarChar).Value = newUsername;
+            using SqlDataReader reader = readNewUserID.ExecuteReader();
+            int finalIDGrab = 0;
+            while (reader.Read())
+            {
+                finalIDGrab = reader.GetInt32(0);
+            }
+            connection.Close();
+
+            // Add the customer's personal information to SQL
+            connection.Open();
+            string addNewCustomer = $"INSERT UserInformation (UserID, FirstName, LastName, PhoneNumber, IsEmployee) " +
+                $"VALUES (@customerID, @firstName, @lastName, @phoneNumber, @isEmployee);";
+            using SqlCommand newUserCreationCommand = new(addNewCustomer, connection);
+            newUserCreationCommand.Parameters.Add("@customerID", System.Data.SqlDbType.Int).Value = finalIDGrab;
+            newUserCreationCommand.Parameters.Add("@firstName", System.Data.SqlDbType.VarChar).Value = firstName;
+            newUserCreationCommand.Parameters.Add("@lastName", System.Data.SqlDbType.VarChar).Value = lastName;
+            newUserCreationCommand.Parameters.Add("@phoneNumber", System.Data.SqlDbType.BigInt).Value = phoneNumber;
+            newUserCreationCommand.Parameters.Add("@isEmployee", System.Data.SqlDbType.VarChar).Value = "FALSE";
+            newUserCreationCommand.ExecuteNonQuery();
+            connection.Close();
+
+            Console.WriteLine($"Your account has been created, {firstName}! You may now login!");
+        }
+
+        public IEnumerable<Store> GetStoreInfo(int storeEntry)
+        {
+            List<Store> result = new List<Store>();
+
+            using SqlConnection connection = new(connectionString);
+
+            //Pull information from the entered store (Name)
+            connection.Open();
+            string getSelectedStore = $"SELECT * FROM StoreInfo WHERE StoreID = @storeID;";
+            using SqlCommand readSelectedStore = new(getSelectedStore, connection);
+            readSelectedStore.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+            using SqlDataReader readStore = readSelectedStore.ExecuteReader();
+            while (readStore.Read())
+            {
+                int storeID = readStore.GetInt32(0);
+                string storeName = readStore.GetString(1);
+                result.Add(new(storeID, storeName));
+            }
+            connection.Close();
+
+            return result;
+        }
+
+        public IEnumerable<Store> GetCartStoreInventory(int storeEntry)
+        {
+            List<Store> result = new List<Store>();
+
+            using SqlConnection connection = new(connectionString);
+
+            //Begin pulling the inventory from the selected store
+            connection.Open();
+            string getStoreInventory = "SELECT ItemDetails.ItemID, ItemDetails.ItemName, StoreInventory.InStock, ItemDetails.ItemPrice " +
+                "FROM StoreInventory JOIN ItemDetails " +
+                "ON StoreInventory.ItemID = ItemDetails.ItemID " +
+                "WHERE StoreInventory.StoreID = @storeID ORDER BY ItemDetails.ItemID;";
+            using SqlCommand readStoreInventory = new(getStoreInventory, connection);
+            readStoreInventory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+            using SqlDataReader readInventory = readStoreInventory.ExecuteReader();
+            while (readInventory.Read())
+            {
+                int id = readInventory.GetInt32(0);
+                string name = readInventory.GetString(1);
+                int quantity = readInventory.GetInt32(2);
+                decimal price = readInventory.GetDecimal(3);
+                //Inventory is stored
+                result.Add(new(id, name, quantity, price));
             }
             connection.Close();
 

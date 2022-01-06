@@ -22,7 +22,14 @@ namespace SpiceItUp.Api.Controllers
         {
             IEnumerable<Transaction> trans;
 
-            trans = _repo.CustomerTransactionHistory(id);
+            try
+            {
+                trans = _repo.CustomerTransactionHistory(id);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(trans);
         }
@@ -33,7 +40,14 @@ namespace SpiceItUp.Api.Controllers
         {
             IEnumerable<Transaction> trans;
 
-            trans = _repo.StoreTransactionHistory(storeID);
+            try
+            {
+                trans = _repo.StoreTransactionHistory(storeID);
+            }
+            catch(Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(trans);
         }
@@ -44,7 +58,14 @@ namespace SpiceItUp.Api.Controllers
         {
             IEnumerable<Transaction> trans;
 
-            trans = _repo.DetailedTransaction(transID);
+            try
+            {
+                trans = _repo.DetailedTransaction(transID);
+            }
+            catch(Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(trans);
         }

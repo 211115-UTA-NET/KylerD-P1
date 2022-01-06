@@ -15,10 +15,20 @@ namespace SpiceItUpDataStorage
         public string? Employee { get; }
         public string? Username { get; }
         public string? Password { get; }
+        public string? PhoneNumber { get; }
 
         public User()
         {
 
+        }
+
+        public User(string username, string password, string firstName, string lastName, string phoneNumber)
+        {
+            this.Username = username;
+            this.Password = password;
+            this.First = firstName;
+            this.Last = lastName;
+            this.PhoneNumber = phoneNumber;
         }
 
         public User(int id, string first, string last, double phone, string employee)

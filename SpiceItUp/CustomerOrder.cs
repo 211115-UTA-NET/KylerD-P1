@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceItUp.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace SpiceItUp
         /// Customer selects the store in which they want to order from
         /// </summary>
         /// <param name="myUserID"></param>
-        public static void StoreSelection(int myUserID)
+        public static async void StoreSelection(int myUserID)
         {
             userID = myUserID;
             exit = false;
@@ -47,7 +48,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    //SpiceItUp.PrintResults.PrintStoreList();
+                    SpiceItUpService service = new SpiceItUpService();
+                    List<Store> stores = await service.GetStoreList();
+                    SpiceItUp.PrintResults.PrintStoreList(stores);
                 }
                 catch (Exception)
                 {
@@ -83,8 +86,10 @@ namespace SpiceItUp
         /// <summary>
         /// Based on user entry, we pull all store information reguarding name and inventory of store
         /// </summary>
-        public static void PullStoreInfo()
+        public static async void PullStoreInfo()
         {
+            SpiceItUpService service = new SpiceItUpService();
+
             itemIDList.Clear();
             itemNameList.Clear();
             inStockList.Clear();
@@ -96,13 +101,21 @@ namespace SpiceItUp
             customerPrice.Clear();
 
             //Pull information from the entered store (Name)
-            storeName = SpiceItUp.PrintResults.GetStoreName(storeEntry);
+            List<Store> storeInfo = await service.GetStoreName(storeEntry);
+            foreach(var record in storeInfo)
+            {
+                storeName = record.StoreName;
+            }
 
             //Begin pulling the inventory from the selected store and storing the info in lists
-            itemIDList = SpiceItUp.PrintResults.GetStoreInventoryItemID(storeEntry);
-            itemNameList = SpiceItUp.PrintResults.GetStoreInventoryItemName(storeEntry);
-            inStockList = SpiceItUp.PrintResults.GetStoreInventoryInStock(storeEntry);
-            priceList = SpiceItUp.PrintResults.GetStoreInventoryPrice(storeEntry);
+            List<Store> storeCart = await service.GetCartStoreInventory(storeEntry);
+            foreach(var record in storeCart)
+            {
+                itemIDList.Add(record.ItemID);
+                itemNameList.Add(record.ItemName);
+                inStockList.Add(record.ItemQuantity);
+                priceList.Add(record.ItemPriceDecimal);
+            }
         }
 
         /// <summary>

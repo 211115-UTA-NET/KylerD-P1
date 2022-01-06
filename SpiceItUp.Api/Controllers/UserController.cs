@@ -22,7 +22,14 @@ namespace SpiceItUpDataStorage.Api.Controllers
         {
             IEnumerable<User> user;
 
-            user = _repo.CustomerList();
+            try
+            {
+                user = _repo.CustomerList();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(user);
         }
@@ -33,7 +40,14 @@ namespace SpiceItUpDataStorage.Api.Controllers
         {
             IEnumerable<User> user;
             
-            user = _repo.SearchCustomerFirstName(firstName);
+            try
+            {
+                user = _repo.SearchCustomerFirstName(firstName);
+            }
+            catch(Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(user);
         }
@@ -44,7 +58,14 @@ namespace SpiceItUpDataStorage.Api.Controllers
         {
             IEnumerable<User> user;
 
-            user = _repo.SearchCustomerLastName(lastName);
+            try
+            {
+                user = _repo.SearchCustomerLastName(lastName);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(user);
         }
@@ -55,7 +76,14 @@ namespace SpiceItUpDataStorage.Api.Controllers
         {
             IEnumerable<User> user;
 
-            user = _repo.GetLoginUserID(username, password);
+            try
+            {
+                user = _repo.GetLoginUserID(username, password);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(user);
         }
@@ -65,10 +93,32 @@ namespace SpiceItUpDataStorage.Api.Controllers
         public IActionResult GetCustomerInfo([FromQuery] int id)
         {
             IEnumerable<User> user;
-
-            user = _repo.GetCustomerInfo(id);
+            try
+            {
+                user = _repo.GetCustomerInfo(id);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return new JsonResult(user);
+        }
+
+        // POST api/user
+        [HttpPost("/newuser")]
+        public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, string phoneNumber)
+        {
+            try
+            {
+                IRepository.PostCustomerInfo(username, password, firstName, lastName, phoneNumber);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(200);
         }
     }
 }

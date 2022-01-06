@@ -36,9 +36,9 @@ namespace SpiceItUp
             {
                 try
                 {
-#pragma warning disable CS8604 // Possible null reference argument.
-                    SpiceItUp.PrintResults.AddNewCustomer(newUsername, newPassword, firstName, lastName, phoneNumber);
-#pragma warning restore CS8604 // Possible null reference argument.
+                    SpiceItUpService service = new SpiceItUpService();
+                    service.PostUserInfo(newUsername, newPassword, firstName, lastName, phoneNumber);
+                    Console.WriteLine($"Your account has been created, {firstName}! You may now login!");
                 }
                 catch (Exception) //Accounts will not be created if there is a duplicate username
                 {
