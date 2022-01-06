@@ -13,6 +13,8 @@ namespace SpiceItUpDataStorage
         public string? Last { get; }
         public double Phone { get; }
         public string? Employee { get; }
+        public string? Username { get; }
+        public string? Password { get; }
 
         public User()
         {
@@ -34,6 +36,18 @@ namespace SpiceItUpDataStorage
             this.First = first;
             this.Last = last;
             this.Phone = phone;
+        }
+
+        public User(int id, string username, string password)
+        {
+            this.Id= id;
+            this.Username = username;
+            this.Password = password;
+        }
+
+        public User(int id)
+        {
+            this.Id = id;
         }
     }
 }

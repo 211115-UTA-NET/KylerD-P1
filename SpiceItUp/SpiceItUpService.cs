@@ -189,5 +189,49 @@ namespace SpiceItUp
 
             return transactions;
         }
+
+        public Task<List<User>> GetLoginInfo(string username, string password)
+        {
+            Uri requestUri = new(server, $"/user/Login?username={username}&password={password}");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var login = response.Content.ReadFromJsonAsync<List<User>>();
+
+            return login;
+        }
+
+        public Task<List<User>> GetUserInfo(int id)
+        {
+            Uri requestUri = new(server, $"/user/ID?id={id}");
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var user = response.Content.ReadFromJsonAsync<List<User>>();
+
+            return user;
+        }
     }
 }

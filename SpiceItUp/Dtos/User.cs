@@ -13,5 +13,7 @@ namespace SpiceItUp.Dtos
         public string? Last { get; set; }
         public double Phone { get; set; }
         public string? Employee { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
     }
 }

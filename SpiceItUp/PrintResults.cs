@@ -426,7 +426,7 @@ namespace SpiceItUp
         /// Search a customer by their first name
         /// </summary>
         /// <returns></returns>
-        public static void SearchCustomerFirstName(IEnumerable<User> users)
+        public static void PrintCustomerInfo(IEnumerable<User> users)
         {
             Console.WriteLine("==============================");
             Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
@@ -441,136 +441,6 @@ namespace SpiceItUp
                     record.Id, record.First, record.Last, record.Phone, record.Employee));
             }
             Console.WriteLine("==============================");
-        }
-
-        /// <summary>
-        /// Search a custome rby their last name
-        /// </summary>
-        /// <returns></returns>
-        public static void SearchCustomerLastName(IEnumerable<User> users)
-        {
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "User ID", "FirstName", "Last Name", "Phone Number", "Is Employee?"));
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "=======", "=========", "=========", "============", "============"));
-
-            //Pull customer information matching last name entered
-            foreach (var record in users)
-            {
-                Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    record.Id, record.First, record.Last, record.Phone, record.Employee));
-            }
-            Console.WriteLine("==============================");
-        }
-
-        /// <summary>
-        /// Based on information in our database, are the entries linked to an accounnt?
-        /// If so, customer is logged in.
-        /// If anything fails, we return to the main program class
-        /// </summary>
-        public static int GetLoginUserID(string username, string password)
-        {
-            int userID = 0;
-
-            using SqlConnection connection = new(connectionString);
-
-            //If username and password is a valid entry, pull a UserID
-            connection.Open();
-            string getLoginManager = $"SELECT UserID FROM LoginManager WHERE (Username = @username AND \"Password\" = @password);";
-            using SqlCommand readLoginManager = new(getLoginManager, connection);
-            readLoginManager.Parameters.Add("@username", System.Data.SqlDbType.VarChar).Value = username;
-            readLoginManager.Parameters.Add("@password", System.Data.SqlDbType.VarChar).Value = password;
-            using SqlDataReader loginReader = readLoginManager.ExecuteReader();
-            while (loginReader.Read())
-            {
-                userID = loginReader.GetInt32(0);
-            }
-            connection.Close();
-
-            return userID;
-        }
-
-        /// <summary>
-        /// Get user info based off userID
-        /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
-        public static string GetLoginFirstName(int userID)
-        {
-            string firstName = "";
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                firstName = userReader.GetString(1);
-            }
-            connection.Close();
-
-            return firstName;
-        }
-        public static string GetLoginLastName(int userID)
-        {
-            string lastName = "";
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                lastName = userReader.GetString(2);
-            }
-            connection.Close();
-
-            return lastName;
-        }
-        public static double GetLoginPhoneNumber(int userID)
-        {
-            double phoneNumber = 0;
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                phoneNumber = userReader.GetInt64(3);
-            }
-            connection.Close();
-
-            return phoneNumber;
-        }
-        public static string GetLoginIsEmployee(int userID)
-        {
-            string isEmployee = "";
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                isEmployee = userReader.GetString(4);
-            }
-            connection.Close();
-
-            return isEmployee;
         }
     }
 }

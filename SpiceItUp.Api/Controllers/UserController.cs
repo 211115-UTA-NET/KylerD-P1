@@ -48,5 +48,27 @@ namespace SpiceItUpDataStorage.Api.Controllers
 
             return new JsonResult(user);
         }
+
+        // GET api/user/?lastName={LastName}
+        [HttpGet("/user/Login")]
+        public IActionResult GetUserID([FromQuery] string username, string password)
+        {
+            IEnumerable<User> user;
+
+            user = _repo.GetLoginUserID(username, password);
+
+            return new JsonResult(user);
+        }
+
+        // GET api/user/?userID={userID}
+        [HttpGet("/user/ID")]
+        public IActionResult GetCustomerInfo([FromQuery] int id)
+        {
+            IEnumerable<User> user;
+
+            user = _repo.GetCustomerInfo(id);
+
+            return new JsonResult(user);
+        }
     }
 }

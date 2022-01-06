@@ -11,10 +11,6 @@ namespace SpiceItUpDataStorage
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
-        private static List<string> transList = new List<string>();
-
-        private static List<int> customerIDList = new List<int>();
-
         /// <summary>
         /// Information from the database reguarding store inventory is stored in lists
         /// </summary>
@@ -22,20 +18,6 @@ namespace SpiceItUpDataStorage
         private static List<string> itemNameList = new List<string>();
         private static List<int> inStockList = new List<int>();
         private static List<decimal> priceList = new List<decimal>();
-
-        /// <summary>
-        /// Information reguarding what the customer has added or removed from their cart is stored in lists
-        /// </summary>
-        //private static List<int> customerItemID = new List<int>();
-        //private static List<string> customerItemName = new List<string>();
-        //private static List<int> customerQuantity = new List<int>();
-        //private static List<decimal> customerPrice = new List<decimal>();
-
-        //For serializer
-        public SqlRepository()
-        {
-
-        }
 
         /// <summary>
         /// The information entered by user is written to our database
@@ -267,115 +249,6 @@ namespace SpiceItUpDataStorage
             customerItemIDNew.Clear();
             customerQuantityNew.Clear();
             customerPriceNew.Clear();
-        }
-
-        /// <summary>
-        /// Based on information in our database, are the entries linked to an accounnt?
-        /// If so, customer is logged in.
-        /// If anything fails, we return to the main program class
-        /// </summary>
-        public static int GetLoginUserID(string username, string password)
-        {
-            int userID = 0;
-
-            using SqlConnection connection = new(connectionString);
-
-            //If username and password is a valid entry, pull a UserID
-            connection.Open();
-            string getLoginManager = $"SELECT UserID FROM LoginManager WHERE (Username = @username AND \"Password\" = @password);";
-            using SqlCommand readLoginManager = new(getLoginManager, connection);
-            readLoginManager.Parameters.Add("@username", System.Data.SqlDbType.VarChar).Value = username;
-            readLoginManager.Parameters.Add("@password", System.Data.SqlDbType.VarChar).Value = password;
-            using SqlDataReader loginReader = readLoginManager.ExecuteReader();
-            while (loginReader.Read())
-            {
-                userID = loginReader.GetInt32(0);
-            }
-            connection.Close();
-
-            return userID;
-        }
-
-        /// <summary>
-        /// Get user info based off userID
-        /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
-        public static string GetLoginFirstName(int userID)
-        {
-            string firstName = "";
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                firstName = userReader.GetString(1);
-            }
-            connection.Close();
-
-            return firstName;
-        }
-        public static string GetLoginLastName(int userID)
-        {
-            string lastName = "";
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                lastName = userReader.GetString(2);
-            }
-            connection.Close();
-
-            return lastName;
-        }
-        public static double GetLoginPhoneNumber(int userID)
-        {
-            double phoneNumber = 0;
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                phoneNumber = userReader.GetInt64(3);
-            }
-            connection.Close();
-
-            return phoneNumber;
-        }
-        public static string GetLoginIsEmployee(int userID)
-        {
-            string isEmployee = "";
-
-            using SqlConnection connection = new(connectionString);
-
-            connection.Open();
-            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
-            using SqlCommand readUserInfo = new(getUserInfo, connection);
-            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = userID;
-            using SqlDataReader userReader = readUserInfo.ExecuteReader();
-            while (userReader.Read())
-            {
-                isEmployee = userReader.GetString(4);
-            }
-            connection.Close();
-
-            return isEmployee;
         }
     }
 }

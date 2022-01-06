@@ -80,7 +80,7 @@ namespace SpiceItUp
                     {
                         SpiceItUpService service = new SpiceItUpService();
                         List<User> users = await service.GetUserFirstName(firstName);
-                        SpiceItUp.PrintResults.SearchCustomerFirstName(users);
+                        SpiceItUp.PrintResults.PrintCustomerInfo(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database
@@ -111,7 +111,7 @@ namespace SpiceItUp
                     {
                         SpiceItUpService service = new SpiceItUpService();
                         List<User> users = await service.GetUserLastName(lastName);
-                        SpiceItUp.PrintResults.SearchCustomerFirstName(users);
+                        SpiceItUp.PrintResults.PrintCustomerInfo(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database

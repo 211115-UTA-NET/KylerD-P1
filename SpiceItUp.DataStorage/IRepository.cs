@@ -365,5 +365,55 @@ namespace SpiceItUpDataStorage
 
             return result;
         }
+
+        public IEnumerable<User> GetLoginUserID(string username, string password)
+        {
+            List<User> result = new List<User>();
+
+            int userID = 0;
+
+            using SqlConnection connection = new(connectionString);
+
+            //If username and password is a valid entry, pull a UserID
+            connection.Open();
+            string getLoginManager = $"SELECT UserID FROM LoginManager WHERE (Username = @username AND \"Password\" = @password);";
+            using SqlCommand readLoginManager = new(getLoginManager, connection);
+            readLoginManager.Parameters.Add("@username", System.Data.SqlDbType.VarChar).Value = username;
+            readLoginManager.Parameters.Add("@password", System.Data.SqlDbType.VarChar).Value = password;
+            using SqlDataReader loginReader = readLoginManager.ExecuteReader();
+            while (loginReader.Read())
+            {
+                userID = loginReader.GetInt32(0);
+                result.Add(new(userID));
+            }
+            connection.Close();
+
+            return result;
+        }
+
+        public IEnumerable<User> GetCustomerInfo(int id)
+        {
+            List<User> result = new List<User>();
+
+            using SqlConnection connection = new(connectionString);
+
+            connection.Open();
+            string getUserInfo = $"SELECT * FROM UserInformation WHERE UserID = @validUserID;";
+            using SqlCommand readUserInfo = new(getUserInfo, connection);
+            readUserInfo.Parameters.Add("@validUserID", System.Data.SqlDbType.Int).Value = id;
+            using SqlDataReader userReader = readUserInfo.ExecuteReader();
+            while (userReader.Read())
+            {
+                int userID = userReader.GetInt32(0);
+                string first = userReader.GetString(1);
+                string last = userReader.GetString(2);
+                double phone = userReader.GetInt64(3);
+                string employee = userReader.GetString(4);
+                result.Add(new(userID, first, last, phone, employee));
+            }
+            connection.Close();
+
+            return result;
+        }
     }
 }
