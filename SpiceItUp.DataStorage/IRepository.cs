@@ -514,5 +514,81 @@ namespace SpiceItUpDataStorage
 
             return result;
         }
+
+        public static void NewTransaction(string transID, int userID, int storeEntry)
+        {
+            using SqlConnection connection = new(connectionString);
+
+            connection.Open();
+            string addTransHistory = "INSERT TransactionHistory (TransactionID, UserID, StoreID, IsStoreOrder, Timestamp) " +
+                "VALUES (@transID, @userID, @storeID, @isStoreOrder, @timestamp);";
+            using SqlCommand newTransHistory = new(addTransHistory, connection);
+            DateTime now = DateTime.Now;
+            string dateTime = now.ToString("F");
+            newTransHistory.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = transID;
+            newTransHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = userID;
+            newTransHistory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+            newTransHistory.Parameters.Add("@isStoreOrder", System.Data.SqlDbType.VarChar).Value = "FALSE";
+            newTransHistory.Parameters.Add("@timestamp", System.Data.SqlDbType.NVarChar).Value = dateTime;
+            newTransHistory.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        public static void TransactionDetails(string transID, int customerItemIDNew, int customerQuantityNew, decimal customerPriceNew)
+        {
+            using SqlConnection connection = new(connectionString);
+
+            //Add customer cart items to database
+            connection.Open();
+            string addTransDetails = "INSERT CustomerTransactionDetails (TransactionID, ItemID, Quantity, Price) " +
+                "VALUES (@transID, @itemID, @quantity, @price);";
+            using SqlCommand newTransDetails = new(addTransDetails, connection);
+            newTransDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = transID;
+            newTransDetails.Parameters.Add("@itemID", System.Data.SqlDbType.Int).Value = customerItemIDNew;
+            newTransDetails.Parameters.Add("@quantity", System.Data.SqlDbType.Int).Value = customerQuantityNew;
+            newTransDetails.Parameters.Add("@price", System.Data.SqlDbType.Money).Value = customerPriceNew;
+            newTransDetails.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        public static void NewStoreInventory(int inStockListNew, int storeEntry, int itemIDListNew)
+        {
+            using SqlConnection connection = new(connectionString);
+
+            //Updates store quantites based on what customer has added to their cart
+            connection.Open();
+            string updateStoreInv = "UPDATE StoreInventory SET InStock = @stock WHERE StoreID = @storeID AND ItemID = @itemID;";
+            using SqlCommand newStoreInv = new(updateStoreInv, connection);
+            newStoreInv.Parameters.Add("@stock", System.Data.SqlDbType.Int).Value = inStockListNew;
+            newStoreInv.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+            newStoreInv.Parameters.Add("@itemID", System.Data.SqlDbType.Int).Value = itemIDListNew;
+            newStoreInv.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        public static void FinalizeTransaction(List<int> itemIDListNew, List<int> inStockListNew, string transID, int storeEntry, int userID, List<int> customerItemIDNew, List<int> customerQuantityNew, List<decimal> customerPriceNew)
+        {
+            using SqlConnection connection = new(connectionString);
+
+            for (int i = 0; i < itemIDListNew.Count; i++) //Loop through remaining store inventory
+            {
+                
+            }
+
+            //Add details of transaction to database
+            
+
+            for (int i = 0; i < customerItemIDNew.Count; i++) //Loop through customer cart
+            {
+                
+            }
+
+            //Clear all lists from next run through
+            itemIDListNew.Clear();
+            inStockListNew.Clear();
+            customerItemIDNew.Clear();
+            customerQuantityNew.Clear();
+            customerPriceNew.Clear();
+        }
     }
 }

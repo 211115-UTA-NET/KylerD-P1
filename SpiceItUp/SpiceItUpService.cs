@@ -295,5 +295,23 @@ namespace SpiceItUp
 
             return user;
         }
+
+        public void PostFinalTransaction(List<int> itemIDListNew, List<int> inStockListNew, int storeEntry, int userID, List<int> customerItemIDNew, List<int> customerQuantityNew, List<decimal> customerPriceNew)
+        {
+            Uri requestUri = new(server, $"/newtransaction?itemIDListNew={itemIDListNew}&inStockListNew={inStockListNew}&storeEntry={storeEntry}&userID={userID}&customerItemIDNew={customerItemIDNew}&customerQuantityNew={customerQuantityNew}&customerPriceNew={customerPriceNew}");
+            HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

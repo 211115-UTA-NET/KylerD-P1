@@ -69,5 +69,53 @@ namespace SpiceItUp.Api.Controllers
 
             return new JsonResult(trans);
         }
+
+        // POST api/newtransaction
+        [HttpPost("/newtransaction")]
+        public IActionResult PostNewTransaction([FromQuery] string transID, int userID, int storeEntry)
+        {
+            try
+            {
+                IRepository.NewTransaction(transID, userID, storeEntry);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(200);
+        }
+
+        // POST api/newtransaction
+        [HttpPost("/newtransaction")]
+        public IActionResult PostTransactionDetails([FromQuery] string transID, int customerItemIDNew, int customerQuantityNew, decimal customerPriceNew)
+        {
+            try
+            {
+                IRepository.TransactionDetails(transID, customerItemIDNew, customerQuantityNew, customerPriceNew);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(200);
+        }
+
+        // POST api/newtransaction
+        [HttpPost("/newtransaction")]
+        public IActionResult PostNewStoreInventroy([FromQuery] int inStockListNew, int storeEntry, int itemIDListNew)
+        {
+            try
+            {
+                IRepository.NewStoreInventory(inStockListNew, storeEntry, itemIDListNew);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(200);
+        }
     }
 }

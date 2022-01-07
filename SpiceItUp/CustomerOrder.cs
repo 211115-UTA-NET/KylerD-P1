@@ -372,7 +372,6 @@ namespace SpiceItUp
         /// </summary>
         public static void FinalizeTransaction()
         {
-            //Get a random string of mixed letter and numbers to represent a unique transaction ID
             StringBuilder createTransID = new StringBuilder();
             Enumerable
                .Range(65, 26)
@@ -386,7 +385,8 @@ namespace SpiceItUp
 
             try
             {
-                SpiceItUp.PrintResults.FinalizeTransaction(itemIDList, inStockList, storeEntry, transID, userID, customerItemID, customerQuantity, customerPrice);
+                SpiceItUpService service = new SpiceItUpService();
+                service.PostFinalTransaction(itemIDList, inStockList, storeEntry, userID, customerItemID, customerQuantity, customerPrice);
 
                 Console.WriteLine("Your order was successful!");
                 Console.WriteLine($"Your transaction ID number is: {transID}");
