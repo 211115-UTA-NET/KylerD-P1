@@ -86,5 +86,21 @@ namespace SpiceItUp.Api.Controllers
 
             return new JsonResult(store);
         }
+
+        // POST api/newinventory
+        [HttpPost("/newinventory")]
+        public IActionResult PostNewStoreInventroy([FromQuery] int inStockListNew, int storeEntry, int itemIDListNew)
+        {
+            try
+            {
+                IRepository.NewStoreInventory(inStockListNew, storeEntry, itemIDListNew);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return StatusCode(200);
+        }
     }
 }

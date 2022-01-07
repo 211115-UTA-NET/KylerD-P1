@@ -565,30 +565,5 @@ namespace SpiceItUpDataStorage
             newStoreInv.ExecuteNonQuery();
             connection.Close();
         }
-
-        public static void FinalizeTransaction(List<int> itemIDListNew, List<int> inStockListNew, string transID, int storeEntry, int userID, List<int> customerItemIDNew, List<int> customerQuantityNew, List<decimal> customerPriceNew)
-        {
-            using SqlConnection connection = new(connectionString);
-
-            for (int i = 0; i < itemIDListNew.Count; i++) //Loop through remaining store inventory
-            {
-                
-            }
-
-            //Add details of transaction to database
-            
-
-            for (int i = 0; i < customerItemIDNew.Count; i++) //Loop through customer cart
-            {
-                
-            }
-
-            //Clear all lists from next run through
-            itemIDListNew.Clear();
-            inStockListNew.Clear();
-            customerItemIDNew.Clear();
-            customerQuantityNew.Clear();
-            customerPriceNew.Clear();
-        }
     }
 }

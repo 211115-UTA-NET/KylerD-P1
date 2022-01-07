@@ -386,7 +386,18 @@ namespace SpiceItUp
             try
             {
                 SpiceItUpService service = new SpiceItUpService();
-                service.PostFinalTransaction(itemIDList, inStockList, storeEntry, userID, customerItemID, customerQuantity, customerPrice);
+
+                for (int i = 0; i < itemIDList.Count; i++) //Loop through remaining store inventory
+                {
+                    service.PostNewStoreInventory(inStockList[i], storeEntry, itemIDList[i]);
+                }
+
+                service.PostNewTransaction(transID, userID, storeEntry);
+
+                for (int i = 0; i < customerItemID.Count; i++) //Loop through customer cart
+                {
+                    service.PostNewTransactionDetails(transID, customerItemID[i], customerQuantity[i], customerPrice[i]);
+                }
 
                 Console.WriteLine("Your order was successful!");
                 Console.WriteLine($"Your transaction ID number is: {transID}");

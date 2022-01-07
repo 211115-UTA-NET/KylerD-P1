@@ -296,9 +296,45 @@ namespace SpiceItUp
             return user;
         }
 
-        public void PostFinalTransaction(List<int> itemIDListNew, List<int> inStockListNew, int storeEntry, int userID, List<int> customerItemIDNew, List<int> customerQuantityNew, List<decimal> customerPriceNew)
+        public void PostNewStoreInventory(int inStockListNew, int storeEntry, int itemIDListNew)
         {
-            Uri requestUri = new(server, $"/newtransaction?itemIDListNew={itemIDListNew}&inStockListNew={inStockListNew}&storeEntry={storeEntry}&userID={userID}&customerItemIDNew={customerItemIDNew}&customerQuantityNew={customerQuantityNew}&customerPriceNew={customerPriceNew}");
+            Uri requestUri = new(server, $"/newinventory?inStockListNew={inStockListNew}&storeEntry={storeEntry}&itemIDListNew={itemIDListNew}");
+            HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public void PostNewTransaction(string transID, int userID, int storeEntry)
+        {
+            Uri requestUri = new(server, $"/newtransaction?transID={transID}&userID={userID}&storeEntry={storeEntry}");
+            HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            HttpResponseMessage response;
+
+            try
+            {
+                response = HttpClient.Send(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new("Network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public void PostNewTransactionDetails(string transID, int customerItemIDNew, int customerQuantityNew, decimal customerPriceNew)
+        {
+            Uri requestUri = new(server, $"/newtransactiondetails?transID={transID}&customerItemIDNew={customerItemIDNew}&customerQuantityNew={customerQuantityNew}&customerPriceNew={customerPriceNew}");
             HttpRequestMessage request = new(HttpMethod.Post, requestUri);
             HttpResponseMessage response;
 
