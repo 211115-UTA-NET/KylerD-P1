@@ -77,7 +77,7 @@ namespace SpiceItUp
                 {
                     try //Try to pull customer information
                     {
-                        SpiceItUpService service = new SpiceItUpService();
+                        SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                         List<User> users = await service.GetUserFirstName(firstName);
                         SpiceItUp.PrintResults.PrintCustomerInfo(users);
                         break;
@@ -108,7 +108,7 @@ namespace SpiceItUp
                 {
                     try //Try to pull customer information
                     {
-                        SpiceItUpService service = new SpiceItUpService();
+                        SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                         List<User> users = await service.GetUserLastName(lastName);
                         SpiceItUp.PrintResults.PrintCustomerInfo(users);
                         break;

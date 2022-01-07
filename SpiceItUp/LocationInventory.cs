@@ -27,7 +27,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Store> stores = await service.GetStoreList();
                     SpiceItUp.PrintResults.PrintStoreList(stores);
                 }
@@ -51,7 +51,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service2 = new SpiceItUpService();
+                    SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Store> inventory = await service2.GetStoreInventory(storeEntry);
                     SpiceItUp.PrintResults.PrintStoreInfo(inventory, storeEntry); //Can we pull the store's inventory information based on user input?
                 }

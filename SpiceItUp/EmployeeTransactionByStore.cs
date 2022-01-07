@@ -15,7 +15,7 @@ namespace SpiceItUp
         /// <summary>
         /// A stores' transactions are stored in a list
         /// </summary>
-        private static List<string> transList = new List<string>();
+        public static List<string> transList = new List<string>();
 
         private static bool exit = false;
         private static int storeEntry;
@@ -34,7 +34,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Store> stores = await service.GetStoreList();
                     SpiceItUp.PrintResults.PrintStoreList(stores);
                 }
@@ -77,7 +77,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Transaction> transactions = await service.GetStoreTransactionList(myEntry);
                     transList = SpiceItUp.PrintResults.PrintStoreTransactionList(transactions, myEntry);
                 }
@@ -101,7 +101,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry);
                     if (transList.Count >= userEntry && userEntry > 0) //If a transaction selectionn is valid
                     {
-                        SpiceItUpService service2 = new SpiceItUpService();
+                        SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
                         userEntry = userEntry - 1;
                         string transactionNum = transList[userEntry];
                         List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);

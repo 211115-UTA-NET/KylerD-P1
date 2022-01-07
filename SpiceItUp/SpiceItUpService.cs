@@ -1,8 +1,10 @@
-﻿using SpiceItUp.Dtos;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using SpiceItUp.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,14 +12,20 @@ namespace SpiceItUp
 {
     public class SpiceItUpService
     {
-        private static readonly HttpClient HttpClient = new();
+        private readonly HttpClient HttpClient = new();
 
-        Uri server = new("https://localhost:7106");
+        public SpiceItUpService(Uri serverUri)
+        {
+            HttpClient.BaseAddress = serverUri;
+        }
 
         public Task<List<User>> GetUserFirstName(string firstName)
         {
-            Uri requestUri = new(server, $"/user/FirstName?firstName={firstName}");
+            Dictionary<string, string> query = new() { ["firstName"] = firstName };
+            string requestUri = QueryHelpers.AddQueryString("/user/FirstName", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
             
             try
@@ -38,8 +46,11 @@ namespace SpiceItUp
 
         public Task<List<User>> GetUserLastName(string lastName)
         {
-            Uri requestUri = new(server, $"/user/LastName?lastName={lastName}");
+            Dictionary<string, string> query = new() { ["lastName"] = lastName };
+            string requestUri = QueryHelpers.AddQueryString("/user/LastName", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -60,8 +71,9 @@ namespace SpiceItUp
 
         public Task<List<User>> GetCustomerList()
         {
-            Uri requestUri = new(server, $"/user");
+            string requestUri = "/user";
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -82,8 +94,13 @@ namespace SpiceItUp
 
         public Task<List<Transaction>> GetCustomerTransactionList(int customerID)
         {
-            Uri requestUri = new(server, $"/transaction/customer?id={customerID}");
+            string custID = customerID.ToString();
+
+            Dictionary<string, string> query = new() { ["id"] = custID };
+            string requestUri = QueryHelpers.AddQueryString("/transaction/customer", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -104,8 +121,11 @@ namespace SpiceItUp
 
         public Task<List<Transaction>> DetailedTransaction(string transID)
         {
-            Uri requestUri = new(server, $"/transaction/transID?transID={transID}");
+            Dictionary<string, string> query = new() { ["transID"] = transID };
+            string requestUri = QueryHelpers.AddQueryString("/transaction/transID", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -126,8 +146,9 @@ namespace SpiceItUp
 
         public Task<List<Store>> GetStoreList()
         {
-            Uri requestUri = new(server, $"/store");
+            string requestUri = "/store";
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -148,8 +169,13 @@ namespace SpiceItUp
 
         public Task<List<Store>> GetStoreInventory(int storeID)
         {
-            Uri requestUri = new(server, $"/store/inventory?storeID={storeID}");
+            string id = storeID.ToString();
+
+            Dictionary<string, string> query = new() { ["storeID"] = id };
+            string requestUri = QueryHelpers.AddQueryString("/store/inventory", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -170,8 +196,13 @@ namespace SpiceItUp
 
         public Task<List<Transaction>> GetStoreTransactionList(int storeID)
         {
-            Uri requestUri = new(server, $"/transaction/storeID?storeID={storeID}");
+            string id = storeID.ToString();
+
+            Dictionary<string, string> query = new() { ["storeID"] = id };
+            string requestUri = QueryHelpers.AddQueryString("/transaction/storeID", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -192,8 +223,11 @@ namespace SpiceItUp
 
         public Task<List<User>> GetLoginInfo(string username, string password)
         {
-            Uri requestUri = new(server, $"/user/Login?username={username}&password={password}");
+            Dictionary<string, string> query = new() { ["username"] = username, ["password"] = password };
+            string requestUri = QueryHelpers.AddQueryString("/user/Login", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -214,8 +248,13 @@ namespace SpiceItUp
 
         public Task<List<User>> GetUserInfo(int id)
         {
-            Uri requestUri = new(server, $"/user/ID?id={id}");
+            string newID = id.ToString();
+
+            Dictionary<string, string> query = new() { ["id"] = newID };
+            string requestUri = QueryHelpers.AddQueryString("/user/ID", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -236,8 +275,11 @@ namespace SpiceItUp
 
         public void PostUserInfo(string user, string pass, string first, string last, string phone)
         {
-            Uri requestUri = new(server, $"/newuser?username={user}&password={pass}&firstName={first}&lastName={last}&phoneNumber={phone}");
+            Dictionary<string, string> query = new() { ["username"] = user, ["password"] = pass, ["firstName"] = first, ["lastName"] = last, ["phoneNumber"] = phone };
+            string requestUri = QueryHelpers.AddQueryString("/newuser", query);
+
             HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -254,8 +296,13 @@ namespace SpiceItUp
 
         public Task<List<Store>> GetStoreName(int id)
         {
-            Uri requestUri = new(server, $"/storeinfo?storeID={id}");
+            string newID = id.ToString();
+
+            Dictionary<string, string> query = new() { ["storeID"] = newID };
+            string requestUri = QueryHelpers.AddQueryString("/storeinfo", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -276,8 +323,13 @@ namespace SpiceItUp
 
         public Task<List<Store>> GetCartStoreInventory(int id)
         {
-            Uri requestUri = new(server, $"/storecart?storeID={id}");
+            string newID = id.ToString();
+
+            Dictionary<string, string> query = new() { ["storeID"] = newID };
+            string requestUri = QueryHelpers.AddQueryString("/storecart", query);
+
             HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -298,8 +350,15 @@ namespace SpiceItUp
 
         public void PostNewStoreInventory(int inStockListNew, int storeEntry, int itemIDListNew)
         {
-            Uri requestUri = new(server, $"/newinventory?inStockListNew={inStockListNew}&storeEntry={storeEntry}&itemIDListNew={itemIDListNew}");
+            string inStock = inStockListNew.ToString();
+            string store = storeEntry.ToString();
+            string itemID = itemIDListNew.ToString();
+
+            Dictionary<string, string> query = new() { ["inStockListNew"] = inStock, ["storeEntry"] = store, ["itemIDListNew"] = itemID };
+            string requestUri = QueryHelpers.AddQueryString("/newinventory", query);
+
             HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -316,8 +375,15 @@ namespace SpiceItUp
 
         public void PostNewTransaction(string transID, int userID, int storeEntry)
         {
-            Uri requestUri = new(server, $"/newtransaction?transID={transID}&userID={userID}&storeEntry={storeEntry}");
+            string trans = transID.ToString();
+            string user = userID.ToString();
+            string store = storeEntry.ToString();
+
+            Dictionary<string, string> query = new() { ["transID"] = trans, ["userID"] = user, ["storeEntry"] = store };
+            string requestUri = QueryHelpers.AddQueryString("/newtransaction", query);
+
             HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try
@@ -334,8 +400,15 @@ namespace SpiceItUp
 
         public void PostNewTransactionDetails(string transID, int customerItemIDNew, int customerQuantityNew, decimal customerPriceNew)
         {
-            Uri requestUri = new(server, $"/newtransactiondetails?transID={transID}&customerItemIDNew={customerItemIDNew}&customerQuantityNew={customerQuantityNew}&customerPriceNew={customerPriceNew}");
+            string itemID = customerItemIDNew.ToString();
+            string quantity = customerQuantityNew.ToString();
+            string price = customerPriceNew.ToString();
+
+            Dictionary<string, string> query = new() { ["transID"] = transID, ["customerItemIDNew"] = itemID, ["customerQuantityNew"] = quantity, ["customerPriceNew"] = price };
+            string requestUri = QueryHelpers.AddQueryString("/newtransactiondetails", query);
+
             HttpRequestMessage request = new(HttpMethod.Post, requestUri);
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
             HttpResponseMessage response;
 
             try

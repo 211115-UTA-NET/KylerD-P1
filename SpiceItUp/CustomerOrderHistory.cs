@@ -32,7 +32,7 @@ namespace SpiceItUp
                 Console.WriteLine("Here is your order History:");
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Transaction> transactions = await service.GetCustomerTransactionList(myUserID);
                     transList = SpiceItUp.PrintResults.CustomerTransactionHistory(transactions);
                 }
@@ -58,7 +58,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry);
                     if (validEntry == true && transList.Count >= userEntry && userEntry > 0) //If entery is valid
                     {
-                        SpiceItUpService service2 = new SpiceItUpService();
+                        SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
                         userEntry--;
                         string transactionNum = transList[userEntry];
                         List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);

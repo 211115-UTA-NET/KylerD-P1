@@ -11,6 +11,8 @@
         public static int userEntry;
         public static bool validEntry;
 
+        public static Uri server = new("https://localhost:7106");
+
         /// <summary>
         /// Begin program.
         /// Give user options to create account or sign in.

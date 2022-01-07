@@ -36,7 +36,7 @@ namespace SpiceItUp
             {
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     service.PostUserInfo(newUsername, newPassword, firstName, lastName, phoneNumber);
                     Console.WriteLine($"Your account has been created, {firstName}! You may now login!");
                 }

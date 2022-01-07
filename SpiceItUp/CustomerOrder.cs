@@ -48,7 +48,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Store> stores = await service.GetStoreList();
                     SpiceItUp.PrintResults.PrintStoreList(stores);
                 }
@@ -88,7 +88,7 @@ namespace SpiceItUp
         /// </summary>
         public static async void PullStoreInfo()
         {
-            SpiceItUpService service = new SpiceItUpService();
+            SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
 
             itemIDList.Clear();
             itemNameList.Clear();
@@ -385,7 +385,7 @@ namespace SpiceItUp
 
             try
             {
-                SpiceItUpService service = new SpiceItUpService();
+                SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
 
                 for (int i = 0; i < itemIDList.Count; i++) //Loop through remaining store inventory
                 {

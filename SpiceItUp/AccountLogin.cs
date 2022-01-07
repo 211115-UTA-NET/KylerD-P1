@@ -50,7 +50,7 @@ namespace SpiceItUp
 
             try
             {
-                SpiceItUpService service = new SpiceItUpService();
+                SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                 IEnumerable<User> login = await service.GetLoginInfo(enteredUsername, enteredPassword);
                 int loginID = 0;
                 foreach (var record in login)

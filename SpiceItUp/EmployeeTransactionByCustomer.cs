@@ -35,7 +35,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<User> users = await service.GetCustomerList();
                     customerIDList = SpiceItUp.PrintResults.CustomerList(users);
                 }
@@ -85,7 +85,7 @@ namespace SpiceItUp
                 try
                 {
                     int customerID = customerIDList[myEntry];
-                    SpiceItUpService service = new SpiceItUpService();
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Transaction> transactions = await service.GetCustomerTransactionList(customerID);
                     transList = SpiceItUp.PrintResults.CustomerTransactionHistory(transactions);
                 }
@@ -109,7 +109,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry2);
                     if (validEntry == true && transList.Count >= userEntry2 && userEntry2 > 0) //If employee chooses a transaction
                     {
-                        SpiceItUpService service2 = new SpiceItUpService();
+                        SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
                         userEntry2 = userEntry2 - 1;
                         string transactionNum = transList[userEntry2];
                         List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);
