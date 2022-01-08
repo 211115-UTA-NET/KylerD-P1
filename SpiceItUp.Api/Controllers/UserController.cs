@@ -9,9 +9,9 @@ namespace SpiceItUpDataStorage.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly SqlRepository _repo;
+        private readonly IRepository _repo;
 
-        public UserController(SqlRepository repository)
+        public UserController(IRepository repository)
         {
             _repo = repository;
         }
@@ -107,7 +107,7 @@ namespace SpiceItUpDataStorage.Api.Controllers
 
         // POST api/user
         [HttpPost("/newuser")]
-        public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, string phoneNumber, SqlRepository repository)
+        public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, string phoneNumber, IRepository repository)
         {
             try
             {

@@ -22,7 +22,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<SqlRepository>(new SqlRepository(connectionString));
+builder.Services.AddSingleton<IRepository>(new IRepository(connectionString));
 
 var app = builder.Build();
 

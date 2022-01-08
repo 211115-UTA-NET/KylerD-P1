@@ -9,9 +9,9 @@ namespace SpiceItUp.Api.Controllers
     [ApiController]
     public class TransactionController : ControllerBase
     {
-        private readonly SqlRepository _repo;
+        private readonly IRepository _repo;
 
-        public TransactionController(SqlRepository repository)
+        public TransactionController(IRepository repository)
         {
             _repo = repository;
         }
@@ -76,7 +76,7 @@ namespace SpiceItUp.Api.Controllers
         {
             try
             {
-                SqlRepository.NewTransaction(transID, userID, storeEntry);
+                IRepository.NewTransaction(transID, userID, storeEntry);
             }
             catch (Exception)
             {
@@ -92,7 +92,7 @@ namespace SpiceItUp.Api.Controllers
         {
             try
             {
-                SqlRepository.TransactionDetails(transID, customerItemIDNew, customerQuantityNew, customerPriceNew);
+                IRepository.TransactionDetails(transID, customerItemIDNew, customerQuantityNew, customerPriceNew);
             }
             catch (Exception)
             {
