@@ -11,7 +11,7 @@ namespace SpiceItUp
     /// Customers and employees can view a store's inventory.
     /// Customers can view the store's inventory before they begin an order.
     /// </summary>
-    public class LocationInventory
+    public static class LocationInventory
     {
         private static int storeEntry;
 
@@ -40,8 +40,8 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? storeSelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(storeSelection, out storeEntry);
-                    if (validEntry == true && storeEntry > 100 && storeEntry < 105)
+                    _ = int.TryParse(storeSelection, out storeEntry);
+                    if (storeEntry > 100 && storeEntry < 105)
                     {
                         break; //Break when valid
                     }

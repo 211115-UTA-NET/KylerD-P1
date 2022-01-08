@@ -11,7 +11,7 @@ namespace SpiceItUp
     /// Employees can pull a customers information by looking up their name
     /// All information is pulled from the database
     /// </summary>
-    public class CustomerLookup
+    public static class CustomerLookup
     {
         private static bool exit = false;
 
@@ -23,7 +23,7 @@ namespace SpiceItUp
         /// </summary>
         public static void CustomerSearchOptions()
         {
-            while (exit == false)
+            while (true)
             {
                 exit = false;
                 Console.WriteLine("Would you like to search by:");
@@ -36,8 +36,8 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && userEntry >= 1 && userEntry <= 3)
+                    _ = int.TryParse(mySelection, out userEntry);
+                    if (userEntry >= 1 && userEntry <= 3)
                     {
                         break; //Break when valid
                     }

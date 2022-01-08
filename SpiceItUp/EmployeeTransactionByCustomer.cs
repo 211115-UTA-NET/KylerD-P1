@@ -10,10 +10,8 @@ namespace SpiceItUp
     /// <summary>
     /// Employees can lookup a customers transaction based on a list of customers
     /// </summary>
-    public class EmployeeTransactionByCustomer : IViewTransaction
+    public class EmployeeTransactionByCustomer
     {
-        private static bool exit = false;
-        private static bool goBack = false;
         private static int userEntry;
         private static int userEntry2;
 
@@ -28,8 +26,7 @@ namespace SpiceItUp
         /// </summary>
         public async static Task SelectACustomer()
         {
-            exit = false;
-            while (exit == false)
+            while (true)
             {
                 customerIDList.Clear();
 
@@ -51,8 +48,8 @@ namespace SpiceItUp
                 while (true)
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && customerIDList.Count >= userEntry && userEntry > 0) //If employee chooses a valid customer
+                    _ = int.TryParse(mySelection, out userEntry);
+                    if (customerIDList.Count >= userEntry && userEntry > 0) //If employee chooses a valid customer
                     {
                         userEntry--;
                         _ = TransactionHistory(userEntry); //Print customer's transaction history
@@ -60,7 +57,6 @@ namespace SpiceItUp
                     }
                     else if (userEntry == 0) //If customer wishes to return to account main menu
                     {
-                        exit = true;
                         Console.WriteLine("return");
                         break;
                     }
@@ -76,9 +72,7 @@ namespace SpiceItUp
         /// </summary>
         public static async Task TransactionHistory(int myEntry)
         {
-            goBack = false;
-
-            while (goBack == false)
+            while (true)
             {
                 transList.Clear();
 
@@ -106,8 +100,8 @@ namespace SpiceItUp
                 while (true) //The employee is prompted to choose a transaction to view in more detail
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry2);
-                    if (validEntry == true && transList.Count >= userEntry2 && userEntry2 > 0) //If employee chooses a transaction
+                    _ = int.TryParse(mySelection, out userEntry2);
+                    if (transList.Count >= userEntry2 && userEntry2 > 0) //If employee chooses a transaction
                     {
                         SpiceItUpService service2 = new SpiceItUpService(Program.server);
                         userEntry2--;
@@ -118,7 +112,6 @@ namespace SpiceItUp
                     }
                     else if (userEntry2 == 0) //Return to customer list
                     {
-                        goBack = true;
                         break;
                     }
                     else //If there is an unknown error

@@ -10,15 +10,13 @@ namespace SpiceItUp
     /// <summary>
     /// Employees can lookup a customers transaction based on what store it was ordered from
     /// </summary>
-    public class EmployeeTransactionByStore : IViewTransaction
+    public class EmployeeTransactionByStore
     {
         /// <summary>
         /// A stores' transactions are stored in a list
         /// </summary>
-        public static List<string> transList = new List<string>();
+        private static List<string> transList = new List<string>();
 
-        private static bool exit = false;
-        private static int storeEntry;
         private static int userEntry;
 
         /// <summary>
@@ -27,7 +25,6 @@ namespace SpiceItUp
         /// </summary>
         public static async Task StoreSelection()
         {
-            exit = false;
             while (true)
             {
                 Console.WriteLine("Enter a store number to view the order history:");
@@ -47,8 +44,8 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? storeSelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(storeSelection, out storeEntry);
-                    if (validEntry == true && storeEntry > 100 && storeEntry < 105) //If selected store is valid
+                    _ = int.TryParse(storeSelection, out int storeEntry);
+                    if (storeEntry > 100 && storeEntry < 105) //If selected store is valid
                     {
                         _ = TransactionHistory(storeEntry); //Print off transactions in the database from entered store
                         break;
@@ -70,8 +67,7 @@ namespace SpiceItUp
         /// </summary>
         public static async Task TransactionHistory(int myEntry)
         {
-            exit = false;
-            while (exit == false)
+            while (true)
             {
                 transList.Clear();
 
@@ -110,7 +106,6 @@ namespace SpiceItUp
                     }
                     else if (userEntry == 0) //If employee enters 0, return to store list
                     {
-                        exit = true;
                         break;
                     }
                     else //If there is an unknown error

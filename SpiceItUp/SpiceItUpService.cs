@@ -273,7 +273,7 @@ namespace SpiceItUp
             return user;
         }
 
-        public void PostUserInfo(string user, string pass, string first, string last, string phone)
+        public void PostUserInfo(string? user, string? pass, string? first, string? last, string? phone)
         {
             Dictionary<string, string> query = new() { ["username"] = user, ["password"] = pass, ["firstName"] = first, ["lastName"] = last, ["phoneNumber"] = phone };
             string requestUri = QueryHelpers.AddQueryString("/newuser", query);
