@@ -8,9 +8,9 @@ namespace SpiceItUp.Api.Controllers
     [ApiController]
     public class StoreController : ControllerBase
     {
-        private readonly IRepository _repo;
+        private readonly SqlRepository _repo;
 
-        public StoreController(IRepository repository)
+        public StoreController(SqlRepository repository)
         {
             _repo = repository;
         }
@@ -93,7 +93,7 @@ namespace SpiceItUp.Api.Controllers
         {
             try
             {
-                IRepository.NewStoreInventory(inStockListNew, storeEntry, itemIDListNew);
+                SqlRepository.NewStoreInventory(inStockListNew, storeEntry, itemIDListNew);
             }
             catch (Exception)
             {
