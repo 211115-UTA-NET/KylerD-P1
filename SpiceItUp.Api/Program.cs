@@ -1,18 +1,28 @@
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.DependencyInjection;
 using SpiceItUpDataStorage;
-
-string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
-IRepository repository = new IRepository();
 
 var builder = WebApplication.CreateBuilder(args);
 
+string connectionString = builder.Configuration.GetConnectionString("SpiceItUp-DB-Connection");
 // Add services to the container.
 
-builder.Services.AddControllers();
+bool prettyPrintJson = builder.Configuration.GetValue<string>("PrettyPrintJsonOutput") == "true";
+
+builder.Services.AddControllers(options =>
+{
+    options.InputFormatters.Add(new XmlSerializerInputFormatter(options));
+    options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+
+    var jsonFormatter = options.OutputFormatters.OfType<SystemTextJsonOutputFormatter>().First();
+    jsonFormatter.SerializerOptions.WriteIndented = prettyPrintJson;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IRepository>(repository);
+builder.Services.AddSingleton<IRepository>(new IRepository(connectionString));
 
 var app = builder.Build();
 

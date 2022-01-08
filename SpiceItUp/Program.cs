@@ -11,7 +11,8 @@
         public static int userEntry;
         public static bool validEntry;
 
-        public static Uri server = new("https://localhost:7106");
+        //public static Uri server = new("https://localhost:7106");
+        public static Uri server = new("https://spiceitup.azurewebsites.net");
 
         /// <summary>
         /// Begin program.

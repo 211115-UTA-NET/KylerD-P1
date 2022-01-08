@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -9,16 +10,21 @@ namespace SpiceItUpDataStorage
 {
     public class IRepository
     {
-        private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
+        //    var connection =
+        //System.Configuration.ConfigurationManager.
+        //ConnectionStrings["Test"].ConnectionString;
+        //string myDb1ConnectionString = Configuration.GetConnectionString("SpiceItUp-DB-Connection");
+        //private string con = ConfigurationManager.ConnectionStrings["SpiceItUp-DB-Connection"];
+        private static string connectionString;
 
         private static List<int> customerIDList = new List<int>();
 
         private static List<string> transList = new List<string>();
 
-        private static List<int> itemIDList = new List<int>();
-        private static List<string> itemNameList = new List<string>();
-        private static List<int> inStockList = new List<int>();
-        private static List<decimal> priceList = new List<decimal>();
+        public IRepository(string CS)
+        {
+            connectionString = CS;
+        }
 
         public IEnumerable<User> SearchCustomerFirstName(string firstName)
         {
@@ -421,7 +427,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public static void PostCustomerInfo(string newUsername, string newPassword, string firstName, string lastName, string phoneNumber)
+        public void PostCustomerInfo(string newUsername, string newPassword, string firstName, string lastName, string phoneNumber)
         {
             using SqlConnection connection = new(connectionString);
 

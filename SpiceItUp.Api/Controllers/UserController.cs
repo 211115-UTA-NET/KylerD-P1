@@ -107,11 +107,11 @@ namespace SpiceItUpDataStorage.Api.Controllers
 
         // POST api/user
         [HttpPost("/newuser")]
-        public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, string phoneNumber)
+        public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, string phoneNumber, IRepository repository)
         {
             try
             {
-                IRepository.PostCustomerInfo(username, password, firstName, lastName, phoneNumber);
+                repository.PostCustomerInfo(username, password, firstName, lastName, phoneNumber);
             }
             catch (Exception)
             {
