@@ -23,9 +23,8 @@ namespace SpiceItUp
         /// </summary>
         public static void CustomerSearchOptions()
         {
-            while (true)
+            while (exit == false)
             {
-                exit = false;
                 Console.WriteLine("Would you like to search by:");
                 Console.WriteLine("1: First Name");
                 Console.WriteLine("2: Last Name");

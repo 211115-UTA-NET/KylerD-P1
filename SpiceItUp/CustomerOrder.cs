@@ -124,7 +124,7 @@ namespace SpiceItUp
         /// </summary>
         public static void AddToCart()
         {
-            while (true)
+            while (exit == false)
             {
                 //Print off what the store has in stock
                 Console.WriteLine($"Store {storeEntry}: {storeName}");

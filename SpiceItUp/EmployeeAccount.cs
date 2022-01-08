@@ -40,7 +40,7 @@ namespace SpiceItUp
         /// </summary>
         public void UserOptions()
         {
-            while (true)
+            while (logout == false)
             {
                 Console.WriteLine($"Welcome, employee {firstName} {lastName?[0]}! What would you like to do?");
                 Console.WriteLine("1: View orders by customer name");
