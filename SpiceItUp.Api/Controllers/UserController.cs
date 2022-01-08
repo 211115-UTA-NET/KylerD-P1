@@ -9,13 +9,6 @@ namespace SpiceItUpDataStorage.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IRepository _repo;
-
-        public UserController(IRepository repository)
-        {
-            _repo = repository;
-        }
-
         // GET api/user
         [HttpGet("/user")]
         public IActionResult GetAllCustomerInfo()
@@ -24,7 +17,7 @@ namespace SpiceItUpDataStorage.Api.Controllers
 
             try
             {
-                user = _repo.CustomerList();
+                user = SqlRepository.CustomerList();
             }
             catch (Exception)
             {
@@ -42,7 +35,7 @@ namespace SpiceItUpDataStorage.Api.Controllers
             
             try
             {
-                user = _repo.SearchCustomerFirstName(firstName);
+                user = SqlRepository.SearchCustomerFirstName(firstName);
             }
             catch(Exception)
             {
@@ -60,7 +53,7 @@ namespace SpiceItUpDataStorage.Api.Controllers
 
             try
             {
-                user = _repo.SearchCustomerLastName(lastName);
+                user = SqlRepository.SearchCustomerLastName(lastName);
             }
             catch (Exception)
             {
@@ -78,7 +71,7 @@ namespace SpiceItUpDataStorage.Api.Controllers
 
             try
             {
-                user = _repo.GetLoginUserID(username, password);
+                user = SqlRepository.GetLoginUserID(username, password);
             }
             catch (Exception)
             {
@@ -95,7 +88,7 @@ namespace SpiceItUpDataStorage.Api.Controllers
             IEnumerable<User> user;
             try
             {
-                user = _repo.GetCustomerInfo(id);
+                user = SqlRepository.GetCustomerInfo(id);
             }
             catch (Exception)
             {
@@ -107,11 +100,11 @@ namespace SpiceItUpDataStorage.Api.Controllers
 
         // POST api/user
         [HttpPost("/newuser")]
-        public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, string phoneNumber, IRepository repository)
+        public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, string phoneNumber, SqlRepository repository)
         {
             try
             {
-                repository.PostCustomerInfo(username, password, firstName, lastName, phoneNumber);
+                SqlRepository.PostCustomerInfo(username, password, firstName, lastName, phoneNumber);
             }
             catch (Exception)
             {

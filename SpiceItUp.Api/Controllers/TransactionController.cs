@@ -9,13 +9,6 @@ namespace SpiceItUp.Api.Controllers
     [ApiController]
     public class TransactionController : ControllerBase
     {
-        private readonly IRepository _repo;
-
-        public TransactionController(IRepository repository)
-        {
-            _repo = repository;
-        }
-
         // GET transaction/customer={id}
         [HttpGet("/transaction/customer")]
         public IActionResult GetCustomerTransactions([FromQuery] int id)
@@ -24,7 +17,7 @@ namespace SpiceItUp.Api.Controllers
 
             try
             {
-                trans = _repo.CustomerTransactionHistory(id);
+                trans = SqlRepository.CustomerTransactionHistory(id);
             }
             catch (Exception)
             {
@@ -42,7 +35,7 @@ namespace SpiceItUp.Api.Controllers
 
             try
             {
-                trans = _repo.StoreTransactionHistory(storeID);
+                trans = SqlRepository.StoreTransactionHistory(storeID);
             }
             catch(Exception)
             {
@@ -60,7 +53,7 @@ namespace SpiceItUp.Api.Controllers
 
             try
             {
-                trans = _repo.DetailedTransaction(transID);
+                trans = SqlRepository.DetailedTransaction(transID);
             }
             catch(Exception)
             {
@@ -76,7 +69,7 @@ namespace SpiceItUp.Api.Controllers
         {
             try
             {
-                IRepository.NewTransaction(transID, userID, storeEntry);
+                SqlRepository.NewTransaction(transID, userID, storeEntry);
             }
             catch (Exception)
             {
@@ -92,7 +85,7 @@ namespace SpiceItUp.Api.Controllers
         {
             try
             {
-                IRepository.TransactionDetails(transID, customerItemIDNew, customerQuantityNew, customerPriceNew);
+                SqlRepository.TransactionDetails(transID, customerItemIDNew, customerQuantityNew, customerPriceNew);
             }
             catch (Exception)
             {

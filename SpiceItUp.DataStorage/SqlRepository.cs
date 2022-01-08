@@ -8,25 +8,20 @@ using System.Threading.Tasks;
 
 namespace SpiceItUpDataStorage
 {
-    public class IRepository
+    public class SqlRepository
     {
-        //    var connection =
-        //System.Configuration.ConfigurationManager.
-        //ConnectionStrings["Test"].ConnectionString;
-        //string myDb1ConnectionString = Configuration.GetConnectionString("SpiceItUp-DB-Connection");
-        //private string con = ConfigurationManager.ConnectionStrings["SpiceItUp-DB-Connection"];
         private static string? connectionString;
 
         private static List<int> customerIDList = new List<int>();
 
         private static List<string> transList = new List<string>();
 
-        public IRepository(string CS)
+        public SqlRepository(string CS)
         {
             connectionString = CS;
         }
 
-        public IEnumerable<User> SearchCustomerFirstName(string firstName)
+        public static IEnumerable<User> SearchCustomerFirstName(string firstName)
         {
             List<User> result = new List<User>();
 
@@ -62,7 +57,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<User> SearchCustomerLastName(string lastName)
+        public static IEnumerable<User> SearchCustomerLastName(string lastName)
         {
             List<User> result = new List<User>();
 
@@ -98,7 +93,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<User> CustomerList()
+        public static IEnumerable<User> CustomerList()
         {
             customerIDList.Clear();
 
@@ -138,7 +133,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<Transaction> CustomerTransactionHistory(int customerID)
+        public static IEnumerable<Transaction> CustomerTransactionHistory(int customerID)
         {
             List<Transaction> result = new List<Transaction>();
 
@@ -170,7 +165,6 @@ namespace SpiceItUpDataStorage
                 result.Add(new(transID, storeID, price));
 
                 transList.Add(reader.GetString(0));
-                //string price = String.Format("{0:0.00}", reader.GetDecimal(2));
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
                     entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
                 entry++;
@@ -180,7 +174,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<Transaction> DetailedTransaction(string id)
+        public static IEnumerable<Transaction> DetailedTransaction(string id)
         {
             List<Transaction> result = new List<Transaction>();
 
@@ -258,7 +252,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<Store> PrintStoreList()
+        public static IEnumerable<Store> PrintStoreList()
         {
             List<Store> result = new List<Store>();
 
@@ -282,7 +276,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<Store> PrintStoreInventory(int storeEntry)
+        public static IEnumerable<Store> PrintStoreInventory(int storeEntry)
         {
             List<Store> result = new List<Store>();
 
@@ -329,7 +323,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<Transaction> StoreTransactionHistory(int storeID)
+        public static IEnumerable<Transaction> StoreTransactionHistory(int storeID)
         {
             List<Transaction> result = new List<Transaction>();
 
@@ -377,7 +371,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<User> GetLoginUserID(string username, string password)
+        public static IEnumerable<User> GetLoginUserID(string username, string password)
         {
             List<User> result = new List<User>();
 
@@ -402,7 +396,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<User> GetCustomerInfo(int id)
+        public static IEnumerable<User> GetCustomerInfo(int id)
         {
             List<User> result = new List<User>();
 
@@ -427,7 +421,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public void PostCustomerInfo(string newUsername, string newPassword, string firstName, string lastName, string phoneNumber)
+        public static void PostCustomerInfo(string newUsername, string newPassword, string firstName, string lastName, string phoneNumber)
         {
             using SqlConnection connection = new(connectionString);
 
@@ -469,7 +463,7 @@ namespace SpiceItUpDataStorage
             Console.WriteLine($"Your account has been created, {firstName}! You may now login!");
         }
 
-        public IEnumerable<Store> GetStoreInfo(int storeEntry)
+        public static IEnumerable<Store> GetStoreInfo(int storeEntry)
         {
             List<Store> result = new List<Store>();
 
@@ -492,7 +486,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public IEnumerable<Store> GetCartStoreInventory(int storeEntry)
+        public static IEnumerable<Store> GetCartStoreInventory(int storeEntry)
         {
             List<Store> result = new List<Store>();
 

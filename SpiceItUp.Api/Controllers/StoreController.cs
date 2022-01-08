@@ -8,13 +8,6 @@ namespace SpiceItUp.Api.Controllers
     [ApiController]
     public class StoreController : ControllerBase
     {
-        private readonly IRepository _repo;
-
-        public StoreController(IRepository repository)
-        {
-            _repo = repository;
-        }
-
         // GET api/store
         [HttpGet("/store")]
         public IActionResult GetStoreList()
@@ -23,7 +16,7 @@ namespace SpiceItUp.Api.Controllers
 
             try
             {
-                store = _repo.PrintStoreList();
+                store = SqlRepository.PrintStoreList();
             }
             catch(Exception)
             {
@@ -41,7 +34,7 @@ namespace SpiceItUp.Api.Controllers
 
             try
             {
-                store = _repo.PrintStoreInventory(storeID);
+                store = SqlRepository.PrintStoreInventory(storeID);
             }
             catch (Exception)
             {
@@ -59,7 +52,7 @@ namespace SpiceItUp.Api.Controllers
 
             try
             {
-                store = _repo.GetStoreInfo(storeID);
+                store = SqlRepository.GetStoreInfo(storeID);
             }
             catch (Exception)
             {
@@ -77,7 +70,7 @@ namespace SpiceItUp.Api.Controllers
 
             try
             {
-                store = _repo.GetCartStoreInventory(storeID);
+                store = SqlRepository.GetCartStoreInventory(storeID);
             }
             catch (Exception)
             {
@@ -93,7 +86,7 @@ namespace SpiceItUp.Api.Controllers
         {
             try
             {
-                IRepository.NewStoreInventory(inStockListNew, storeEntry, itemIDListNew);
+                SqlRepository.NewStoreInventory(inStockListNew, storeEntry, itemIDListNew);
             }
             catch (Exception)
             {
