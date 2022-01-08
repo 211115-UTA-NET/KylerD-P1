@@ -27,12 +27,6 @@ namespace SpiceItUpDataStorage
 
             using SqlConnection connection = new(connectionString);
 
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "User ID", "FirstName", "Last Name", "Phone Number", "Is Employee?"));
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "=======", "=========", "=========", "============", "============"));
-
             //Pull customer information matching first name entered
             connection.Open();
             string customerSearch = "SELECT UserID, FirstName, LastName, PhoneNumber, IsEmployee FROM UserInformation " +
@@ -48,11 +42,7 @@ namespace SpiceItUpDataStorage
                 double phone = reader.GetInt64(3);
                 string employee = reader.GetString(4);
                 result.Add(new(id, first, last, phone, employee));
-
-                Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3), reader.GetString(4)));
             }
-            Console.WriteLine("==============================");
 
             return result;
         }
@@ -62,12 +52,6 @@ namespace SpiceItUpDataStorage
             List<User> result = new List<User>();
 
             using SqlConnection connection = new(connectionString);
-
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "User ID", "FirstName", "Last Name", "Phone Number", "Is Employee?"));
-            Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                    "=======", "=========", "=========", "============", "============"));
 
             //Pull customer information matching last name entered
             connection.Open();
@@ -84,11 +68,7 @@ namespace SpiceItUpDataStorage
                 double phone = reader.GetInt64(3);
                 string employee = reader.GetString(4);
                 result.Add(new(id, first, last, phone, employee));
-
-                Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
-                       reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3), reader.GetString(4)));
             }
-            Console.WriteLine("==============================");
 
             return result;
         }
@@ -100,14 +80,6 @@ namespace SpiceItUpDataStorage
             List<User> result = new List<User>();
 
             using SqlConnection connection = new(connectionString);
-
-            //Format our customer list
-            Console.WriteLine("Here is the customer list:");
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    "Entry", "First Name", "Last Name", "Phone Number"));
-            Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    "=====", "==========", "=========", "============"));
 
             //Pull a list of customers from the database
             connection.Open();
@@ -124,8 +96,7 @@ namespace SpiceItUpDataStorage
                 result.Add(new(id, first, last, phone));
 
                 customerIDList.Add(readCustomers.GetInt32(0));
-                Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
-                    entry, readCustomers.GetString(1), readCustomers.GetString(2), readCustomers.GetInt64(3)));
+
                 entry++;
             }
             connection.Close();
@@ -140,12 +111,6 @@ namespace SpiceItUpDataStorage
             transList.Clear();
 
             using SqlConnection connection = new(connectionString);
-            //Format our transaction list
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    "Entry", "Transaction ID", "Store ID", "Total Price"));
-            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    "=====", "==============", "========", "==========="));
 
             //Get transaction list from database and print
             connection.Open();
@@ -165,8 +130,6 @@ namespace SpiceItUpDataStorage
                 result.Add(new(transID, storeID, price));
 
                 transList.Add(reader.GetString(0));
-                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                    entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
                 entry++;
             }
             connection.Close();
@@ -213,20 +176,8 @@ namespace SpiceItUpDataStorage
                 firstName = myReader.GetString(4);
                 lastName = myReader.GetString(5);
                 totalPrice = String.Format("{0:0.00}", myReader.GetDecimal(6));
-
-                Console.WriteLine("==============================");
-                Console.WriteLine($"Transaction ID: {myReader.GetString(0)}");
-                Console.WriteLine($"Store {myReader.GetInt32(1)}: {myReader.GetString(2)}");
-                Console.WriteLine($"Name: {myReader.GetString(4)} {myReader.GetString(5)}");
-                Console.WriteLine($"Time: {myReader.GetString(3)}");
-                Console.WriteLine($"Total: ${totalPrice}");
-                Console.WriteLine("==============================");
             }
             connection.Close();
-
-            //Format transaction information
-            Console.WriteLine("Item Name\t Quantity\t Price");
-            Console.WriteLine("=========\t ========\t =====");
 
             //Print items that were bought in transaction
             connection.Open();
@@ -242,11 +193,7 @@ namespace SpiceItUpDataStorage
                 int quantity = detailReader.GetInt32(1);
                 string itemPrice = String.Format("{0:0.00}", detailReader.GetDecimal(2));
                 result.Add(new(transID, storeID, storeName, timestamp, firstName, lastName, totalPrice, itemName, quantity, itemPrice));
-
-                Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
-                detailReader.GetString(0), detailReader.GetInt32(1), $"${itemPrice}"));
             }
-            Console.WriteLine("==============================");
             connection.Close();
 
             return result;
@@ -268,8 +215,6 @@ namespace SpiceItUpDataStorage
                 int id = reader.GetInt32(0);
                 string name = reader.GetString(1);
                 result.Add(new(id, name));
-
-                Console.WriteLine($"Store {reader.GetInt32(0)}: {reader.GetString(1)}");
             }
             connection.Close();
 
@@ -281,23 +226,6 @@ namespace SpiceItUpDataStorage
             List<Store> result = new List<Store>();
 
             using SqlConnection connection = new(connectionString);
-
-            //Pull the selected store information
-            connection.Open();
-            string getSelectedStore = $"SELECT * FROM StoreInfo WHERE StoreID = @storeID;";
-            using SqlCommand readSelectedStore = new(getSelectedStore, connection);
-            readSelectedStore.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
-            using SqlDataReader readStore = readSelectedStore.ExecuteReader();
-            while (readStore.Read())
-            {
-                Console.WriteLine($"Inventory for store {readStore.GetInt32(0)}: {readStore.GetString(1)}");
-            }
-            connection.Close();
-
-            //Formatting
-            Console.WriteLine("=================================");
-            Console.WriteLine("Item Name\t In Stock\t Price");
-            Console.WriteLine("=========\t ========\t =====");
 
             //Pull and print the store's inventory
             connection.Open();
@@ -315,8 +243,6 @@ namespace SpiceItUpDataStorage
                 decimal itemPrice = readInventory.GetDecimal(2);
                 string price = String.Format("{0:0.00}", itemPrice);
                 result.Add(new(name, quantity, price));
-
-                Console.WriteLine(String.Format("{0, -16} {1, -15} {2, -16}", readInventory.GetString(0), readInventory.GetInt32(1), $"${price}"));
             }
             connection.Close();
 
@@ -330,14 +256,6 @@ namespace SpiceItUpDataStorage
             transList.Clear();
 
             using SqlConnection connection = new(connectionString);
-
-            //Format our transactions
-            Console.WriteLine($"Order history for store {storeID}");
-            Console.WriteLine("==============================");
-            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -10} {4, -10}",
-                    "Entry", "Transaction ID", "First Name", "Last Name", "Total Price"));
-            Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -10} {4, -10}",
-                    "=====", "==============", "==========", "==========", "=========="));
 
             //Print off transactions at selected store from database
             connection.Open();
@@ -362,8 +280,6 @@ namespace SpiceItUpDataStorage
                 result.Add(new(id, first, last, price));
 
                 transList.Add(reader.GetString(0));
-                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -10} {4, -10}",
-                    entry, reader.GetString(0), reader.GetString(1), reader.GetString(2), $"${price}"));
                 entry++;
             }
             connection.Close();
@@ -374,8 +290,6 @@ namespace SpiceItUpDataStorage
         public static IEnumerable<User> GetLoginUserID(string username, string password)
         {
             List<User> result = new List<User>();
-
-            int userID = 0;
 
             using SqlConnection connection = new(connectionString);
 
@@ -388,7 +302,7 @@ namespace SpiceItUpDataStorage
             using SqlDataReader loginReader = readLoginManager.ExecuteReader();
             while (loginReader.Read())
             {
-                userID = loginReader.GetInt32(0);
+                int userID = loginReader.GetInt32(0);
                 result.Add(new(userID));
             }
             connection.Close();
@@ -459,8 +373,6 @@ namespace SpiceItUpDataStorage
             newUserCreationCommand.Parameters.Add("@isEmployee", System.Data.SqlDbType.VarChar).Value = "FALSE";
             newUserCreationCommand.ExecuteNonQuery();
             connection.Close();
-
-            Console.WriteLine($"Your account has been created, {firstName}! You may now login!");
         }
 
         public static IEnumerable<Store> GetStoreInfo(int storeEntry)
