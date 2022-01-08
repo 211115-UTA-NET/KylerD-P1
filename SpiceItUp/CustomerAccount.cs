@@ -65,13 +65,13 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-                        SpiceItUp.CustomerOrder.StoreSelection(userID); //Start a new order
+                        _ = CustomerOrder.StoreSelection(userID); //Start a new order
                         break;
                     case 2:
-                        SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
+                        _ = CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
                         break;
                     case 3:
-                        SpiceItUp.LocationInventory.StoreSelection(); //View store inventory
+                        _ = LocationInventory.StoreSelection(); //View store inventory
                         break;
                     case 4: //Log out of account
                         Console.WriteLine("Goodbye!");

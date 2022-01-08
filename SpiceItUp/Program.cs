@@ -29,8 +29,6 @@
                 Console.WriteLine("2: Existing Account Login");
                 Console.WriteLine("3: Exit");
 
-                //int userEntry;
-
                 while (true) //Test to ensure user entry is valid
                 {
                     mySelection = Console.ReadLine();
@@ -46,10 +44,10 @@
                 switch (userEntry)
                 {
                     case 1:
-                        SpiceItUp.NewAccount.CreateAnAccount(); //Create an account
+                        NewAccount.CreateAnAccount(); //Create an account
                         break;
                     case 2:
-                        SpiceItUp.AccountLogin.LoginManager(); //Log into an account
+                        _ = AccountLogin.LoginManager(); //Log into an account
                         break;
                     case 3: //Stop program by finishing main method
                         Console.WriteLine("Thank you for shopping with us! Have a good day!");

@@ -24,6 +24,7 @@ namespace SpiceItUp.Test
         [InlineData("3")]
         [InlineData("4")]
         [InlineData("5")]
+        [InlineData("s")]
         public void Main_MySelection_ValidEntry(string selection)
         {
             //Arrange

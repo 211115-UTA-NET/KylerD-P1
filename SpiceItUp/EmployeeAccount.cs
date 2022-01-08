@@ -66,16 +66,16 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1: //View order histories by customer name
-                        SpiceItUp.EmployeeTransactionByCustomer.SelectACustomer();
+                        _ = EmployeeTransactionByCustomer.SelectACustomer();
                         break;
                     case 2: //View order histories by store 
-                        SpiceItUp.EmployeeTransactionByStore.StoreSelection();
+                        _ = EmployeeTransactionByStore.StoreSelection();
                         break;
                     case 3: //View a stores inventory
-                        SpiceItUp.LocationInventory.StoreSelection();
+                        _ = LocationInventory.StoreSelection();
                         break;
                     case 4: //Pull a customer's account information by looking up their name
-                        SpiceItUp.CustomerLookup.CustomerSearchOptions();
+                        CustomerLookup.CustomerSearchOptions();
                         break;
                     case 5: //Log out of the employye account and return to the login page
                         Console.WriteLine("Goodbye!");

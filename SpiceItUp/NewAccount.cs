@@ -36,7 +36,7 @@ namespace SpiceItUp
             {
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
+                    SpiceItUpService service = new(Program.server);
                     service.PostUserInfo(newUsername, newPassword, firstName, lastName, phoneNumber);
                     Console.WriteLine($"Your account has been created, {firstName}! You may now login!");
                 }
@@ -106,7 +106,7 @@ namespace SpiceItUp
                     if (validPhoneNumber != "" && "Y" == validPhoneNumber?.ToUpper())
                         break;
                     else if (validPhoneNumber == "EXIT")
-                        SpiceItUp.Program.Main();
+                        Program.Main();
                 }
             }
         }

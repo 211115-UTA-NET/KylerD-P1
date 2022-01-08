@@ -19,7 +19,7 @@ namespace SpiceItUp
         /// Print off a list of stores by pulling store information from the database.
         /// The user can then sleect a store to view it's inventory
         /// </summary>
-        public static async void StoreSelection()
+        public static async Task StoreSelection()
         {
             while (true)
             {
@@ -27,9 +27,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
+                    SpiceItUpService service = new(Program.server);
                     List<Store> stores = await service.GetStoreList();
-                    SpiceItUp.PrintResults.PrintStoreList(stores);
+                    PrintResults.PrintStoreList(stores);
                 }
                 catch (Exception)
                 {
@@ -51,9 +51,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
+                    SpiceItUpService service2 = new(Program.server);
                     List<Store> inventory = await service2.GetStoreInventory(storeEntry);
-                    SpiceItUp.PrintResults.PrintStoreInfo(inventory, storeEntry); //Can we pull the store's inventory information based on user input?
+                    PrintResults.PrintStoreInfo(inventory, storeEntry); //Can we pull the store's inventory information based on user input?
                 }
                 catch (Exception) //If we fail to pull store inventory
                 {

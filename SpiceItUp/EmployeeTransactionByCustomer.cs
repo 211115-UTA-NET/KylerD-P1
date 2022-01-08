@@ -21,12 +21,12 @@ namespace SpiceItUp
         /// Customer's basic info is stored in lists
         /// </summary>
         private static List<int> customerIDList = new List<int>();
-        public static List<string> transList = new List<string>();
+        private static List<string> transList = new List<string>();
 
         /// <summary>
         /// The database prints off a list of customers for the employee to choose from
         /// </summary>
-        public async static void SelectACustomer()
+        public async static Task SelectACustomer()
         {
             exit = false;
             while (exit == false)
@@ -37,7 +37,7 @@ namespace SpiceItUp
                 {
                     SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<User> users = await service.GetCustomerList();
-                    customerIDList = SpiceItUp.PrintResults.CustomerList(users);
+                    customerIDList = PrintResults.CustomerList(users);
                 }
                 catch (Exception)
                 {
@@ -55,7 +55,7 @@ namespace SpiceItUp
                     if (validEntry == true && customerIDList.Count >= userEntry && userEntry > 0) //If employee chooses a valid customer
                     {
                         userEntry--;
-                        TransactionHistory(userEntry); //Print customer's transaction history
+                        _ = TransactionHistory(userEntry); //Print customer's transaction history
                         break;
                     }
                     else if (userEntry == 0) //If customer wishes to return to account main menu
@@ -74,7 +74,7 @@ namespace SpiceItUp
         /// Once the employee chooses a customer, that customer's transaction list is printed off.
         /// The employee can choose to view a transaction in more details if they wish
         /// </summary>
-        public static async void TransactionHistory(int myEntry)
+        public static async Task TransactionHistory(int myEntry)
         {
             goBack = false;
 
@@ -87,7 +87,7 @@ namespace SpiceItUp
                     int customerID = customerIDList[myEntry];
                     SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Transaction> transactions = await service.GetCustomerTransactionList(customerID);
-                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(transactions);
+                    transList = PrintResults.CustomerTransactionHistory(transactions);
                 }
                 catch(Exception)
                 {
@@ -109,11 +109,11 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry2);
                     if (validEntry == true && transList.Count >= userEntry2 && userEntry2 > 0) //If employee chooses a transaction
                     {
-                        SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
-                        userEntry2 = userEntry2 - 1;
+                        SpiceItUpService service2 = new SpiceItUpService(Program.server);
+                        userEntry2--;
                         string transactionNum = transList[userEntry2];
                         List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);
-                        SpiceItUp.PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
+                        PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
                         break;
                     }
                     else if (userEntry2 == 0) //Return to customer list

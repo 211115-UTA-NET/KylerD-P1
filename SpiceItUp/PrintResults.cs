@@ -91,7 +91,6 @@ namespace SpiceItUp
                 Console.WriteLine($"Time: {record.Timestamp}");
                 Console.WriteLine($"Total: {record.TotalPrice}");
                 Console.WriteLine("==============================");
-                break;
             }
 
             //Format transaction information

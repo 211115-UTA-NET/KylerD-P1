@@ -21,7 +21,7 @@ namespace SpiceItUp
         /// Customers can select a transaction to view it more in detail
         /// </summary>
         /// <param name="myUserID"></param>
-        public static async void CustomerTransactionHistory(int myUserID)
+        public static async Task CustomerTransactionHistory(int myUserID)
         {
             exit = false;
             while (exit == false)
@@ -34,7 +34,7 @@ namespace SpiceItUp
                 {
                     SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Transaction> transactions = await service.GetCustomerTransactionList(myUserID);
-                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(transactions);
+                    transList = PrintResults.CustomerTransactionHistory(transactions);
                 }
                 catch (Exception)
                 {
@@ -62,7 +62,7 @@ namespace SpiceItUp
                         userEntry--;
                         string transactionNum = transList[userEntry];
                         List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);
-                        SpiceItUp.PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
+                        PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
                         break;
                     }
                     else if (userEntry == 0) //If customer wishes to exit

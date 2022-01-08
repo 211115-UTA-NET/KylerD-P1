@@ -38,7 +38,7 @@ namespace SpiceItUp
         /// Customer selects the store in which they want to order from
         /// </summary>
         /// <param name="myUserID"></param>
-        public static async void StoreSelection(int myUserID)
+        public static async Task StoreSelection(int myUserID)
         {
             userID = myUserID;
             exit = false;
@@ -48,9 +48,9 @@ namespace SpiceItUp
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
+                    SpiceItUpService service = new SpiceItUpService(Program.server);
                     List<Store> stores = await service.GetStoreList();
-                    SpiceItUp.PrintResults.PrintStoreList(stores);
+                    PrintResults.PrintStoreList(stores);
                 }
                 catch (Exception)
                 {
@@ -72,7 +72,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    PullStoreInfo(); //If store is valid, we will try to pull the store inventory and store it in a series of lists
+                    _ = PullStoreInfo(); //If store is valid, we will try to pull the store inventory and store it in a series of lists
                 }
                 catch (Exception)
                 {
@@ -86,9 +86,9 @@ namespace SpiceItUp
         /// <summary>
         /// Based on user entry, we pull all store information reguarding name and inventory of store
         /// </summary>
-        public static async void PullStoreInfo()
+        public static async Task PullStoreInfo()
         {
-            SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
+            SpiceItUpService service = new(SpiceItUp.Program.server);
 
             itemIDList.Clear();
             itemNameList.Clear();
@@ -142,9 +142,8 @@ namespace SpiceItUp
                 Console.WriteLine("Type 'EXIT' to cancel your order and return to your account menu.");
                 while (exit == false)
                 {
-                    int itemToAdd;
                     string? adding = Console.ReadLine(); //Customer enters which item ID they would like to add to their cart
-                    bool validEntry = int.TryParse(adding, out itemToAdd);
+                    bool validEntry = int.TryParse(adding, out int itemToAdd);
                     itemToAdd--;
                     if (validEntry == true && itemToAdd > -1 && itemToAdd < itemIDList.Count && inStockList[itemToAdd] != 0) //If our item ID entry is valid
                     {
@@ -152,8 +151,7 @@ namespace SpiceItUp
                         while (exit == false)
                         {
                             string? quantityString = Console.ReadLine(); //Customers will now enter a quantity
-                            int quantity;
-                            bool validQuantity = int.TryParse(quantityString, out quantity);
+                            bool validQuantity = int.TryParse(quantityString, out int quantity);
                             bool failedEntry = false;
                             bool sameEntry = false;
                             bool maxQuantity = false;
@@ -277,9 +275,8 @@ namespace SpiceItUp
                 Console.WriteLine("Type 'EXIT' to cancel your order and return to your account menu.");
                 while (exit == false)
                 {
-                    int itemToRemove;
                     string? removing = Console.ReadLine();
-                    bool validEntry = int.TryParse(removing, out itemToRemove);
+                    bool validEntry = int.TryParse(removing, out int itemToRemove);
                     itemToRemove--;
                     if (validEntry == true && itemToRemove > -1) //If the Item ID entered is valid
                     {
@@ -308,7 +305,6 @@ namespace SpiceItUp
                                         }
                                         else if (finalQuantity == 0) //If customer removes all quantites of an item from cart, delete item line in lists
                                         {
-                                            failedEntry = false;
                                             customerItemID.RemoveAt(j);
                                             customerItemName.RemoveAt(j);
                                             customerQuantity.RemoveAt(j);
@@ -318,7 +314,6 @@ namespace SpiceItUp
                                         }
                                         else //If customer only removes part of an items quantites, updates lists accordingly
                                         {
-                                            failedEntry = false;
                                             decimal itemPrice = customerPrice[j] / customerQuantity[j];
                                             customerQuantity[j] = customerQuantity[j] - quantity;
                                             decimal newPrice = itemPrice * customerQuantity[j];

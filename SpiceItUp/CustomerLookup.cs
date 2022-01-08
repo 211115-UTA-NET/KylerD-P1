@@ -15,8 +15,8 @@ namespace SpiceItUp
     {
         private static bool exit = false;
 
-        public static string? firstName;
-        public static string? lastName;
+        private static string? firstName;
+        private static string? lastName;
 
         /// <summary>
         /// Employee chooses how they would like to lookup the customer (first or last name)
@@ -48,10 +48,10 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-                        SearchByFirstName(); //If employee chooses first name
+                        _ = SearchByFirstName(); //If employee chooses first name
                         break;
                     case 2:
-                        SearchByLastName(); //If employee chooses last name
+                        _ = SearchByLastName(); //If employee chooses last name
                         break;
                     case 3: //Exit and return to account menu
                         exit = true;
@@ -63,7 +63,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a first name
         /// </summary>
-        public static async void SearchByFirstName()
+        public static async Task SearchByFirstName()
         {
             while (true)
             {
@@ -77,9 +77,9 @@ namespace SpiceItUp
                 {
                     try //Try to pull customer information
                     {
-                        SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
+                        SpiceItUpService service = new SpiceItUpService(Program.server);
                         List<User> users = await service.GetUserFirstName(firstName);
-                        SpiceItUp.PrintResults.PrintCustomerInfo(users);
+                        PrintResults.PrintCustomerInfo(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database
@@ -94,7 +94,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a last name
         /// </summary>
-        public static async void SearchByLastName()
+        public static async Task SearchByLastName()
         {
             while (true)
             {
@@ -108,9 +108,9 @@ namespace SpiceItUp
                 {
                     try //Try to pull customer information
                     {
-                        SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
+                        SpiceItUpService service = new SpiceItUpService(Program.server);
                         List<User> users = await service.GetUserLastName(lastName);
-                        SpiceItUp.PrintResults.PrintCustomerInfo(users);
+                        PrintResults.PrintCustomerInfo(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database
