@@ -10,10 +10,9 @@ namespace SpiceItUp
     /// <summary>
     /// Customers can view their order history
     /// </summary>
-    public class CustomerOrderHistory
+    public static class CustomerOrderHistory
     {
-        private static bool exit = false;
-        public static List<string> transList = new List<string>();
+        private static List<string> transList = new List<string>();
         private static int userEntry;
 
         /// <summary>
@@ -23,7 +22,7 @@ namespace SpiceItUp
         /// <param name="myUserID"></param>
         public static async Task CustomerTransactionHistory(int myUserID)
         {
-            exit = false;
+            bool exit = false;
             while (exit == false)
             {
                 transList.Clear();
@@ -55,8 +54,8 @@ namespace SpiceItUp
                 while (true)
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && transList.Count >= userEntry && userEntry > 0) //If entery is valid
+                    _ = int.TryParse(mySelection, out userEntry);
+                    if (transList.Count >= userEntry && userEntry > 0) //If entery is valid
                     {
                         SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
                         userEntry--;

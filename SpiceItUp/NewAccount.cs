@@ -10,7 +10,7 @@ namespace SpiceItUp
     /// <summary>
     /// User is able to begin creating an account with basic information.
     /// </summary>
-    public class NewAccount
+    public static class NewAccount
     {
         private static string? firstName = "";
         private static string? lastName = "";

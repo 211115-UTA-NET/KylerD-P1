@@ -13,8 +13,8 @@ namespace SpiceItUp
     public class EmployeeAccount
     {
         protected int userID;
-        protected string firstName;
-        protected string lastName;
+        protected string? firstName;
+        protected string? lastName;
         protected double phoneNumber;
 
         private bool logout = false;
@@ -27,7 +27,7 @@ namespace SpiceItUp
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="phoneNumber"></param>
-        public EmployeeAccount(int userID, string firstName, string lastName, double phoneNumber)
+        public EmployeeAccount(int userID, string? firstName, string? lastName, double phoneNumber)
         {
             this.userID = userID;
             this.firstName = firstName;
@@ -54,8 +54,8 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && userEntry >= 1 && userEntry <= 5)
+                    _ = int.TryParse(mySelection, out userEntry);
+                    if (userEntry >= 1 && userEntry <= 5)
                     {
                         break; //Break when valid
                     }
@@ -66,13 +66,13 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1: //View order histories by customer name
-                        SpiceItUp.EmployeeTransactionByCustomer.SelectACustomer();
+                        _ = SpiceItUp.EmployeeTransactionByCustomer.SelectACustomer();
                         break;
                     case 2: //View order histories by store 
-                        SpiceItUp.EmployeeTransactionByStore.StoreSelection();
+                        _ = SpiceItUp.EmployeeTransactionByStore.StoreSelection();
                         break;
                     case 3: //View a stores inventory
-                        SpiceItUp.LocationInventory.StoreSelection();
+                        _ = SpiceItUp.LocationInventory.StoreSelection();
                         break;
                     case 4: //Pull a customer's account information by looking up their name
                         SpiceItUp.CustomerLookup.CustomerSearchOptions();

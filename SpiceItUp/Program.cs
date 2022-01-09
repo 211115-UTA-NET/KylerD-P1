@@ -3,16 +3,14 @@
     /// <summary>
     /// Starting basic class with starting options.
     /// </summary>
-    public class Program
+    public static class Program
     {
         private static bool logout = false;
 
-        public static string? mySelection;
-        public static int userEntry;
-        public static bool validEntry;
+        private static string? mySelection;
+        private static int userEntry;
 
-        //public static Uri server = new("https://localhost:7106");
-        public static Uri server = new("https://spiceitup.azurewebsites.net");
+        public static readonly Uri server = new("https://spiceitup.azurewebsites.net");
 
         /// <summary>
         /// Begin program.
@@ -29,13 +27,11 @@
                 Console.WriteLine("2: Existing Account Login");
                 Console.WriteLine("3: Exit");
 
-                //int userEntry;
-
                 while (true) //Test to ensure user entry is valid
                 {
                     mySelection = Console.ReadLine();
-                    validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && userEntry >= 1 && userEntry <= 3)
+                    _ = int.TryParse(mySelection, out userEntry);
+                    if (userEntry >= 1 && userEntry <= 3)
                     {
                         break; //Break when valid
                     }
@@ -49,7 +45,7 @@
                         SpiceItUp.NewAccount.CreateAnAccount(); //Create an account
                         break;
                     case 2:
-                        SpiceItUp.AccountLogin.LoginManager(); //Log into an account
+                        _ = SpiceItUp.AccountLogin.LoginManager(); //Log into an account
                         break;
                     case 3: //Stop program by finishing main method
                         Console.WriteLine("Thank you for shopping with us! Have a good day!");

@@ -15,9 +15,8 @@ namespace SpiceItUp
         /// <summary>
         /// A stores' transactions are stored in a list
         /// </summary>
-        public static List<string> transList = new List<string>();
+        private static List<string> transList = new List<string>();
 
-        private static bool exit = false;
         private static int storeEntry;
         private static int userEntry;
 
@@ -27,7 +26,6 @@ namespace SpiceItUp
         /// </summary>
         public static async Task StoreSelection()
         {
-            exit = false;
             while (true)
             {
                 Console.WriteLine("Enter a store number to view the order history:");
@@ -47,10 +45,10 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? storeSelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(storeSelection, out storeEntry);
-                    if (validEntry == true && storeEntry > 100 && storeEntry < 105) //If selected store is valid
+                    _ = int.TryParse(storeSelection, out storeEntry);
+                    if (storeEntry > 100 && storeEntry < 105) //If selected store is valid
                     {
-                        TransactionHistory(storeEntry); //Print off transactions in the database from entered store
+                        _ = TransactionHistory(storeEntry); //Print off transactions in the database from entered store
                         break;
                     }
                     else //If there is an unknown error
@@ -70,7 +68,7 @@ namespace SpiceItUp
         /// </summary>
         public static async Task TransactionHistory(int myEntry)
         {
-            exit = false;
+            bool exit = false;
             while (exit == false)
             {
                 transList.Clear();
@@ -98,7 +96,7 @@ namespace SpiceItUp
                 while (true) //The employee can now view a store's transaction in more detail, if they wish
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
+                    _ = int.TryParse(mySelection, out userEntry);
                     if (transList.Count >= userEntry && userEntry > 0) //If a transaction selectionn is valid
                     {
                         SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
-    public class PrintResults
+    public static class PrintResults
     {
         private static List<string> transList = new List<string>();
 

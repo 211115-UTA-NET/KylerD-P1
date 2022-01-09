@@ -12,12 +12,9 @@ namespace SpiceItUp
     /// </summary>
     public interface IViewTransaction
     {
-        static List<string> transList = new List<string>();
-
-        static bool exit = false;
-
-        static int userEntry;
-
-        static void TransactionHistory() { }
+        static void TransactionHistory()
+        {
+            //Gets transaction history
+        }
     }
 }

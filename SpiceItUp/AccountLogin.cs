@@ -12,7 +12,7 @@ namespace SpiceItUp
     /// User will enter their login information
     /// If valid, the user will be able to login to their account
     /// </summary>
-    public class AccountLogin
+    public static class AccountLogin
     {
         private static string? enteredUsername;
         private static string? enteredPassword;
