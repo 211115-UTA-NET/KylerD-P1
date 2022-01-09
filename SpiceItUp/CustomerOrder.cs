@@ -11,7 +11,7 @@ namespace SpiceItUp
     /// This class manages a customer order.
     /// Orders are restricted based on the store inventory.
     /// </summary>
-    public static class CustomerOrder
+    public class CustomerOrder
     {
         private static int storeEntry;
         private static string? storeName;
@@ -38,19 +38,19 @@ namespace SpiceItUp
         /// Customer selects the store in which they want to order from
         /// </summary>
         /// <param name="myUserID"></param>
-        public static async Task StoreSelection(int myUserID)
+        public static async void StoreSelection(int myUserID)
         {
             userID = myUserID;
             exit = false;
-            while (true)
+            while (exit == false)
             {
                 Console.WriteLine("Enter a store number to begin shopping:");
 
                 try
                 {
-                    SpiceItUpService service = new SpiceItUpService(Program.server);
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Store> stores = await service.GetStoreList();
-                    PrintResults.PrintStoreList(stores);
+                    SpiceItUp.PrintResults.PrintStoreList(stores);
                 }
                 catch (Exception)
                 {
@@ -61,8 +61,8 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? storeSelection = Console.ReadLine();
-                    _ = int.TryParse(storeSelection, out storeEntry);
-                    if (storeEntry > 100)
+                    bool validEntry = int.TryParse(storeSelection, out storeEntry);
+                    if (validEntry == true && storeEntry > 100)
                     {
                         break; //Break when valid
                     }
@@ -72,7 +72,7 @@ namespace SpiceItUp
 
                 try
                 {
-                    _ = PullStoreInfo(); //If store is valid, we will try to pull the store inventory and store it in a series of lists
+                    PullStoreInfo(); //If store is valid, we will try to pull the store inventory and store it in a series of lists
                 }
                 catch (Exception)
                 {
@@ -86,9 +86,9 @@ namespace SpiceItUp
         /// <summary>
         /// Based on user entry, we pull all store information reguarding name and inventory of store
         /// </summary>
-        public static async Task PullStoreInfo()
+        public static async void PullStoreInfo()
         {
-            SpiceItUpService service = new(SpiceItUp.Program.server);
+            SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
 
             itemIDList.Clear();
             itemNameList.Clear();
@@ -140,22 +140,24 @@ namespace SpiceItUp
 
                 Console.WriteLine("Enter an Item ID to add to your cart, or enter 0 to view your cart.");
                 Console.WriteLine("Type 'EXIT' to cancel your order and return to your account menu.");
-                while (true)
+                while (exit == false)
                 {
+                    int itemToAdd;
                     string? adding = Console.ReadLine(); //Customer enters which item ID they would like to add to their cart
-                    _ = int.TryParse(adding, out int itemToAdd);
+                    bool validEntry = int.TryParse(adding, out itemToAdd);
                     itemToAdd--;
-                    if (itemToAdd > -1 && itemToAdd < itemIDList.Count && inStockList[itemToAdd] != 0) //If our item ID entry is valid
+                    if (validEntry == true && itemToAdd > -1 && itemToAdd < itemIDList.Count && inStockList[itemToAdd] != 0) //If our item ID entry is valid
                     {
                         Console.WriteLine("Enter a quantity to add to cart:");
-                        while (true)
+                        while (exit == false)
                         {
                             string? quantityString = Console.ReadLine(); //Customers will now enter a quantity
-                            _ = int.TryParse(quantityString, out int quantity);
+                            int quantity;
+                            bool validQuantity = int.TryParse(quantityString, out quantity);
                             bool failedEntry = false;
                             bool sameEntry = false;
                             bool maxQuantity = false;
-                            if (quantity > 0 && quantity < 11 && quantity <= inStockList[itemToAdd]) //If quantity entered is valid
+                            if (validQuantity == true && quantity > 0 && quantity < 11 && quantity <= inStockList[itemToAdd]) //If quantity entered is valid
                             {
                                 for (int j = 0; j < customerItemID.Count; j++) //Loop through current customer cart to find duplicate Item IDs
                                 {
@@ -199,23 +201,25 @@ namespace SpiceItUp
                                     inStockList[itemToAdd] = inStockList[itemToAdd] - quantity;
                                     break;
                                 }
-                                else if (maxQuantity == true || failedEntry == false)
+                                else if (maxQuantity == true) //If customer already has 10 of selected item in cart, break the loop
+                                    break;
+                                else if (failedEntry == false) //If the customers current entered quantity and the quantity in their cart exceeds 10, break the loop
                                     break;
                             }
-                            else if (quantity > inStockList[itemToAdd]) //If customer tries to add more than what store has in stock
+                            else if (validQuantity == true && quantity > inStockList[itemToAdd]) //If customer tries to add more than what store has in stock
                                 Console.WriteLine("This store does not have enough in stock for that quantity. \nPlease enter a new quantity:");
-                            else if (quantity < 1) //If customer enters a quantity below 0
+                            else if (validQuantity == true && quantity < 1) //If customer enters a quantity below 0
                                 Console.WriteLine("You cannot have a quantity less than 1. \nPlease enter a new quantity:");
                             else //If quantity exceeds 10 items
                                 Console.WriteLine("Sorry, quantities are limited to 10 per item. \nPlease enter a new quantity.");
                         }
                         break;
                     }
-                    else if (itemToAdd < -1 || itemToAdd >= itemIDList.Count) //Item ID entered by customer is not valid
+                    else if (validEntry == true && itemToAdd < -1 || itemToAdd >= itemIDList.Count) //Item ID entered by customer is not valid
                         Console.WriteLine("Invalid item ID. \nPlease enter a new item ID:");
-                    else if (itemToAdd > -1 && itemToAdd < itemIDList.Count && inStockList[itemToAdd] == 0) //If the item customer selected is out of stock
+                    else if (validEntry == true && itemToAdd > -1 && itemToAdd < itemIDList.Count && inStockList[itemToAdd] == 0) //If the item customer selected is out of stock
                         Console.WriteLine("We are currently out of this item. \nPlease enter a new item ID:");
-                    else if (itemToAdd == -1) //If customer wishes to enter cart:
+                    else if (validEntry == true && itemToAdd == -1) //If customer wishes to enter cart:
                     {
                         if (customerItemID.Count == 0) //Customer cannot view cart if it is empty
                             Console.WriteLine("Your cart is empty. Enter a valid Item ID to create a cart:");
@@ -250,7 +254,7 @@ namespace SpiceItUp
         /// </summary>
         public static void RemoveFromCart()
         {
-            while (true)
+            while (exit == false)
             {
                 if (customerItemID.Count == 0) //If customer rmeoves all items from their cart
                 {
@@ -271,19 +275,22 @@ namespace SpiceItUp
                 Console.WriteLine("=========================");
                 Console.WriteLine("Enter an Item ID to remove it from your cart, or enter 0 to view your cart.");
                 Console.WriteLine("Type 'EXIT' to cancel your order and return to your account menu.");
-                while (true)
+                while (exit == false)
                 {
+                    int itemToRemove;
                     string? removing = Console.ReadLine();
-                    _ = int.TryParse(removing, out int itemToRemove);
+                    bool validEntry = int.TryParse(removing, out itemToRemove);
                     itemToRemove--;
-                    if (itemToRemove > -1) //If the Item ID entered is valid
+                    if (validEntry == true && itemToRemove > -1) //If the Item ID entered is valid
                     {
+                        bool failedEntry = true;
                         Console.WriteLine("Enter a quantity to remove from your cart:");
-                        while (true)
+                        while (failedEntry == true)
                         {
                             string? quantityString = Console.ReadLine();
-                            _ = int.TryParse(quantityString, out int quantity);
-                            if (quantity > 0 && quantity < 11) //If quantity entered is valid
+                            int quantity;
+                            bool validQuantity = int.TryParse(quantityString, out quantity);
+                            if (validQuantity == true && quantity > 0 && quantity < 11) //If quantity entered is valid
                             {
                                 itemToRemove++;
                                 int itemRemoved = 0;
@@ -301,6 +308,7 @@ namespace SpiceItUp
                                         }
                                         else if (finalQuantity == 0) //If customer removes all quantites of an item from cart, delete item line in lists
                                         {
+                                            failedEntry = false;
                                             customerItemID.RemoveAt(j);
                                             customerItemName.RemoveAt(j);
                                             customerQuantity.RemoveAt(j);
@@ -310,6 +318,7 @@ namespace SpiceItUp
                                         }
                                         else //If customer only removes part of an items quantites, updates lists accordingly
                                         {
+                                            failedEntry = false;
                                             decimal itemPrice = customerPrice[j] / customerQuantity[j];
                                             customerQuantity[j] = customerQuantity[j] - quantity;
                                             decimal newPrice = itemPrice * customerQuantity[j];
@@ -325,16 +334,16 @@ namespace SpiceItUp
                                     Console.WriteLine("We could not find that item. Please try again.");
                                 break;
                             }
-                            else if (quantity <= 0) //Quantity entered cannot be less than 1
+                            else if (validQuantity == true && quantity <= 0) //Quantity entered cannot be less than 1
                                 Console.WriteLine("You cannot remove a quantity less than 1. \nPlease enter a new quantity to remove:");
-                            else if (quantity > 10) //Quantity entered cannot be more than 10
+                            else if (validQuantity == true && quantity > 10) //Quantity entered cannot be more than 10
                                 Console.WriteLine("You cannot remove a quantity more than 10. \nPlease enter a new quantity to remove:");
                             else //If there is an unknow error
                                 Console.WriteLine("There was an error. \nPlease enter a new quantity to remove:");
                         }
                         break;
                     }
-                    else if (itemToRemove == -1) //If customer enters 0 to view cart
+                    else if (validEntry == true && itemToRemove == -1) //If customer enters 0 to view cart
                         ViewCustomerCart(); //Return to cart
                     else if (removing == "EXIT") //If customer wishes to exit, clear all lists and return to customer main menu
                     {
@@ -427,7 +436,7 @@ namespace SpiceItUp
                 string price = String.Format("{0:0.00}", customerPrice[i]);
                 Console.WriteLine(String.Format("{0, -8} {1, -15} {2, -15} {3, -16}",
                     customerItemID[i], customerItemName[i], customerQuantity[i], $"${price}"));
-                totalPrice += customerPrice[i];
+                totalPrice = totalPrice + customerPrice[i];
             }
             //Print off total price of entire cart
             string stringTotalPrice = String.Format("{0:0.00}", totalPrice);
@@ -441,8 +450,8 @@ namespace SpiceItUp
             while (true) //Test to ensure user entry is valid
             {
                 string? mySelection = Console.ReadLine();
-                _ = int.TryParse(mySelection, out userEntry);
-                if (userEntry >= 1 && userEntry <= 4)
+                bool validEntry = int.TryParse(mySelection, out userEntry);
+                if (validEntry == true && userEntry >= 1 && userEntry <= 4)
                 {
                     if (userEntry == 3 && customerItemID.Count == 0)
                         Console.WriteLine("You cannot checkout with an empty cart. Please select another option:");

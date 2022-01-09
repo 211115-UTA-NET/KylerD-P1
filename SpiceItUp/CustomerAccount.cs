@@ -13,8 +13,8 @@ namespace SpiceItUp
     public class CustomerAccount
     {
         protected int userID;
-        protected string? firstName;
-        protected string? lastName;
+        protected string firstName;
+        protected string lastName;
         protected double phoneNumber;
 
         private bool logout = false;
@@ -27,7 +27,7 @@ namespace SpiceItUp
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="phoneNumber"></param>
-        public CustomerAccount(int userID, string? firstName, string? lastName, double phoneNumber)
+        public CustomerAccount(int userID, string firstName, string lastName, double phoneNumber)
         {
             this.userID = userID;
             this.firstName = firstName;
@@ -42,7 +42,7 @@ namespace SpiceItUp
         {
             while (logout == false)
             {
-                Console.WriteLine($"Welcome, {firstName} {lastName?[0]}! What would you like to do?");
+                Console.WriteLine($"Welcome, {firstName} {lastName[0]}! What would you like to do?");
                 Console.WriteLine("1: Start a new order");
                 Console.WriteLine("2: View order history");
                 Console.WriteLine("3: View store inventory");
@@ -53,8 +53,8 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    _ = int.TryParse(mySelection, out userEntry);
-                    if (userEntry >= 1 && userEntry <= 4)
+                    bool validEntry = int.TryParse(mySelection, out userEntry);
+                    if (validEntry == true && userEntry >= 1 && userEntry <= 4)
                     {
                         break; //Break when valid
                     }
@@ -65,13 +65,13 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-                        _ = CustomerOrder.StoreSelection(userID); //Start a new order
+                        SpiceItUp.CustomerOrder.StoreSelection(userID); //Start a new order
                         break;
                     case 2:
-                        _ = CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
+                        SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
                         break;
                     case 3:
-                        _ = LocationInventory.StoreSelection(); //View store inventory
+                        SpiceItUp.LocationInventory.StoreSelection(); //View store inventory
                         break;
                     case 4: //Log out of account
                         Console.WriteLine("Goodbye!");

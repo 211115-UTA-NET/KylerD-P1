@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
-    public static class PrintResults
+    public class PrintResults
     {
         private static List<string> transList = new List<string>();
 
@@ -91,6 +91,7 @@ namespace SpiceItUp
                 Console.WriteLine($"Time: {record.Timestamp}");
                 Console.WriteLine($"Total: {record.TotalPrice}");
                 Console.WriteLine("==============================");
+                break;
             }
 
             //Format transaction information

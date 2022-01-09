@@ -11,12 +11,12 @@ namespace SpiceItUp
     /// Employees can pull a customers information by looking up their name
     /// All information is pulled from the database
     /// </summary>
-    public static class CustomerLookup
+    public class CustomerLookup
     {
         private static bool exit = false;
 
-        private static string? firstName;
-        private static string? lastName;
+        public static string? firstName;
+        public static string? lastName;
 
         /// <summary>
         /// Employee chooses how they would like to lookup the customer (first or last name)
@@ -25,6 +25,7 @@ namespace SpiceItUp
         {
             while (exit == false)
             {
+                exit = false;
                 Console.WriteLine("Would you like to search by:");
                 Console.WriteLine("1: First Name");
                 Console.WriteLine("2: Last Name");
@@ -35,8 +36,8 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    _ = int.TryParse(mySelection, out userEntry);
-                    if (userEntry >= 1 && userEntry <= 3)
+                    bool validEntry = int.TryParse(mySelection, out userEntry);
+                    if (validEntry == true && userEntry >= 1 && userEntry <= 3)
                     {
                         break; //Break when valid
                     }
@@ -47,10 +48,10 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-                        _ = SearchByFirstName(); //If employee chooses first name
+                        SearchByFirstName(); //If employee chooses first name
                         break;
                     case 2:
-                        _ = SearchByLastName(); //If employee chooses last name
+                        SearchByLastName(); //If employee chooses last name
                         break;
                     case 3: //Exit and return to account menu
                         exit = true;
@@ -62,7 +63,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a first name
         /// </summary>
-        public static async Task SearchByFirstName()
+        public static async void SearchByFirstName()
         {
             while (true)
             {
@@ -76,9 +77,9 @@ namespace SpiceItUp
                 {
                     try //Try to pull customer information
                     {
-                        SpiceItUpService service = new SpiceItUpService(Program.server);
+                        SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                         List<User> users = await service.GetUserFirstName(firstName);
-                        PrintResults.PrintCustomerInfo(users);
+                        SpiceItUp.PrintResults.PrintCustomerInfo(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database
@@ -93,7 +94,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a last name
         /// </summary>
-        public static async Task SearchByLastName()
+        public static async void SearchByLastName()
         {
             while (true)
             {
@@ -107,9 +108,9 @@ namespace SpiceItUp
                 {
                     try //Try to pull customer information
                     {
-                        SpiceItUpService service = new SpiceItUpService(Program.server);
+                        SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                         List<User> users = await service.GetUserLastName(lastName);
-                        PrintResults.PrintCustomerInfo(users);
+                        SpiceItUp.PrintResults.PrintCustomerInfo(users);
                         break;
                     }
                     catch (Exception) //If we run into an error while accessing database

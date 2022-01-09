@@ -10,7 +10,7 @@ namespace SpiceItUp
     /// <summary>
     /// User is able to begin creating an account with basic information.
     /// </summary>
-    public static class NewAccount
+    public class NewAccount
     {
         private static string? firstName = "";
         private static string? lastName = "";
@@ -26,23 +26,17 @@ namespace SpiceItUp
         /// </summary>
         public static void CreateAnAccount()
         {
+            exit = false;
             Console.WriteLine("Lets create an account! Type 'EXIT' to return to the main menu.");
-            
-            CustomerInformation();
-            CustomerLoginInformation();
-
-            Console.WriteLine("Create your account (Y/N)?");
-            string? response = Console.ReadLine();
-            if ("Y" != response?.ToUpper())
-            {
-                exit = true;
-            }
-
+            if (exit == false)
+                CustomerInformation();
+            if (exit == false)
+                CustomerLoginInformation();
             if (exit == false)
             {
                 try
                 {
-                    SpiceItUpService service = new(Program.server);
+                    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     service.PostUserInfo(newUsername, newPassword, firstName, lastName, phoneNumber);
                     Console.WriteLine($"Your account has been created, {firstName}! You may now login!");
                 }
@@ -59,12 +53,14 @@ namespace SpiceItUp
         /// </summary>
         public static void CustomerInformation()
         {
-            while (true) //Create an account FIRST name
+            while (exit == false) //Create an account FIRST name
             {
                 Console.WriteLine("Please enter your first name:");
                 firstName = Console.ReadLine();
                 if (firstName == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (firstName == "EXIT")
+                    exit = true;
                 else
                 {
                     Console.WriteLine($"Is {firstName} your first name? (Y/N)");
@@ -74,12 +70,14 @@ namespace SpiceItUp
                 }
             }
 
-            while (true) //Create an account LAST name
+            while (exit == false) //Create an account LAST name
             {
                 Console.WriteLine("Please enter your last name:");
                 lastName = Console.ReadLine();
                 if (lastName == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (lastName == "EXIT")
+                    exit = true;
                 else
                 {
                     Console.WriteLine($"Is {lastName} your last name? (Y/N)");
@@ -89,12 +87,14 @@ namespace SpiceItUp
                 }
             }
 
-            while (true) //Create a phone number
+            while (exit == false) //Create a phone number
             {
                 Console.WriteLine("Please enter a valid phone number:");
                 phoneNumber = Console.ReadLine();
                 if (phoneNumber == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (phoneNumber == "EXIT")
+                    exit = true;
                 else if (phoneNumber?.Length < 10)
                 {
                     Console.WriteLine("The phone number you entered is not long enough. Please enter a new phone number.");
@@ -106,7 +106,7 @@ namespace SpiceItUp
                     if (validPhoneNumber != "" && "Y" == validPhoneNumber?.ToUpper())
                         break;
                     else if (validPhoneNumber == "EXIT")
-                        Program.Main();
+                        SpiceItUp.Program.Main();
                 }
             }
         }
@@ -117,12 +117,14 @@ namespace SpiceItUp
         /// </summary>
         public static void CustomerLoginInformation()
         {
-            while (true) //Create an account username
+            while (exit == false) //Create an account username
             {
                 Console.WriteLine("Please enter your username:");
                 newUsername = Console.ReadLine();
                 if (newUsername == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (newUsername == "EXIT")
+                    exit = true;
                 else
                 {
                     Console.WriteLine($"Is {newUsername} your username? (Y/N)");
@@ -132,20 +134,26 @@ namespace SpiceItUp
                 }
             }
 
-            while (true) //Create an account password
+            while (exit == false) //Create an account password
             {
                 Console.WriteLine("Please enter your password (must be at least 8 characters long):");
                 newPassword = Console.ReadLine();
                 if (newPassword == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (newPassword == "EXIT")
+                    exit = true;
                 else if (newPassword?.Length < 8) //Password must be at least 8 characters long
+                {
                     Console.WriteLine("Password is not long enough. Please enter a new password.");
+                }
                 else
                 {
                     Console.WriteLine("Please re-enter your password for verification:");
                     string? validPassword = Console.ReadLine();
                     if (validPassword != "" && newPassword == validPassword && newPassword?.Length >= 8) //Re enter password for verification
                         break;
+                    else if (validPassword == "EXIT")
+                        exit = true;
                     else
                         Console.WriteLine("Passwords did not match. Please try again.");
                 }

@@ -12,7 +12,7 @@ namespace SpiceItUp
     /// User will enter their login information
     /// If valid, the user will be able to login to their account
     /// </summary>
-    public static class AccountLogin
+    public class AccountLogin
     {
         private static string? enteredUsername;
         private static string? enteredPassword;
@@ -20,7 +20,7 @@ namespace SpiceItUp
         /// <summary>
         /// Customer is prompted to enter their username and password
         /// </summary>
-        public static async Task LoginManager()
+        public static async void LoginManager()
         {
             Console.WriteLine("Lets get you logged in!");
             
@@ -46,11 +46,11 @@ namespace SpiceItUp
                     break;
             }
 
-            IEnumerable<User>? info = new List<User>();
+            IEnumerable<User> info = new List<User>();
 
             try
             {
-                SpiceItUpService service = new SpiceItUpService(Program.server);
+                SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                 IEnumerable<User> login = await service.GetLoginInfo(enteredUsername, enteredPassword);
                 int loginID = 0;
                 foreach (var record in login)

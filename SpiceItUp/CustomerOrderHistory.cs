@@ -10,9 +10,10 @@ namespace SpiceItUp
     /// <summary>
     /// Customers can view their order history
     /// </summary>
-    public static class CustomerOrderHistory
+    public class CustomerOrderHistory
     {
-        private static List<string> transList = new();
+        private static bool exit = false;
+        public static List<string> transList = new List<string>();
         private static int userEntry;
 
         /// <summary>
@@ -20,9 +21,10 @@ namespace SpiceItUp
         /// Customers can select a transaction to view it more in detail
         /// </summary>
         /// <param name="myUserID"></param>
-        public static async Task CustomerTransactionHistory(int myUserID)
+        public static async void CustomerTransactionHistory(int myUserID)
         {
-            while (true)
+            exit = false;
+            while (exit == false)
             {
                 transList.Clear();
 
@@ -32,7 +34,7 @@ namespace SpiceItUp
                 {
                     SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
                     List<Transaction> transactions = await service.GetCustomerTransactionList(myUserID);
-                    transList = PrintResults.CustomerTransactionHistory(transactions);
+                    transList = SpiceItUp.PrintResults.CustomerTransactionHistory(transactions);
                 }
                 catch (Exception)
                 {
@@ -53,18 +55,19 @@ namespace SpiceItUp
                 while (true)
                 {
                     string? mySelection = Console.ReadLine();
-                    _ = int.TryParse(mySelection, out userEntry);
-                    if (transList.Count >= userEntry && userEntry > 0) //If entery is valid
+                    bool validEntry = int.TryParse(mySelection, out userEntry);
+                    if (validEntry == true && transList.Count >= userEntry && userEntry > 0) //If entery is valid
                     {
                         SpiceItUpService service2 = new SpiceItUpService(SpiceItUp.Program.server);
                         userEntry--;
                         string transactionNum = transList[userEntry];
                         List<Transaction> transaction = await service2.DetailedTransaction(transactionNum);
-                        PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
+                        SpiceItUp.PrintResults.DetailedTransaction(transaction); //View the transaction in more detail
                         break;
                     }
                     else if (userEntry == 0) //If customer wishes to exit
                     {
+                        exit = true;
                         break;
                     }
                     else //If there is an unknown error
