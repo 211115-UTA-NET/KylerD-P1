@@ -82,8 +82,11 @@ namespace SpiceItUp
         /// </summary>
         public static void DetailedTransaction(IEnumerable<Transaction> transaction)
         {
+            bool breakOnce = true;
+
             foreach (var record in transaction)
             {
+                
                 Console.WriteLine("==============================");
                 Console.WriteLine($"Transaction ID: {record.TransID}");
                 Console.WriteLine($"Store {record.StoreID}: {record.StoreName}");
@@ -91,7 +94,10 @@ namespace SpiceItUp
                 Console.WriteLine($"Time: {record.Timestamp}");
                 Console.WriteLine($"Total: {record.TotalPrice}");
                 Console.WriteLine("==============================");
-                break;
+                if(breakOnce == true)
+                {
+                    break;
+                }
             }
 
             //Format transaction information

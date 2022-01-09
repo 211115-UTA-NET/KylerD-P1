@@ -20,7 +20,7 @@ namespace SpiceItUp
         /// <summary>
         /// Customer is prompted to enter their username and password
         /// </summary>
-        public static async void LoginManager()
+        public static async Task LoginManager()
         {
             Console.WriteLine("Lets get you logged in!");
             

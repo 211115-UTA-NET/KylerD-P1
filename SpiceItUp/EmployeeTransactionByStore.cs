@@ -25,7 +25,7 @@ namespace SpiceItUp
         /// Employee is given a list of stores.
         /// Employe is then given a list of transactions made at the selected store
         /// </summary>
-        public static async void StoreSelection()
+        public static async Task StoreSelection()
         {
             exit = false;
             while (true)
@@ -68,7 +68,7 @@ namespace SpiceItUp
         /// The basic transaction information is printed for the selected store.
         /// The employee has the option to view a transaction more in depth
         /// </summary>
-        public static async void TransactionHistory(int myEntry)
+        public static async Task TransactionHistory(int myEntry)
         {
             exit = false;
             while (exit == false)

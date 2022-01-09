@@ -63,7 +63,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a first name
         /// </summary>
-        public static async void SearchByFirstName()
+        public static async Task SearchByFirstName()
         {
             while (true)
             {
@@ -94,7 +94,7 @@ namespace SpiceItUp
         /// <summary>
         /// The employye can search the database by entering a last name
         /// </summary>
-        public static async void SearchByLastName()
+        public static async Task SearchByLastName()
         {
             while (true)
             {

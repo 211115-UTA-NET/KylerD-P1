@@ -19,7 +19,7 @@ namespace SpiceItUp
         /// Print off a list of stores by pulling store information from the database.
         /// The user can then sleect a store to view it's inventory
         /// </summary>
-        public static async void StoreSelection()
+        public static async Task StoreSelection()
         {
             while (true)
             {

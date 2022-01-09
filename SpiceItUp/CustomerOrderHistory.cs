@@ -21,7 +21,7 @@ namespace SpiceItUp
         /// Customers can select a transaction to view it more in detail
         /// </summary>
         /// <param name="myUserID"></param>
-        public static async void CustomerTransactionHistory(int myUserID)
+        public static async Task CustomerTransactionHistory(int myUserID)
         {
             exit = false;
             while (exit == false)

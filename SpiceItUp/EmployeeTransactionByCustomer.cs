@@ -26,7 +26,7 @@ namespace SpiceItUp
         /// <summary>
         /// The database prints off a list of customers for the employee to choose from
         /// </summary>
-        public async static void SelectACustomer()
+        public async static Task SelectACustomer()
         {
             exit = false;
             while (exit == false)
@@ -74,7 +74,7 @@ namespace SpiceItUp
         /// Once the employee chooses a customer, that customer's transaction list is printed off.
         /// The employee can choose to view a transaction in more details if they wish
         /// </summary>
-        public static async void TransactionHistory(int myEntry)
+        public static async Task TransactionHistory(int myEntry)
         {
             goBack = false;
 

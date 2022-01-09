@@ -38,7 +38,7 @@ namespace SpiceItUp
         /// Customer selects the store in which they want to order from
         /// </summary>
         /// <param name="myUserID"></param>
-        public static async void StoreSelection(int myUserID)
+        public static async Task StoreSelection(int myUserID)
         {
             userID = myUserID;
             exit = false;
@@ -86,7 +86,7 @@ namespace SpiceItUp
         /// <summary>
         /// Based on user entry, we pull all store information reguarding name and inventory of store
         /// </summary>
-        public static async void PullStoreInfo()
+        public static async Task PullStoreInfo()
         {
             SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
 
