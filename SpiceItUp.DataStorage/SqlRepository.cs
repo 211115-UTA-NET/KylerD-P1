@@ -335,7 +335,7 @@ namespace SpiceItUpDataStorage
             return result;
         }
 
-        public static void PostCustomerInfo(string newUsername, string newPassword, string firstName, string lastName, string phoneNumber)
+        public static void PostCustomerInfo(string newUsername, string newPassword, string firstName, string lastName, double phoneNumber)
         {
             using SqlConnection connection = new(connectionString);
 
