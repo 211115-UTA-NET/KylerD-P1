@@ -99,7 +99,7 @@ namespace SpiceItUpDataStorage.Api.Controllers
         }
 
         // POST api/newuser
-        [HttpPost("/user/newuser")]
+        [HttpPost("/newuser")]
         public IActionResult PostNewCustomer([FromQuery] string username, string password, string firstName, string lastName, double phoneNumber)
         {
             try
