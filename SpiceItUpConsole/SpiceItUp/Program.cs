@@ -10,6 +10,7 @@
         private static string? mySelection;
         private static int userEntry;
 
+        //public static readonly Uri server = new("https://localhost:7106/");
         public static readonly Uri server = new("https://spiceitup.azurewebsites.net");
 
         /// <summary>
