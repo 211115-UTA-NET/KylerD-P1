@@ -10,7 +10,7 @@ namespace SpiceItUpDataStorage
 {
     public class SqlRepository
     {
-        private static string? connectionString;
+        private static string? connectionString = "Server=tcp:spiceitup-p0-kylerd.database.windows.net,1433;Initial Catalog=SpiceItUp-P0-KylerD;Persist Security Info=False;User ID=LetsGetSpicy;Password=P0StoreEmulator!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         private static List<int> customerIDList = new List<int>();
 

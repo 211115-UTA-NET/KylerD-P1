@@ -15,16 +15,16 @@ namespace SpiceItUp.Test
         public void TestEntries_UsernamePassword_ValidAccount()
         {
             //Arrange
-            //string username = "ManagerKyler";
-            //string password = "ManagerPassword";
-            //string firstNameResult = "Kyler";
-            //string lastNameResult = "Dennis";
+            string username = "ManagerKyler";
+            string password = "ManagerPassword";
+            string firstNameResult = "Kyler";
+            string lastNameResult = "Dennis";
 
-            ////Act
-            //AccountLogin.TestEntries(username, password);
+            //Act
+            AccountLogin.TestEntries(username, password);
 
-            ////Assert
-            //Assert.True(firstNameResult.Equals(AccountLogin.firstName) && lastNameResult.Equals(AccountLogin.lastName));
+            //Assert
+            Assert.True(firstNameResult.Equals(AccountLogin.firstName) && lastNameResult.Equals(AccountLogin.lastName));
         }
 
         /// <summary>
@@ -34,15 +34,15 @@ namespace SpiceItUp.Test
         public void TestEntries_UsernamePassword_EmployeeTrue()
         {
             //Arrange
-            //string username = "ManagerKyler";
-            //string password = "ManagerPassword";
-            //string isEmployeeResult = "TRUE";
+            string username = "ManagerKyler";
+            string password = "ManagerPassword";
+            string isEmployeeResult = "TRUE";
 
-            ////Act
-            //AccountLogin.TestEntries(username, password);
+            //Act
+            AccountLogin.TestEntries(username, password);
 
-            ////Assert
-            //Assert.True(isEmployeeResult.Equals(AccountLogin.isEmployee));
+            //Assert
+            Assert.True(isEmployeeResult.Equals(AccountLogin.isEmployee));
         }
 
         /// <summary>
@@ -51,16 +51,16 @@ namespace SpiceItUp.Test
         [Fact]
         public void TestEntries_UsernamePassword_EmployeeFalse()
         {
-            //Arrange
-            //string username = "Daniel0";
-            //string password = "Everett0";
-            //string isEmployeeResult = "FALSE";
+            Arrange
+            string username = "Daniel0";
+            string password = "Everett0";
+            string isEmployeeResult = "FALSE";
 
-            ////Act
-            //AccountLogin.TestEntries(username, password);
+            //Act
+            AccountLogin.TestEntries(username, password);
 
-            ////Assert
-            //Assert.True(isEmployeeResult.Equals(AccountLogin.isEmployee));
+            //Assert
+            Assert.True(isEmployeeResult.Equals(AccountLogin.isEmployee));
         }
     }
 }

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceItUpDataStorage", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "..\DataAccess\DataAccess.csproj", "{71E35321-6212-43F9-B310-EE8FBBE6A1C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceItUpAPI.Test", "..\SpiceItUpAPI.Test\SpiceItUpAPI.Test.csproj", "{B0408BA1-35FD-4D62-8606-CEE302597015}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{71E35321-6212-43F9-B310-EE8FBBE6A1C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71E35321-6212-43F9-B310-EE8FBBE6A1C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71E35321-6212-43F9-B310-EE8FBBE6A1C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0408BA1-35FD-4D62-8606-CEE302597015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0408BA1-35FD-4D62-8606-CEE302597015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0408BA1-35FD-4D62-8606-CEE302597015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0408BA1-35FD-4D62-8606-CEE302597015}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

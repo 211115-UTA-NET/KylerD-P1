@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace SpiceItUp.Test
@@ -15,19 +16,34 @@ namespace SpiceItUp.Test
         ///// <summary>
         ///// If we select an incorrect store, we can't pull records
         ///// </summary>
-        [Fact]
-        public void StoreTransactionHistory_UserID_InvalidEntry()
-        {
-            //Act
-           EmployeeTransactionByStore.TransactionHistory(100);
+        //[Fact]
+        //public async void StoreTransactionHistory_UserID_InvalidEntry()
+        //{
+        //    //Arrange
+        //    int store = 100;
 
-           //Assert
-           Assert.False(EmployeeTransactionByStore.transList.Count == 0);
-        }
+        //    //Act
+        //    //trans = (List<Transaction>)SqlRepository.StoreTransactionHistory(store);
 
-        ///// <summary>
-        ///// If we select an incorrect store, we can't pull records
-        ///// </summary>
+
+        //    //Assert
+        //    Assert.True(trans.Count == 0);
+
+        //    //Arrange
+        //    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
+        //    int entry = 100;
+
+        //    //Act
+        //    List<Transaction> trans = await service.GetStoreTransactionList(entry);
+        //    _ = EmployeeTransactionByStore.TransactionHistory(100);
+
+        //   //Assert
+        //   Assert.False(EmployeeTransactionByStore.transList.Count == 0);
+        //}
+
+        /////// <summary>
+        /////// If we select an incorrect store, we can't pull records
+        /////// </summary>
         //[Fact]
         //public void CustomerNameTransactionHistory_UserID_InvalidEntry()
         //{
