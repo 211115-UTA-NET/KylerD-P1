@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SpiceItUp-DB-Connection");
 // Add services to the container.
 
-bool prettyPrintJson = builder.Configuration.GetValue<string>("PrettyPrintJsonOutput") == "true";
+//bool prettyPrintJson = builder.Configuration.GetValue<string>("PrettyPrintJsonOutput") == "true";
 
 builder.Services.AddControllers();/* (options =>
 {
