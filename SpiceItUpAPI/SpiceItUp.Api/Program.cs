@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SpiceItUp-DB-Connection");
 // Add services to the container.
 
-//bool prettyPrintJson = builder.Configuration.GetValue<string>("PrettyPrintJsonOutput") == "true";
+bool prettyPrintJson = builder.Configuration.GetValue<string>("PrettyPrintJsonOutput") == "true";
 
-builder.Services.AddControllers();/* (options =>
+builder.Services.AddControllers(options =>
 {
     options.InputFormatters.Add(new XmlSerializerInputFormatter(options));
     options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
@@ -17,7 +17,7 @@ builder.Services.AddControllers();/* (options =>
     var jsonFormatter = options.OutputFormatters.OfType<SystemTextJsonOutputFormatter>().First();
     jsonFormatter.SerializerOptions.WriteIndented = prettyPrintJson;
 });
-*/
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
