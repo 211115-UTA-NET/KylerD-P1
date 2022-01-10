@@ -70,14 +70,14 @@ namespace SpiceItUp
                 {
                     CustomerAccount customerLogin;
                     customerLogin = new CustomerAccount(record.Id, record.First, record.Last, record.Phone);
-                    customerLogin.UserOptions();
+                    customerLogin.CustomerOptions();
                     break;
                 }
                 else if (record.Employee == "TRUE") // Is this an employee account?
                 {
                     EmployeeAccount employeeLogin;
                     employeeLogin = new EmployeeAccount(record.Id, record.First, record.Last, record.Phone);
-                    employeeLogin.UserOptions();
+                    employeeLogin.EmployeeOptions();
                     break;
                 }
                 else

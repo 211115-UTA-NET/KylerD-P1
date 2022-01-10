@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpiceItUpLogic
+namespace SpiceItUp
 {
     /// <summary>
     /// A user directed to this class is flagged as an employee.
@@ -13,8 +13,8 @@ namespace SpiceItUpLogic
     public class EmployeeAccount
     {
         protected int userID;
-        protected string firstName;
-        protected string lastName;
+        protected string? firstName;
+        protected string? lastName;
         protected double phoneNumber;
 
         private bool logout = false;
@@ -27,7 +27,7 @@ namespace SpiceItUpLogic
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="phoneNumber"></param>
-        public EmployeeAccount(int userID, string firstName, string lastName, double phoneNumber)
+        public EmployeeAccount(int userID, string? firstName, string? lastName, double phoneNumber)
         {
             this.userID = userID;
             this.firstName = firstName;
@@ -38,7 +38,7 @@ namespace SpiceItUpLogic
         /// <summary>
         /// Customers are given different options for how to proceed.
         /// </summary>
-        public void UserOptions()
+        public void EmployeeOptions()
         {
             while (logout == false)
             {
@@ -54,8 +54,8 @@ namespace SpiceItUpLogic
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && userEntry >= 1 && userEntry <= 5)
+                    _ = int.TryParse(mySelection, out userEntry);
+                    if (userEntry >= 1 && userEntry <= 5)
                     {
                         break; //Break when valid
                     }
@@ -66,16 +66,16 @@ namespace SpiceItUpLogic
                 switch (userEntry)
                 {
                     case 1: //View order histories by customer name
-                        SpiceItUpLogic.EmployeeTransactionByCustomer.SelectACustomer();
+                        _ = SpiceItUp.EmployeeTransactionByCustomer.SelectACustomer();
                         break;
                     case 2: //View order histories by store 
-                        SpiceItUpLogic.EmployeeTransactionByStore.StoreSelection();
+                        _ = SpiceItUp.EmployeeTransactionByStore.StoreSelection();
                         break;
                     case 3: //View a stores inventory
-                        SpiceItUpLogic.LocationInventory.StoreSelection();
+                        _ = SpiceItUp.LocationInventory.StoreSelection();
                         break;
                     case 4: //Pull a customer's account information by looking up their name
-                        SpiceItUpLogic.CustomerLookup.CustomerSearchOptions();
+                        SpiceItUp.CustomerLookup.CustomerSearchOptions();
                         break;
                     case 5: //Log out of the employye account and return to the login page
                         Console.WriteLine("Goodbye!");

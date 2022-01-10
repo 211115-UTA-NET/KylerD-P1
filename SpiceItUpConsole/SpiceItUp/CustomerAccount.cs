@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpiceItUpLogic
+namespace SpiceItUp
 {
     /// <summary>
     /// A user directed to this class is flagged as a customer.
@@ -13,8 +13,8 @@ namespace SpiceItUpLogic
     public class CustomerAccount
     {
         protected int userID;
-        protected string firstName;
-        protected string lastName;
+        protected string? firstName;
+        protected string? lastName;
         protected double phoneNumber;
 
         private bool logout = false;
@@ -27,7 +27,7 @@ namespace SpiceItUpLogic
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="phoneNumber"></param>
-        public CustomerAccount(int userID, string firstName, string lastName, double phoneNumber)
+        public CustomerAccount(int userID, string? firstName, string? lastName, double phoneNumber)
         {
             this.userID = userID;
             this.firstName = firstName;
@@ -38,7 +38,7 @@ namespace SpiceItUpLogic
         /// <summary>
         /// Customers are given different options for how to proceed.
         /// </summary>
-        public void UserOptions()
+        public void CustomerOptions()
         {
             while (logout == false)
             {
@@ -53,8 +53,8 @@ namespace SpiceItUpLogic
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && userEntry >= 1 && userEntry <= 4)
+                    _ = int.TryParse(mySelection, out userEntry);
+                    if (userEntry >= 1 && userEntry <= 4)
                     {
                         break; //Break when valid
                     }
@@ -65,13 +65,13 @@ namespace SpiceItUpLogic
                 switch (userEntry)
                 {
                     case 1:
-                        SpiceItUpLogic.CustomerOrder.StoreSelection(userID); //Start a new order
+                        _ = SpiceItUp.CustomerOrder.StoreSelection(userID); //Start a new order
                         break;
                     case 2:
-                        SpiceItUpLogic.CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
+                        _ = SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
                         break;
                     case 3:
-                        SpiceItUpLogic.LocationInventory.StoreSelection(); //View store inventory
+                        _ = SpiceItUp.LocationInventory.StoreSelection(); //View store inventory
                         break;
                     case 4: //Log out of account
                         Console.WriteLine("Goodbye!");
