@@ -15,15 +15,15 @@ namespace SpiceItUp.Test
         ///// <summary>
         ///// If we select an incorrect store, we can't pull records
         ///// </summary>
-        //[Fact]
-        //public void StoreTransactionHistory_UserID_InvalidEntry()
-        //{
-        //    //Act
-        //    EmployeeTransactionByStore.TransactionHistory(100);
+        [Fact]
+        public void StoreTransactionHistory_UserID_InvalidEntry()
+        {
+            //Act
+           EmployeeTransactionByStore.TransactionHistory(100);
 
-        //    //Assert
-        //    Assert.False(EmployeeTransactionByStore.transList.Count == 0);
-        //}
+           //Assert
+           Assert.False(EmployeeTransactionByStore.transList.Count == 0);
+        }
 
         ///// <summary>
         ///// If we select an incorrect store, we can't pull records
