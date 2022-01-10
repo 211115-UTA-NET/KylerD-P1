@@ -276,7 +276,7 @@ namespace SpiceItUp
         public void PostUserInfo(string? user, string? pass, string? first, string? last, string? phone)
         {
             Dictionary<string, string?> query = new() { ["username"] = user, ["password"] = pass, ["firstName"] = first, ["lastName"] = last, ["phoneNumber"] = phone };
-            string requestUri = QueryHelpers.AddQueryString("/newuser", query);
+            string requestUri = QueryHelpers.AddQueryString("/user/newuser", query);
 
             HttpRequestMessage request = new(HttpMethod.Post, requestUri);
             request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
