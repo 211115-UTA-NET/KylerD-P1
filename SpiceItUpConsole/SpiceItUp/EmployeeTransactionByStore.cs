@@ -63,7 +63,7 @@ namespace SpiceItUp
         }
 
         /// <summary>
-        /// The basic transaction information is printed for the selected store.
+        /// Basic transaction information is printed for the selected store.
         /// The employee has the option to view a transaction more in depth
         /// </summary>
         public static async Task TransactionHistory(int myEntry)
