@@ -54,13 +54,9 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    _ = int.TryParse(mySelection, out userEntry);
-                    if (userEntry >= 1 && userEntry <= 5)
-                    {
-                        break; //Break when valid
-                    }
-                    else
-                        Console.WriteLine("Invalid selection. Please try again.");
+                    userEntry = ValidEntry(mySelection);
+                    if (userEntry > 0)
+                        break;
                 }
 
                 switch (userEntry)
@@ -82,6 +78,20 @@ namespace SpiceItUp
                         logout = true;
                         break;
                 }
+            }
+        }
+
+        public static int ValidEntry(string? selection)
+        {
+            _ = int.TryParse(selection, out int userEntry);
+            if (userEntry >= 1 && userEntry <= 5)
+            {
+                return userEntry;
+            }
+            else
+            {
+                Console.WriteLine("Invalid selection. Please try again.");
+                return 0;
             }
         }
     }

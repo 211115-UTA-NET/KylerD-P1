@@ -62,10 +62,9 @@ namespace SpiceItUp
             }
         }
 
-        public static int ValidEntry(string selection)
+        public static int ValidEntry(string? selection)
         {
-            int userEntry;
-            _ = int.TryParse(selection, out userEntry);
+            _ = int.TryParse(selection, out int userEntry);
             if (userEntry >= 1 && userEntry <= 4)
             {
                 return userEntry; //Break when valid

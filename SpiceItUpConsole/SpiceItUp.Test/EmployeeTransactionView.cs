@@ -11,77 +11,28 @@ namespace SpiceItUp.Test
     /// <summary>
     /// We should not be able to view transaction details if an incorrect store is entered
     /// </summary>
-    public class EmployeeTransactionView
+    public class TestLocationInventory
     {
-        ///// <summary>
-        ///// If we select an incorrect store, we can't pull records
-        ///// </summary>
-        //[Fact]
-        //public async void StoreTransactionHistory_UserID_InvalidEntry()
-        //{
-        //    //Arrange
-        //    int store = 100;
+        [Theory]
+        [InlineData("99")]
+        [InlineData("100")]
+        [InlineData("101")]
+        [InlineData("102")]
+        [InlineData("103")]
+        [InlineData("104")]
+        [InlineData("105")]
+        public void ValidStore_StireEntry_ValidEntry(string selection)
+        {
+            //Act
+            int entry = SpiceItUp.LocationInventory.ValidStore(selection);
 
-        //    //Act
-        //    //trans = (List<Transaction>)SqlRepository.StoreTransactionHistory(store);
-
-
-        //    //Assert
-        //    Assert.True(trans.Count == 0);
-
-        //    //Arrange
-        //    SpiceItUpService service = new SpiceItUpService(SpiceItUp.Program.server);
-        //    int entry = 100;
-
-        //    //Act
-        //    List<Transaction> trans = await service.GetStoreTransactionList(entry);
-        //    _ = EmployeeTransactionByStore.TransactionHistory(100);
-
-        //   //Assert
-        //   Assert.False(EmployeeTransactionByStore.transList.Count == 0);
-        //}
-
-        /////// <summary>
-        /////// If we select an incorrect store, we can't pull records
-        /////// </summary>
-        //[Fact]
-        //public void CustomerNameTransactionHistory_UserID_InvalidEntry()
-        //{
-        //    //Act
-        //    EmployeeTransactionByCustomer.TransactionHistory(100);
-
-        //    //Assert
-        //    Assert.False(EmployeeTransactionByCustomer.transList.Count == 0);
-        //}
-
-        //[Fact]
-        //public static void StoreTransactionHistory_UserID_InvalidEntry()
-        //{
-        //    //Arrange
-        //    List<Transaction> trans = new();
-        //    int store = 100;
-
-        //    //Act
-        //    trans = (List<Transaction>)SqlRepository.StoreTransactionHistory(store);
-
-
-        //    //Assert
-        //    Assert.True(trans.Count == 0);
-        //}
-
-        //[Fact]
-        //public static void StoreTransactionHistory_UserID_ValidEntry()
-        //{
-        //    //Arrange
-        //    List<Transaction> trans = new();
-        //    int store = 104;
-
-        //    //Act
-        //    trans = (List<Transaction>)SqlRepository.StoreTransactionHistory(store);
-
-
-        //    //Assert
-        //    Assert.True(trans.Count > 0);
-        //}
+            //Assert
+            if (entry > 100 && entry < 105)
+                Assert.True(entry > 100 && entry < 105);
+            else if (entry == 0)
+                Assert.True(entry == 0);
+            else
+                Assert.True(false);
+        }
     }
 }

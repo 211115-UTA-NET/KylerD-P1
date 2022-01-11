@@ -40,13 +40,9 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? storeSelection = Console.ReadLine();
-                    _ = int.TryParse(storeSelection, out storeEntry);
-                    if (storeEntry > 100 && storeEntry < 105)
-                    {
-                        break; //Break when valid
-                    }
-                    else
-                        Console.WriteLine("Invalid selection. Please try again.");
+                    storeEntry = ValidStore(storeSelection);
+                    if (storeEntry > 100)
+                        break;
                 }
 
                 try
@@ -64,6 +60,20 @@ namespace SpiceItUp
                 string? checkNewStore = Console.ReadLine();
                 if ("Y" != checkNewStore?.ToUpper()) //If customer does not wish to check another store's inventory, break the loop and return to account main menu
                     break;
+            }
+        }
+
+        public static int ValidStore(string? selection)
+        {
+            _ = int.TryParse(selection, out int storeEntry);
+            if (storeEntry > 100 && storeEntry < 105)
+            {
+                return storeEntry;
+            }
+            else
+            {
+                Console.WriteLine("Invalid selection. Please try again.");
+                return 0;
             }
         }
     }
