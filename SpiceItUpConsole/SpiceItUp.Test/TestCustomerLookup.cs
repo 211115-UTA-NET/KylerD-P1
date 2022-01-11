@@ -15,69 +15,69 @@ namespace SpiceItUp.Test
         /// <summary>
         /// First name entered is a valid customer
         /// </summary>
-        [Fact]
-        public void CustmerLookup_FirstName_ValidCustomer()
-        {
-            //Arrange
-            string firstName = "Daniel";
-            CustomerLookup.firstName = firstName;
+        //[Fact]
+        //public void CustmerLookup_FirstName_ValidCustomer()
+        //{
+        //    //Arrange
+        //    string firstName = "Daniel";
+        //    CustomerLookup.firstName = firstName;
 
-            //Act
-            CustomerLookup.SearchByFirstName();
+        //    //Act
+        //    CustomerLookup.SearchByFirstName();
 
-            //Assert
-            Assert.True(CustomerLookup.test >= 0);
-        }
+        //    //Assert
+        //    Assert.True(CustomerLookup.test >= 0);
+        //}
 
-        /// <summary>
-        /// First name entered is an invalid customer
-        /// </summary>
-        [Fact]
-        public void CustmerLookup_FirstName_InValidCustomer()
-        {
-            //Arrange
-            string firstName = "Greg";
-            CustomerLookup.firstName = firstName;
+        ///// <summary>
+        ///// First name entered is an invalid customer
+        ///// </summary>
+        //[Fact]
+        //public void CustmerLookup_FirstName_InValidCustomer()
+        //{
+        //    //Arrange
+        //    string firstName = "Greg";
+        //    CustomerLookup.firstName = firstName;
 
-            //Act
-            CustomerLookup.SearchByFirstName();
+        //    //Act
+        //    CustomerLookup.SearchByFirstName();
 
-            //Assert
-            Assert.False(CustomerLookup.test >= 0);
-        }
+        //    //Assert
+        //    Assert.False(CustomerLookup.test >= 0);
+        //}
 
-        /// <summary>
-        /// Last name entered is a valid customer
-        /// </summary>
-        [Fact]
-        public void CustmerLookup_LastName_ValidCustomer()
-        {
-            //Arrange
-            string lastName = "Wooten";
-            CustomerLookup.lastName = lastName;
+        ///// <summary>
+        ///// Last name entered is a valid customer
+        ///// </summary>
+        //[Fact]
+        //public void CustmerLookup_LastName_ValidCustomer()
+        //{
+        //    //Arrange
+        //    string lastName = "Wooten";
+        //    CustomerLookup.lastName = lastName;
 
-            //Act
-            CustomerLookup.SearchByLastName();
+        //    //Act
+        //    CustomerLookup.SearchByLastName();
 
-            //Assert
-            Assert.True(CustomerLookup.test >= 0);
-        }
+        //    //Assert
+        //    Assert.True(CustomerLookup.test >= 0);
+        //}
 
-        /// <summary>
-        /// Last name entered is an invalid customer
-        /// </summary>
-        [Fact]
-        public void CustmerLookup_LastName_InValidCustomer()
-        {
-            //Arrange
-            string lastName = "Failue";
-            CustomerLookup.lastName = lastName;
+        ///// <summary>
+        ///// Last name entered is an invalid customer
+        ///// </summary>
+        //[Fact]
+        //public void CustmerLookup_LastName_InValidCustomer()
+        //{
+        //    //Arrange
+        //    string lastName = "Failue";
+        //    CustomerLookup.lastName = lastName;
 
-            //Act
-            CustomerLookup.SearchByLastName();
+        //    //Act
+        //    CustomerLookup.SearchByLastName();
 
-            //Assert
-            Assert.False(CustomerLookup.test >= 0);
-        }
+        //    //Assert
+        //    Assert.False(CustomerLookup.test >= 0);
+        //}
     }
 }

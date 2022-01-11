@@ -17,7 +17,7 @@ namespace SpiceItUp
         protected string? lastName;
         protected double phoneNumber;
 
-        private bool logout = false;
+        private static bool logout = false;
 
         /// <summary>
         /// Constructor to get the basic information from customer.
@@ -53,31 +53,47 @@ namespace SpiceItUp
                 while (true) //Test to ensure user entry is valid
                 {
                     string? mySelection = Console.ReadLine();
-                    _ = int.TryParse(mySelection, out userEntry);
-                    if (userEntry >= 1 && userEntry <= 4)
-                    {
-                        break; //Break when valid
-                    }
-                    else
-                        Console.WriteLine("Invalid selection. Please try again.");
+                    userEntry = ValidEntry(mySelection);
+                    if (userEntry > 0)
+                        break;
                 }
 
-                switch (userEntry)
-                {
-                    case 1:
-                        _ = SpiceItUp.CustomerOrder.StoreSelection(userID); //Start a new order
-                        break;
-                    case 2:
-                        _ = SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
-                        break;
-                    case 3:
-                        _ = SpiceItUp.LocationInventory.StoreSelection(); //View store inventory
-                        break;
-                    case 4: //Log out of account
-                        Console.WriteLine("Goodbye!");
-                        logout = true;
-                        break;
-                }
+                SelectedOption(userEntry, userID);
+            }
+        }
+
+        public static int ValidEntry(string selection)
+        {
+            int userEntry;
+            _ = int.TryParse(selection, out userEntry);
+            if (userEntry >= 1 && userEntry <= 4)
+            {
+                return userEntry; //Break when valid
+            }
+            else
+            {
+                Console.WriteLine("Invalid selection. Please try again.");
+                return 0;
+            }
+        }
+
+        public static void SelectedOption(int userEntry, int userID)
+        {
+            switch (userEntry)
+            {
+                case 1:
+                    _ = SpiceItUp.CustomerOrder.StoreSelection(userID); //Start a new order
+                    break;
+                case 2:
+                    _ = SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
+                    break;
+                case 3:
+                    _ = SpiceItUp.LocationInventory.StoreSelection(); //View store inventory
+                    break;
+                case 4: //Log out of account
+                    Console.WriteLine("Goodbye!");
+                    logout = true;
+                    break;
             }
         }
     }

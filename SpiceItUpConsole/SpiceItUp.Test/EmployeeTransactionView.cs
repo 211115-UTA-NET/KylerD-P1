@@ -53,5 +53,35 @@ namespace SpiceItUp.Test
         //    //Assert
         //    Assert.False(EmployeeTransactionByCustomer.transList.Count == 0);
         //}
+
+        //[Fact]
+        //public static void StoreTransactionHistory_UserID_InvalidEntry()
+        //{
+        //    //Arrange
+        //    List<Transaction> trans = new();
+        //    int store = 100;
+
+        //    //Act
+        //    trans = (List<Transaction>)SqlRepository.StoreTransactionHistory(store);
+
+
+        //    //Assert
+        //    Assert.True(trans.Count == 0);
+        //}
+
+        //[Fact]
+        //public static void StoreTransactionHistory_UserID_ValidEntry()
+        //{
+        //    //Arrange
+        //    List<Transaction> trans = new();
+        //    int store = 104;
+
+        //    //Act
+        //    trans = (List<Transaction>)SqlRepository.StoreTransactionHistory(store);
+
+
+        //    //Assert
+        //    Assert.True(trans.Count > 0);
+        //}
     }
 }

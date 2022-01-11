@@ -15,14 +15,14 @@ namespace SpiceItUp.Test
         /// <summary>
         /// We should not be able to pull up a valid user with an invalid user ID
         /// </summary>
-        [Fact]
-        public void CustomerTransactionHistory_UserID_InvalidUser()
-        {
-            //Act
-            CustomerOrderHistory.CustomerTransactionHistory(0);
+        //[Fact]
+        //public void CustomerTransactionHistory_UserID_InvalidUser()
+        //{
+        //    //Act
+        //    CustomerOrderHistory.CustomerTransactionHistory(0);
 
-            //Assert
-            Assert.True(CustomerOrderHistory.transList.Count == 0);
-        }
+        //    //Assert
+        //    Assert.True(CustomerOrderHistory.transList.Count == 0);
+        //}
     }
 }
