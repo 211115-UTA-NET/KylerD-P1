@@ -8,6 +8,20 @@ namespace SpiceItUp.Api.Controllers
     [ApiController]
     public class StoreController : ControllerBase
     {
+
+        private readonly IRepository _repository;
+        public StoreController(IRepository repository)
+        {
+            _repository = repository;
+        }
+
+        [HttpGet]
+        public List<Store> StoreList()
+        {
+            IEnumerable<Store> storeList = _repository.GetStoreList();
+            return storeList.ToList();
+        }
+
         // GET api/store
         [HttpGet("/store")]
         public IActionResult GetStoreList()

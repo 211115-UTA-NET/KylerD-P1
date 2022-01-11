@@ -8,13 +8,13 @@ namespace SpiceItUpDataStorage
 {
     public class Store
     {
-        public int StoreID { get; }
-        public string? StoreName { get; }
-        public int ItemID { get; }
-        public string? ItemName { get; }
-        public int ItemQuantity { get; }
-        public string? ItemPrice { get; }
-        public decimal ItemPriceDecimal { get; }
+        public int StoreID { get; set; }
+        public string? StoreName { get; set; }
+        public int ItemID { get; set; }
+        public string? ItemName { get; set; }
+        public int ItemQuantity { get; set; }
+        public string? ItemPrice { get; set; }
+        public decimal ItemPriceDecimal { get; set; }
 
         public Store()
         {

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace SpiceItUpDataStorage
 {
-    public class SqlRepository
-    {
+    public class SqlRepository : IRepository
+{
         private static string? connectionString = "Server=tcp:spiceitup-p0-kylerd.database.windows.net,1433;Initial Catalog=SpiceItUp-P0-KylerD;Persist Security Info=False;User ID=LetsGetSpicy;Password=P0StoreEmulator!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         private static List<int> customerIDList = new List<int>();
@@ -72,6 +72,7 @@ namespace SpiceItUpDataStorage
 
             return result;
         }
+
 
         public static IEnumerable<User> CustomerList()
         {
@@ -200,6 +201,28 @@ namespace SpiceItUpDataStorage
         }
 
         public static IEnumerable<Store> PrintStoreList()
+        {
+            List<Store> result = new List<Store>();
+
+            using SqlConnection connection = new(connectionString);
+
+            //Get list of stores from database
+            connection.Open();
+            string getStoreInfo = "SELECT * FROM StoreInfo ORDER BY StoreID;";
+            using SqlCommand readStoreInfo = new(getStoreInfo, connection);
+            using SqlDataReader reader = readStoreInfo.ExecuteReader();
+            while (reader.Read())
+            {
+                int id = reader.GetInt32(0);
+                string name = reader.GetString(1);
+                result.Add(new(id, name));
+            }
+            connection.Close();
+
+            return result;
+        }
+
+        public List<Store> GetStoreList()
         {
             List<Store> result = new List<Store>();
 
