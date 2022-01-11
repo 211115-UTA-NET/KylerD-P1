@@ -38,7 +38,7 @@ jobs:
           context: ./SpiceItUpConsole/SpiceItUp
           file: ./SpiceItUpConsole/SpiceItUp/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/simplewhale:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spiceitup:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
