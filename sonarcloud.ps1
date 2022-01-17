@@ -24,7 +24,7 @@ $branch = git branch --show-current
 Write-Host "branch is $branch"
 
 dotnet tool restore
-gotnet tool run sonarscanner begin /k:"211115-UTA-NET_KylerD-P1" /v:"$assemblyVer" /o:"211115-UTA-NET-github" /d:sonar.login="$sonarSecret" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths=TestResults/*.trx /d:sonar.cs.opencover.reportsPaths=TestResults/*/coverage.opencover.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name="$branch"
+dotnet tool run sonarscanner begin /k:"211115-UTA-NET_KylerD-P1" /v:"$assemblyVer" /o:"211115-UTA-NET-github" /d:sonar.login="$sonarSecret" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths=TestResults/*.trx /d:sonar.cs.opencover.reportsPaths=TestResults/*/coverage.opencover.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name="$branch"
 
 dotnet restore src
 dotnet build src --configuration release
