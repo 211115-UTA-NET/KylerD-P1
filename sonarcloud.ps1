@@ -1,5 +1,5 @@
 param(
-    [string] $SONAR_TOKEN
+    [string] $sonarSecret
 )
 
 
@@ -24,11 +24,11 @@ $branch = git branch --show-current
 Write-Host "branch is $branch"
 
 dotnet tool restore
-dotnet tool run dotnet-sonarscanner begin /k:"211115-UTA-NET_KylerD-P1" /v:"$assemblyVer" /o:"211115-UTA-NET-github" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths=TestResults/*.trx /d:sonar.cs.opencover.reportsPaths=TestResults/*/coverage.opencover.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name="$branch"
+dotnet tool run dotnet-sonarscanner begin /k:"211115-UTA-NET_KylerD-P1" /v:"$assemblyVer" /o:"211115-UTA-NET-github" /d:sonar.login="$sonarSecret" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths=TestResults/*.trx /d:sonar.cs.opencover.reportsPaths=TestResults/*/coverage.opencover.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name="$branch"
 
 dotnet restore src
 dotnet build src --configuration release
 dotnet test "./SpiceItUpConsole/SpiceItUp.Test/SpiceItUp.Test.csproj" --collect:"XPlat Code Coverage" --results-directory TestResults/ --logger "trx;LogFileName=unittests.trx" --no-build --no-restore --configuration release -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
          
 
-dotnet tool run dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+dotnet tool run dotnet-sonarscanner end /d:sonar.login="$sonarSecret"
